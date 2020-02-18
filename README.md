@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Instructions used to [add TypeScript to the project]https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScripts on that page.
+Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScripts on that page.
 
 ## Available Scripts
 
