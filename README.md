@@ -1,3 +1,5 @@
+# Make sure you create a branch for your commits! DO NOT COMMIT TO MASTER, YOU WILL HAVE A BAD TIME.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
