@@ -1,16 +1,17 @@
 .header {
-    background: #282c34;
+    background: white;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     padding: 1%;
+    border-bottom: 3px solid #ACA59D;
 }
 
 .nav-logo {
     display:flex;
-    height: 50px;
-    width: 50px;
-    padding: 10%;
+    height: 75px;
+    width: 175px;
+    padding: 5%;
 }
 
 .nav-logo:hover {
@@ -25,14 +26,19 @@
 }
 
 .nav-link {
-    background-color: #09d3ac;
-    color: black;
+    background-color: white;
+    color: #DF791E;
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
+    border-radius: 5px;
+    margin-left: 8px;
+    font-weight: bold;
 }
 
 .nav-link:hover {
-    background-color: #08bd9a;
+    border-color: #ACA59D;
+    border-width: 1px;
+    border-style: solid;
 }
 

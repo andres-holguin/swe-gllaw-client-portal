@@ -3,12 +3,16 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import './main.scss'
 
-// can add events could be a prop passed to Calendar so if they are an admin they can add events
+// could add events could be a prop passed to Calendar so if they are an admin they can add events
 
 const Calendar = () => {
     return (
-        <div>
-            <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]} />
+        <div className='demo-app'>
+            <div className='demo-app-top'> 
+            </div>
+            <div className='demo-app-calendar'>
+                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]} />
+            </div>
         </div>
     )
 }
