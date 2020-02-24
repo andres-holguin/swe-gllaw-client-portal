@@ -8,4 +8,4 @@ const listingSchema = new mongoose.Schema({
   //progress: {type : Array, required: true}
 });
 
-export default mongoose.model('listings', listingSchema);
+export default mongoose.model('User', listingSchema);
