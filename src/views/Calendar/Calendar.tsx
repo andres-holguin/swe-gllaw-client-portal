@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' 
+
 import './main.scss'
 import Modal from '../../utils/modal/Modal';
 
@@ -20,8 +21,13 @@ const Calendar = () => {
     }
 
     const _handleDateClick = (day : any) => {
+        console.log('setting true')
         setVisible(true)
         setDate(day)
+    }
+
+    const addEvent = (e) => {
+        setEvents([...events, e])
     }
 
     return (
@@ -33,6 +39,7 @@ const Calendar = () => {
                     visible={visible}
                     date={date}
                     closeModal={_handleCloseModal}
+                    addEvent={addEvent}
                 />
                 <FullCalendar
                     defaultView="dayGridMonth"

@@ -7,12 +7,31 @@ import './Modal.css'
 interface Props {
     visible: boolean,
     date: any,
-    closeModal: any
+    closeModal: any,
+    addEvent: any
 }
 
 const Modal: React.FC<Props> = (props) => {
     const [event, setEvent] = useState('')
     const [time, setTime] = useState('')
+
+    console.log(props.visible)
+
+    const setTimeAndDate = () => {
+        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
+        let minute = parseInt(time.substring(3))
+        let d = props.date.date
+        d.setHours(hour)
+        d.setMinutes(minute)
+        let e = {
+            title: event,
+            start: d
+        }
+        props.addEvent(e)
+        setTime('')
+        setEvent('')
+        props.closeModal()
+    }
 
     return (
         <div>
@@ -50,7 +69,7 @@ const Modal: React.FC<Props> = (props) => {
                             disableClock={true}
                         />
                         <div className='addButton'>
-                            <button className='addButtonStyle'>Add Event</button>
+                            <button onClick={setTimeAndDate} className='addButtonStyle'>Add Event</button>
                         </div>
                     </div>
                 ) : (

@@ -43,7 +43,7 @@
     visibility: visible;
     height: 200px;
     border-radius: 5px;
-    display: block;
+    /* display: block; */
 }
 
 .exit {
