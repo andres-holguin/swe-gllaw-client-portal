@@ -1,3 +1,35 @@
+.addButton {
+    position:absolute;
+    bottom:0;
+    right:0;
+    margin-bottom: .5rem;
+    margin-right: .5rem;
+}
+
+.addButtonStyle {
+    height: 35px;
+    width: 90px;
+    border-radius: 5px;
+    background-color: #DF791E;
+    border-color: #DF791E;
+    font-size: 14px;
+    color: white;
+}
+
+.date {
+    font-size: 18px;
+    color: gray;
+    margin-left: 1rem;
+    margin-top: .5rem;
+}
+
+.modalHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 2%;
+}
+
 .modal {
     width: 400px;
     background: white;
@@ -9,7 +41,9 @@
     transform: scale(1);  
     opacity: 1;
     visibility: visible;
-    height: 400px;
+    height: 200px;
+    border-radius: 5px;
+    display: block;
 }
 
 .exit {
@@ -17,14 +51,21 @@
     width: 25px;
 }
 
-.button {
-    justify-content: flex-end;
-    display: flex;
+.exitButton {
+    display:flex;
+    margin-left: auto;
+    margin-right: 3%;
+    margin-top: 1%;
 }
 
 .input {
     height: 50px;
-    width: 300px;
+    width: 325px;
     margin-left: 1rem;
-    font-size: 18px;
+    font-size: 25px;
+}
+
+.timePicker {
+    padding-left: 1rem;
+    padding-top: 1rem;
 }
