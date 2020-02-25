@@ -15,8 +15,6 @@ const Modal: React.FC<Props> = (props) => {
     const [event, setEvent] = useState('')
     const [time, setTime] = useState('')
 
-    console.log(props.visible)
-
     const setTimeAndDate = () => {
         let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
         let minute = parseInt(time.substring(3))
