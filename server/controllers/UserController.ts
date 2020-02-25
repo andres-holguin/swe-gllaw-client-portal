@@ -2,6 +2,12 @@
 import mongoose from 'mongoose';
 import User from '../models/USERModel.js';
 
+interface UserRequest {
+    userName: String,
+    password: String,
+}
+
+
 
 //TODO: DEFINE FUNCTIONS
 
@@ -12,7 +18,10 @@ export const create = async (req, res) => {
 
 /* Show the current listing */
 export const read = (req, res) => {
-    
+    User.findOne({userName: req.user.userName}, (err, result) => {
+        if (err) throw err;
+        console.log(result.toJSON());
+    });
 };
 
 /* Update a listing*/
