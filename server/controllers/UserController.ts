@@ -7,8 +7,6 @@ interface UserRequest {
     password: String,
 }
 
-
-
 //TODO: DEFINE FUNCTIONS
 
 /* Create a listing */
