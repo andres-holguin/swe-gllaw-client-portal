@@ -5,7 +5,8 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' 
 
 import './main.scss'
-import Modal from '../../utils/modal/Modal';
+import Modal from '../../components/modal/Modal';
+import NavBar from '../../components/Header/NavBar';
 
 // could add events could be a prop passed to Calendar so if they are an admin they can add events
 
@@ -31,24 +32,27 @@ const Calendar = () => {
     }
 
     return (
-        <div className='demo-app'>
-            <div className='demo-app-top'> 
+        <>
+            <NavBar />
+            <div className='demo-app'>
+                <div className='demo-app-top'> 
+                </div>
+                <div className='demo-app-calendar'>
+                    <Modal
+                        visible={visible}
+                        date={date}
+                        closeModal={_handleCloseModal}
+                        addEvent={addEvent}
+                    />
+                    <FullCalendar
+                        defaultView="dayGridMonth"
+                        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]} 
+                        events={events}
+                        dateClick={_handleDateClick}
+                    />
+                </div>
             </div>
-            <div className='demo-app-calendar'>
-                <Modal
-                    visible={visible}
-                    date={date}
-                    closeModal={_handleCloseModal}
-                    addEvent={addEvent}
-                />
-                <FullCalendar
-                    defaultView="dayGridMonth"
-                    plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]} 
-                    events={events}
-                    dateClick={_handleDateClick}
-                />
-            </div>
-        </div>
+        </>
     )
 }
 
