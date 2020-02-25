@@ -2,6 +2,11 @@
 import mongoose from 'mongoose';
 import User from '../models/USERModel.js';
 
+interface UserRequest {
+    userName: String,
+    passWord: String,
+}
+
 
 //TODO: DEFINE FUNCTIONS
 
