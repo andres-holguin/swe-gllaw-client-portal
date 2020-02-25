@@ -36,7 +36,7 @@ const Modal: React.FC<Props> = (props) => {
             {
                 props.visible ? 
                 (
-                    <div className='modal'>
+                    <div className='eventmodal'>
                         <div className='modalHeader'>
                             <div className='date'>
                                 {props.date.dateStr}
