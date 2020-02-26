@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 import User from '../models/USERModel.js';
 
-interface UserRequest {
+export interface UserRequest {
     userName: String,
     password: String,
 }
@@ -24,7 +24,10 @@ export const read = (req, res) => {
 
 /* Update a listing*/
 export const update = (req, res) => {
-    
+/*   User.findOneAndUpdate({userName: req.user.UserName}, (err, result) => {
+       if (err) throw err;
+       console.log(update)
+   } */
 };
 
 /* Delete a listing */
