@@ -14,4 +14,8 @@ loginRouter.post("/login", (req, res) => {
     read(req, res);
 });
 
+loginRouter.put("/update", (req, res) => {
+    update(req, res);
+});
+
 export default loginRouter;
