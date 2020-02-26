@@ -13,3 +13,5 @@ loginRouter.post("/register", (req, res) => {
 loginRouter.post("/login", (req, res) => {
     read(req, res);
 });
+
+export default loginRouter;
