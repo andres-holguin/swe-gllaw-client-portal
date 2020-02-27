@@ -3,22 +3,34 @@ import mongoose from 'mongoose';
 import User from '../models/USERModel.js';
 
 export interface UserRequest {
+    email: String
     userName: String,
     password: String,
 }
 
-//TODO: DEFINE FUNCTIONS
-
 /* Create a listing */
 export const create = async (req, res) => {
-    
-};
-
+    let err = {};
+    User.findOne({userName: req.user_req.userName}).then(user => {
+        if (user){
+            console.error("User already exists"); //TODO send back a response.
+        } else {
+            const niceUser = new User({ 
+                username: req.user_req.email,
+                email: req.user_req.userName,
+                password: req.user_req.password,
+                isAdmin: false,
+            });
+            niceUser.save();
+        };
+    });
+}
 /* Show the current listing */
 export const read = (req, res) => {
     User.findOne({userName: req.user.userName}, (err, result) => {
         if (err) throw err;
-        console.log(result.toJSON());
+        res.json(result);
+        //console.log(result.toJSON());
     });
 };
 
@@ -32,6 +44,13 @@ export const update = (req, res) => {
 
 /* Delete a listing */
 export const remove = (req, res) => {
+    User.findOneAndDelete({userName: req.user.userName}, (err, result) => {
+        if (err) throw err;
+        if (!result) {
+            console.log("No user by that name exist.")
+        }
+        
+    });
 };
 
 /* Retreive all the directory listings*/
