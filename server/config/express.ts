@@ -26,7 +26,7 @@ module.exports.init = () => {
     app.use(bodyParser.json());
 
     // LoginRouter
-    //app.use('/api/login', loginRouter);
+    app.use('/api/login', loginRouter);
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
@@ -35,7 +35,7 @@ module.exports.init = () => {
         // Handle React routing, return all requests to React app
         app.get('*', function(req, res) {
             res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
-        });
+        }); 
     }
 
     return app;
