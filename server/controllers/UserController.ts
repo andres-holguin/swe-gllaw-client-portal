@@ -10,10 +10,10 @@ export interface UserRequest {
 
 /* Create a listing */
 export const create = async (req, res) => {
-    let err = {};
+    let err:any = {};
     User.findOne({userName: req.user_req.userName}).then(user => {
         if (user){
-            console.error("User already exists"); //TODO send back a response.
+            err.user = "User already exists"; //TODO send back a response.
         } else {
             const niceUser = new User({ 
                 username: req.user_req.email,
@@ -30,7 +30,6 @@ export const read = (req, res) => {
     User.findOne({userName: req.user.userName}, (err, result) => {
         if (err) throw err;
         res.json(result);
-        //console.log(result.toJSON());
     });
 };
 

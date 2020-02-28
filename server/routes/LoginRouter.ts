@@ -1,5 +1,5 @@
 
-import {create, read, update} from "../controllers/UserController"
+//import {create, read, update} from "../controllers/UserController"
 import {login, register} from "../user"
 const express = require("express");
 const loginRouter = express.Router();
@@ -11,7 +11,7 @@ loginRouter.post("/login", (req, res) => {
 });
 
 loginRouter.put("/update", (req, res) => {
-    update(req, res);
+ //   update(req, res);
 });
-
+module.exports = loginRouter;
 export default loginRouter;

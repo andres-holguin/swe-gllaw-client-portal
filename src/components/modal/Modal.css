@@ -1,0 +1,71 @@
+.addButton {
+    position:absolute;
+    bottom:0;
+    right:0;
+    margin-bottom: .5rem;
+    margin-right: .5rem;
+}
+
+.addButtonStyle {
+    height: 35px;
+    width: 90px;
+    border-radius: 5px;
+    background-color: #DF791E;
+    border-color: #DF791E;
+    font-size: 14px;
+    color: white;
+}
+
+.date {
+    font-size: 18px;
+    color: gray;
+    margin-left: 1rem;
+    margin-top: .5rem;
+}
+
+.modalHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 2%;
+}
+
+.eventmodal {
+    width: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    transition: 1.1s ease-out;
+    box-shadow: 
+      -2rem 2rem 2rem rgba(black, 0.2);
+    filter: blur(0);
+    transform: scale(1);  
+    opacity: 1;
+    visibility: visible;
+    height: 200px;
+    border-radius: 5px;
+    /* display: block; */
+}
+
+.exit {
+    height: 25px;
+    width: 25px;
+}
+
+.exitButton {
+    display:flex;
+    margin-left: auto;
+    margin-right: 3%;
+    margin-top: 1%;
+}
+
+.input {
+    height: 50px;
+    width: 325px;
+    margin-left: 1rem;
+    font-size: 25px;
+}
+
+.timePicker {
+    padding-left: 1rem;
+    padding-top: 1rem;
+}
