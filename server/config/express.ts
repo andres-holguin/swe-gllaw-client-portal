@@ -1,16 +1,16 @@
+import loginRouter from '../routes/LoginRouter'
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
     bodyParser = require('body-parser');
-    loginRouter = require('../routes/LoginRouter');
-
+    const config = require('./config');
 module.exports.init = () => {
     /* 
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI || require('./config').db.uri, {
+    mongoose.connect(process.env.DB_URI || config.default.db.uri, {
         useNewUrlParser: true
     });
     mongoose.set('useCreateIndex', true);
@@ -26,7 +26,7 @@ module.exports.init = () => {
     app.use(bodyParser.json());
 
     // LoginRouter
-    app.use('/api/login', loginRouter);
+    //app.use('/api/login', loginRouter);
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
