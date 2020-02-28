@@ -5,7 +5,7 @@ const Documents = () => {
     return (
         <div>
             <NavBar />
-            <p>DOcuments go here</p>
+            <p>Documents go here</p>
         </div>
     )
 }

@@ -13,6 +13,7 @@ const NavBar = () => {
             <div className = "nav-items">
                 <Link className = "nav-link" to='/Calendar'>Calendar</Link>
                 <Link className = "nav-link" to='/Documents'>Documents</Link>
+                <Link className = "nav-link" to='/Selector'>Switch Project</Link>
             </div>
         </div>
     )

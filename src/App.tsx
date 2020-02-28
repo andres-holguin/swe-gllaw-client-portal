@@ -7,6 +7,7 @@ import Login from './views/Login/Login';
 import Documents from './views/Documents/Documents'
 import UnauthenticatedRoute from './components/Routes/UnauthenticatedRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
+import Selector from './views/Selector/Selector';
 
 
 const App = () => {
@@ -39,6 +40,11 @@ const App = () => {
         <AuthenticatedRoute
             path="/Documents"
             component={Documents}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/Selector"
+            component={Selector}
             appProps={{ isAuthenticated }}
         />
       </Switch>
