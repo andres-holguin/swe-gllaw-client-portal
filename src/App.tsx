@@ -19,7 +19,7 @@ const App = () => {
 
   const onLoad = () => {
     // check if the user is authenticated
-    setTimeout(() => userHasAuthenticated(true), 2500);
+    setTimeout(() => userHasAuthenticated(true), 500);
   }
 
   console.log('isAuthenticated', isAuthenticated)
