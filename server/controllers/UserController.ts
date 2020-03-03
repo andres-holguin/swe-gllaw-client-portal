@@ -1,9 +1,8 @@
 /* Dependencies */
-import mongoose from 'mongoose';
-import User from '../models/USERModel.js';
+import User from '../models/USERModel';
 
 export interface UserRequest {
-    email: String
+    email: String,
     userName: String,
     password: String,
 }
@@ -11,26 +10,38 @@ export interface UserRequest {
 /* Create a listing */
 export const create = async (req, res) => {
     let err:any = {};
-    User.findOne({userName: req.user_req.userName}).then(user => {
+    let user_req: UserRequest = req.body.u_req;
+    console.log(user_req);
+    User.findOne({username: user_req.userName}).then(user => {
         if (user){
+            console.log("User already exisit");
             err.user = "User already exists"; //TODO send back a response.
         } else {
-            const niceUser = new User({ 
-                username: req.user_req.email,
-                email: req.user_req.userName,
-                password: req.user_req.password,
+            User.create({ 
+                username: user_req.userName,
+                email: user_req.email,
+                password: user_req.password,
                 isAdmin: false,
+            }).then( (d)  => {
+                d.save();
+                            console.log("Saved");
             });
-            niceUser.save();
-        };
+        }
     });
 }
+
 /* Show the current listing */
 export const read = (req, res) => {
-    User.findOne({userName: req.user.userName}, (err, result) => {
-        if (err) throw err;
-        res.json(result);
-    });
+    User.findOne({username: req.body.u_req.userName}).then(user => {
+        if (!user) {
+            console.log("User does not exist");
+            //res.send("User does not exist");
+        } else {
+            console.log("User exists");
+
+        }
+
+    })
 };
 
 /* Update a listing*/
@@ -39,6 +50,7 @@ export const update = (req, res) => {
        if (err) throw err;
        console.log(update)
    } */
+  // User.findOneAndUpdate({userName: req.user_req.userName}).
 };
 
 /* Delete a listing */
