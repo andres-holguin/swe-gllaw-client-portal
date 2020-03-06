@@ -6,7 +6,7 @@ const loginRouter = express.Router();
 
 loginRouter.post("/register", register);
 
-loginRouter.post("/", (req, res) => {
+loginRouter.post("/:Login", (req, res) => {
     login(req, res);
     res.json(req.body);
 });
@@ -14,6 +14,11 @@ loginRouter.post("/", (req, res) => {
 loginRouter.put("/update", (req, res) => {
     update(req, res);
 });
+
+
+
+
+
 
 module.exports = loginRouter;
 export default loginRouter;
