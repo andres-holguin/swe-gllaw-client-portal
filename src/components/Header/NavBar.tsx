@@ -6,7 +6,7 @@ import ProgressBar from '../ProgressBar/ProgressBar'
 import logo from '../../images/GonzaloLawLogo.png';
 
 const NavBar = () => {
-    const [progressPercent, setProgressPercent] = useState(40)
+    const [progressPercent, setProgressPercent] = useState(10)
 
     return (
         <div>

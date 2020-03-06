@@ -43,6 +43,7 @@
 }
 
 .progressBar {
+    width: 100%;
     border-bottom: 3px solid #ACA59D;
     padding-left: 1rem;
 }
