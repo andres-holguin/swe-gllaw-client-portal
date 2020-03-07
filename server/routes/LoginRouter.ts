@@ -8,7 +8,7 @@ loginRouter.post("/register", register);
 
 loginRouter.post("/:Login", (req, res) => {
     login(req, res);
-    res.json(req.body);
+   // res.json(req.body);
 });
 
 loginRouter.put("/update", (req, res) => {

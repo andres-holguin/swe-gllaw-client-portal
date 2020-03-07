@@ -1,19 +1,12 @@
-import {create, read, UserRequest} from "./controllers/UserController";
+import {create, read, UserRequest, verifyUser} from "./controllers/UserController";
+import { MongooseDocument } from "mongoose";
 
-export const login = (req, res) => {
+export const login = async (req, res) =>  {
     //u_req is ?
     let u_req = req.body.u_req;
-    console.log(u_req);
-    if(verify(u_req))
-    {
-        res.send(1);
-    }
-    else
-    {
-        res.send(0);
-    }
-    req.user = req.body.u_req;
-    read(req, res);
+    //const result = await read(req, verify);
+    console.log("result, ", res.result);
+    verifyUser(req, res);
 }
 
 export const register = (req, res) => {
@@ -24,7 +17,7 @@ export const register = (req, res) => {
 }
 
 /* Verify function */
-const verify = (user: UserRequest) => {
+const verify = (user: UserRequest, found) => {
     //password verifcation goes on in here
     let err:any;
     if (!user) {
@@ -32,6 +25,12 @@ const verify = (user: UserRequest) => {
         err.user = 'No request was made.';
     }
     if (err) throw err;
-    return true;
+    console.log(user.password);
+    if (user.password === found.password) {
+        console.log("User confiremed");
+        return true;
+    } else {
+        return false;
+    }
 }
 export {}

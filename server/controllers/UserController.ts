@@ -31,19 +31,38 @@ export const create = async (req, res) => {
 }
 
 /* Show the current listing */
-export const read = (req, res) => {
-    User.findOne({username: req.body.u_req.userName}).then(user => {
+export const read = (name: String, res) => {
+    User.findOne({username: name}).then(user => {
         if (!user) {
             console.log("User does not exist");
+            
             //res.send("User does not exist");
         } else {
             console.log("User exists");
-
+            res.result = user;
         }
-
     })
 };
 
+export const verifyUser = (req, res) => {
+    let u: UserRequest = req.body.u_req;
+    User.findOne({username: u.userName}).then(user => {
+
+        if (!user) {
+            console.log("Oops");
+            return res.status(404).json({userNotFound: "User not found"});
+        } else {
+            console.log(u); 
+            console.log(user.toObject());
+            if (u.password === user.toObject().password) {
+                console.log("user confirmed");
+                res.send(true);
+            } else {
+                res.send(false);
+            }
+        }
+    });
+}
 /* Update a listing*/
 export const update = (req, res) => {
 /*   User.findOneAndUpdate({userName: req.user.UserName}, (err, result) => {
