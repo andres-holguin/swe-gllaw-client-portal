@@ -1,5 +1,5 @@
 
-import {create, read, update} from "../controllers/UserController"
+import {update} from "../controllers/UserController"
 import {login, register} from "../user"
 import express  from 'express'
 const loginRouter = express.Router();

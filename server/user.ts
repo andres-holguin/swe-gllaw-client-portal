@@ -1,12 +1,8 @@
 import {create, read, UserRequest, verifyUser} from "./controllers/UserController";
-import { MongooseDocument } from "mongoose";
 
 export const login = async (req, res) =>  {
-    //u_req is ?
-    let u_req = req.body.u_req;
-    //const result = await read(req, verify);
-    console.log("result, ", res.result);
-    verifyUser(req, res);
+    verifyUser(req, res); // Move the code from verify user into thi function.
+    
 }
 
 export const register = (req, res) => {

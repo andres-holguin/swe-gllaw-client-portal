@@ -10,7 +10,7 @@
 
 * Email
 
-  example
+  example:
 
   ```json
   {

@@ -1,6 +1,7 @@
 /* Dependencies */
 import User from '../models/USERModel';
 
+const bcrypt = require("bcrypt");
 export interface UserRequest {
     email: String,
     userName: String,

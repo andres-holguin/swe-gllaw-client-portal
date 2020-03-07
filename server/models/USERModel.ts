@@ -7,8 +7,4 @@ const userSchema = new mongoose.Schema({
   isAdmin: {type : Boolean, required: true},
   //progress: {type : Array, required: true}
 });
-const session = new mongoose.Schema({
-  //sessionid: {type : String, required: true},
-
-}); 
 export default mongoose.model('users', userSchema);
