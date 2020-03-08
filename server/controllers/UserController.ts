@@ -79,16 +79,13 @@ export const verifyUser = (req, res) => {
     });
 }
 /* Update a listing*/
-/*export const update = (req, res) => {
+export const update = (req, res) => {
     let u_req: UserRequest = req.body.u_req;
    User.findOneAndUpdate({username: u_req.userName}, {
        username: req.user.username
-   }
-}; */
-
-const update = (updated: UserRequest) => {
-
+   });
 }
+
 export const resetPassword = (hmm: newPasswordRequest) => {
     let user = hmm.username;
     //let userDocument  = getUser(user);
