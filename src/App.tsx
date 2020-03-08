@@ -1,24 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Route, Switch, Redirect, Router } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+import Calendar from './views/Calendar/Calendar';
+import Login from './views/Login/Login';
+import Documents from './views/Documents/Documents'
+import UnauthenticatedRoute from './components/Routes/UnauthenticatedRoute';
+import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
+import Selector from './views/Selector/Selector';
+
+
+const App = () => {
+  const [isAuthenticated, userHasAuthenticated] = useState(false)
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  const onLoad = () => {
+    // check if the user is authenticated
+    setTimeout(() => userHasAuthenticated(true), 2000);
+  }
+
+  console.log('isAuthenticated', isAuthenticated)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Switch>
+        <UnauthenticatedRoute
+            path="/Login"
+            component={Login}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/Calendar"
+            component={Calendar}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/Documents"
+            component={Documents}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/Selector"
+            component={Selector}
+            appProps={{ isAuthenticated }}
+        />
+      </Switch>
     </div>
   );
 }
