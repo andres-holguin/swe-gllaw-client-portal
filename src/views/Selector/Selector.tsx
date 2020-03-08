@@ -28,6 +28,12 @@ const Selector = () => {
             'ly@aol.com',
             date,
             5
+        ], [
+            'Yashiyah',
+            'backend SWE',
+            'lyyyy@aol.com',
+            date,
+            1
         ]
     ])
 

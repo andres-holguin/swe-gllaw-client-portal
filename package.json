@@ -29,7 +29,7 @@
     "react-time-picker": "^3.9.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -56,6 +56,6 @@
     "@types/node": "^12.12.28",
     "node-sass": "^4.13.1",
     "sass-loader": "^8.0.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   }
 }
