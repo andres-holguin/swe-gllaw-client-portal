@@ -136,6 +136,7 @@ const deleteUser = (req, res) => {
     //req.body.u_req;
 }
 
+
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
     User.find({},function(err,data){

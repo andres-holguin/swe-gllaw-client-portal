@@ -7,6 +7,4 @@ router.route('/')
   
 module.exports = router;
 
-
-
 //private route would be good for login
