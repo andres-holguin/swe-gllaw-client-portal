@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 
 interface Props {
-    data: any
+    data: any,
+    target: String
 }
 
 const Table: React.FC<Props> = (props) => {
     // if they're a client or admin, the headers will be different
     const [headers, setHeaders] = useState(['Client', 'Project', 'Email', 'Date Created', 'Stage'])
 
-    props.data.map(subarry => 
-        subarry.map(el =>
-            console.log(el)
-        )
-    )
+    const res = props.data.filter(element => element[0].includes(props.target) || element[1].includes(props.target));
 
     return (
         <div>
@@ -23,7 +20,7 @@ const Table: React.FC<Props> = (props) => {
                             <th key={index}>{el}</th>
                         ))}
                     </tr>
-                    {props.data.map(subarry => 
+                    {res.map(subarry => 
                         <tr>
                             {subarry.map(el =>
                                 <td>{el}</td>
