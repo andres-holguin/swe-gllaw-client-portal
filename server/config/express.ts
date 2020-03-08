@@ -1,16 +1,16 @@
+import loginRouter from '../routes/LoginRouter'
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    exampleRouter = require('../routes/examples.server.routes');
-
+    bodyParser = require('body-parser');
+    const config = require('./config');
 module.exports.init = () => {
     /* 
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI || require('./config').db.uri, {
+    mongoose.connect(process.env.DB_URI || config.default.db.uri, {
         useNewUrlParser: true
     });
     mongoose.set('useCreateIndex', true);
@@ -25,19 +25,19 @@ module.exports.init = () => {
     // body parsing middleware
     app.use(bodyParser.json());
 
-    // add a router
-    app.use('/api/example', exampleRouter);
+    // LoginRouter
+    app.use('/api/user', loginRouter);
 
-    if (process.env.NODE_ENV === 'production') {
+    /* if (process.env.NODE_ENV === 'production') {
         // Serve any static files
         app.use(express.static(path.join(__dirname, '../../client/build')));
 
         // Handle React routing, return all requests to React app
         app.get('*', function(req, res) {
             res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
-        });
-    }
+        }); 
+    } */
 
-    return app
-}
+    return app;
+};
 

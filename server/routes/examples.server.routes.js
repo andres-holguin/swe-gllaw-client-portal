@@ -6,3 +6,5 @@ router.route('/')
   .get(examples.hello);
   
 module.exports = router;
+
+//private route would be good for login
