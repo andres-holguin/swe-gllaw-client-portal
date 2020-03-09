@@ -28,7 +28,7 @@
     "ts-node": "^8.6.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cd server && concurrently \"tsc -w\" \"nodemon dist/server.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
