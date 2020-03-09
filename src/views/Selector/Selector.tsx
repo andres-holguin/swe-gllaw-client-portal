@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from '../../components/Header/NavBar';
 import Search from '../../components/Search/Search';
-import List from '../../components/List/List';
 import Table from '../../components/Table/Table';
 import SubmissionForm from '../../components/SubmissionForm/SubmissionForm'
 
