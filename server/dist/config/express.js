@@ -22,12 +22,18 @@ module.exports.init = () => {
     app.use(morgan('dev'));
     // body parsing middleware
     app.use(bodyParser.json());
+    app.get('*', (req, res) => {
+        //res.send('hello')
+        app.use(express.static(path.join(__dirname, '../../../build')));
+        res.sendFile(path.join(__dirname, '../../../build', 'index.html'));
+    });
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
-        app.use(express.static(path.join(__dirname, 'public')));
+        // app.use(express.static(path.join(__dirname, '../../../build')));
         // Handle React routing, return all requests to React app
         app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, 'public', 'index.html'));
+            res.send('Hello');
+            //res.sendFile(path.join(__dirname, '../../../build', 'index.html'));
         });
     }
     // LoginRouter
