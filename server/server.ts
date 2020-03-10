@@ -4,7 +4,7 @@ import path from 'path';
 const express = require('./config/express')
 
 // Use env port or default
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const app = express.init();
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
