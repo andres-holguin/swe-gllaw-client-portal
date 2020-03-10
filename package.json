@@ -67,5 +67,6 @@
     "nodemon": "^2.0.2",
     "sass-loader": "^8.0.2",
     "typescript": "^3.8.3"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }

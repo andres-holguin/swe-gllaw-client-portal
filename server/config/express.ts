@@ -22,6 +22,12 @@ module.exports.init = () => {
     // enable request logging for development debugging
     app.use(morgan('dev'));
 
+    app.use(
+        bodyParser.urlencoded({
+            extended: false
+        })
+    );
+
     // body parsing middleware
     app.use(bodyParser.json());
 
@@ -33,13 +39,13 @@ module.exports.init = () => {
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
-        // app.use(express.static(path.join(__dirname, '../../../build')));
+        app.use(express.static(path.join(__dirname, '../../../build')));
     
         // Handle React routing, return all requests to React app
         app.get('*', (req, res) => {
             res.send('Hello')
 
-            //res.sendFile(path.join(__dirname, '../../../build', 'index.html'));
+            res.sendFile(path.join(__dirname, '../../../build', 'index.html'));
         });
     }
 
