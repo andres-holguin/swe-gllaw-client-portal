@@ -5,7 +5,7 @@ export default function SubmissionForm() {
 const { register, handleSubmit, errors, reset } = useForm();
 const onSubmit = (event:any, data: any) => {
     console.log(data)
-    
+    reset();
   };
   
   return (
