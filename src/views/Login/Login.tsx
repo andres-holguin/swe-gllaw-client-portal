@@ -31,12 +31,14 @@ const Login = () => {
                 placeholder='Username'
                 value={username}
                 onChange={(val) => setUsername(val) }
+                required={true}
             />
             <InputField
                 type='password'
                 placeholder='Password'
                 value={password}
                 onChange={(val) => setPassword(val) }
+                required={true}
             /> 
             {/* <button onClick={redirect}>redirecting to home</button> */}
             <SubmitButton

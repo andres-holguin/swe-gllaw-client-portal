@@ -28,6 +28,10 @@ const Account: React.FC<Props> = (props) => {
         } else toggleEqual(true)
     }
 
+    const _handleForm = (e) => {
+        e.preventDefault()
+    }
+
     return (
         <>
             <NavBar />
@@ -36,40 +40,48 @@ const Account: React.FC<Props> = (props) => {
                     <p className='heading'>Account</p>
                 </div>
                 <div className='content'> 
-                    <InputField
-                        border={ correct ? 'lightgrey' : 'red' }
-                        type='password'
-                        placeholder='Current Password'
-                        value={currentPassword}
-                        onChange={(val) => setCurrentPassword(val)}
-                    />
-                    {
-                        correct ? <></> : (
-                            <div>
-                                <p>Looks like this password is incorrect. Try again.</p>
-                            </div>
-                        )
-                    }
-                    <InputField
-                        type='password'
-                        placeholder='New Password'
-                        value={newPassword}
-                        onChange={(val) => setNewPassword(val)}
-                    />
-                    <InputField
-                        border={ equal ? 'lightgrey' : 'red' }
-                        type='password'
-                        placeholder='Retype Password'
-                        value={retypePassword}
-                        onChange={(val) => setRetypePassword(val)}
-                    />
-                    {
-                        equal ? <></> : (
-                            <div>
-                                <p>Your passwords do not match.</p>
-                            </div>
-                        )
-                    }
+                    <form onSubmit={_handleForm}>
+                        <InputField
+                            border={ correct ? 'lightgrey' : 'red' }
+                            type='password'
+                            placeholder='Current Password'
+                            value={currentPassword}
+                            onChange={(val) => setCurrentPassword(val)}
+                            required={true}
+                            name='currentPassword'
+                        />
+                        {
+                            correct ? <></> : (
+                                <div>
+                                    <p>Looks like this password is incorrect. Try again.</p>
+                                </div>
+                            )
+                        }
+                        <InputField
+                            type='password'
+                            placeholder='New Password'
+                            value={newPassword}
+                            onChange={(val) => setNewPassword(val)}
+                            required={true}
+                            name='newPassword'
+                        />
+                        <InputField
+                            border={ equal ? 'lightgrey' : 'red' }
+                            type='password'
+                            placeholder='Retype Password'
+                            value={retypePassword}
+                            onChange={(val) => setRetypePassword(val)}
+                            required={true}
+                            name='retypePassword'
+                        />
+                        {
+                            equal ? <></> : (
+                                <div>
+                                    <p>Your passwords do not match.</p>
+                                </div>
+                            )
+                        }
+                    </form>
                 </div>
                 <div className='saveChanges'>
                     <SubmitButton
