@@ -11,7 +11,8 @@ module.exports.init = () => {
         - reference README for db uri
     */
     mongoose.connect(process.env.DB_URI || config.default.db.uri, {
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     });
     mongoose.set('useCreateIndex', true);
     mongoose.set('useFindAndModify', false);
@@ -28,15 +29,15 @@ module.exports.init = () => {
     // LoginRouter
     app.use('/api/user', loginRouter);
 
-    /* if (process.env.NODE_ENV === 'production') {
+    // if (process.env.NODE_ENV === 'production') {
         // Serve any static files
-        app.use(express.static(path.join(__dirname, '../../client/build')));
+        app.use(express.static(path.join(__dirname, '../../../build')));
 
         // Handle React routing, return all requests to React app
         app.get('*', function(req, res) {
-            res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+            res.sendFile(path.join(__dirname, '../../../build', 'index.html'));
         }); 
-    } */
+   // } 
 
     return app;
 };

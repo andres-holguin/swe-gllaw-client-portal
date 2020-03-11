@@ -1,19 +1,31 @@
 /* Dependencies */
 import User from '../models/USERModel';
-
+import config from '../config/config';
 const bcrypt = require("bcrypt");
+
+const jwt = require("jsonwebtoken");
+const secret = config.jwt.secret;
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
 export interface UserRequest {
-    email: String,
-    userName: String,
-    password: String,
+    email: string,
+    userName: string,
+    password: string,
 }
 
 interface newPasswordRequest {
     username: string,
     oldPassword: string,
     newPassword: string,
+}
+
+const generateToken = (username: string) => {
+
+    const tok = {name: username};
+    const accessToken = jwt.sign(tok, secret);
+    console.log(accessToken);
+    return accessToken;
+   // const token  = jwt.
 }
 
 /* Create a listing */
@@ -67,12 +79,14 @@ export const verifyUser = (req, res) => {
             console.log(user.toObject());
             let hash = user.toObject().password;
             if (bcrypt.compareSync(u.password, hash)) {
-            
                 console.log("user confirmed");
-                res.send(true);
+                
+                const accessToken = generateToken(u.userName);
+                res.json({accessToken: accessToken});
+                
             } else {
                 console.log("User not confirmed");
-                res.send(false);
+                return res.status(401).json({usernotfound: "You dont have access"});
             }
         }
     });
