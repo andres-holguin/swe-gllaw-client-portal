@@ -4,6 +4,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
+# Application Wireframe
+![GL Law Portal Wireframe](documentation/images/Wireframe.png)
+
+# System Context Model
+![GL Law Portal System Context Model](documentation/images/System_Context.png)
+
+# User Storyboard
+![GL Law Portal User Storyboard](documentation/images/User_Storyboard.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
