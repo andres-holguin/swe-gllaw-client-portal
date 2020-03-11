@@ -1,32 +1,33 @@
-import {create, read, UserRequest, verifyUser} from "./controllers/UserController";
+import * as users from "./controllers/UserController";
 
+const bcrypt  = require("bcrypt");
 export const login = async (req, res) =>  {
-    verifyUser(req, res); // Move the code from verify user into thi function.
-    
+    let valid = await users.verifyUser(req, res);
+    console.log("Password valid: ", valid);
 }
 
 export const register = (req, res) => {
     let u_req = req.body.u_req;
     console.log(u_req);
-    create(req, res);
+    users.create(req, res, false);
     res.send("User created");
 }
 
-/* Verify function */
-const verify = (user: UserRequest, found) => {
-    //password verifcation goes on in here
-    let err:any;
-    if (!user) {
-        console.log("aaa");
-        err.user = 'No request was made.';
-    }
-    if (err) throw err;
-    console.log(user.password);
-    if (user.password === found.password) {
-        console.log("User confiremed");
-        return true;
-    } else {
-        return false;
-    }
+export const registerAdmin = (req, res) => {
+    let u_req = req.body.u_req;
+    console.log(u_req);
+    users.create(req, res, true);
+    res.send("Admin created");
+}
+
+export const removeUser = (req, res) => {
+    let pass: string = req.body.u_req.password;
+    let u= users.getUserID(req.body.u_req.userName);
+   /* let hash: String = u.toObject().password;
+    console.log("Remove user", hash);
+    bcrypt.compare(pass, hash, (err, result) => {
+        res.send("User removed: ", result);
+        users.remove(req, res);
+    }) */
 }
 export {}

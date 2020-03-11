@@ -3,7 +3,7 @@ import User from '../models/USERModel';
 
 const bcrypt = require("bcrypt");
 
-const saltRounds = 10;
+const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
 export interface UserRequest {
     email: String,
     userName: String,
@@ -17,23 +17,23 @@ interface newPasswordRequest {
 }
 
 /* Create a listing */
-export const create = async (req, res) => {
+export const create = async (req, res, isAdmin) => {
     let err:any = {};
     let user_req: UserRequest = req.body.u_req;
     console.log(user_req);
     let hashedPassword = bcrypt.hashSync(user_req.password, saltRounds);
     console.log(hashedPassword);
-    User.findOne({username: user_req.userName}).then(user => {
+    User.findOne({username: user_req.userName.toLowerCase()}).then(user => {
         
         if (user){
             console.log("User already exisit");
             err.user = "User already exists"; //TODO send back a response.
         } else {
             User.create({ 
-                username: user_req.userName,
-                email: user_req.email,
+                username: user_req.userName.toLowerCase(),
+                email: user_req.email.toLowerCase(),
                 password: hashedPassword,
-                isAdmin: false,
+                isAdmin: isAdmin,
             }).then( (d)  => {
                 d.save();
                             console.log("Saved");
@@ -44,11 +44,9 @@ export const create = async (req, res) => {
 
 /* Show the current listing */
 export const read = (name: String, res) => {
-    User.findOne({username: name}).then(user => {
+    User.findOne({username: name.toLowerCase()}).then(user => {
         if (!user) {
             console.log("User does not exist");
-            
-            //res.send("User does not exist");
         } else {
             console.log("User exists");
             res.result = user;
@@ -58,7 +56,8 @@ export const read = (name: String, res) => {
 
 export const verifyUser = (req, res) => {
     let u: UserRequest = req.body.u_req;
-    User.findOne({username: u.userName}).then(user => {
+    let valid  = false;
+    User.findOne({username: u.userName}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
@@ -77,6 +76,7 @@ export const verifyUser = (req, res) => {
             }
         }
     });
+
 }
 /* Update a listing*/
 export const update = (req, res) => {
@@ -106,10 +106,17 @@ export const remove = (req, res) => {
     });
 };
 
-export const getUser = (username: string) => {
-    User.findOne({username: username}).exec().then( (d) => {
-        return d;
-    })
+export const getUserID = (username: string) => {
+    let  out: number = -1; // Document
+    User.findOne({username: username}).exec().then( (u) => {
+        if (u) {
+            console.log(u._id);
+            out = u.toObject()._id;
+        } else {
+            out = -1;
+        }
+        return out;
+    });
 }
 
 const isAdmin = (username: string) => { //Replace this function
