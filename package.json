@@ -15,10 +15,13 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.3",
+    "bcrypt": "^4.0.1",
     "bootstrap": "^4.4.1",
+    "concurrently": "^5.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.1",
     "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
@@ -34,7 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd server && ts-node server.ts"
+    "server": "cd server && concurrently \"tsc -w\" \"nodemon dist/server.js\""
   },
   "eslintConfig": {
     "extends": "react-app"
