@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './SubmitButton.css'
+
 interface Props {
     onClick: any,
     text: string,
@@ -10,7 +12,7 @@ const SubmitButton: React.FC<Props> = (props) => {
     return (
         <div>
             <button
-                className= 'button'
+                className='submit'
                 disabled={props.disabled}
                 onClick={() => props.onClick()}
             >

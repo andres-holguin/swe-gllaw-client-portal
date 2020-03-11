@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import './SubmissionForm.css'
+
 export default function SubmissionForm() {
 const { register, handleSubmit, errors, reset } = useForm();
 const onSubmit = (event:any, data: any) => {

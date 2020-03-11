@@ -8,6 +8,7 @@ import Documents from './views/Documents/Documents'
 import UnauthenticatedRoute from './components/Routes/UnauthenticatedRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Selector from './views/Selector/Selector';
+import Account from './views/Account/Account';
 
 
 const App = () => {
@@ -19,7 +20,7 @@ const App = () => {
 
   const onLoad = () => {
     // check if the user is authenticated
-    //setTimeout(() => userHasAuthenticated(true), 2000);
+    setTimeout(() => userHasAuthenticated(true), 10);
   }
 
   console.log('isAuthenticated', isAuthenticated)
@@ -48,6 +49,11 @@ const App = () => {
         <AuthenticatedRoute
             path="/Selector"
             component={Selector}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/MyAccount"
+            component={Account}
             appProps={{ isAuthenticated }}
         />
       </Switch>
