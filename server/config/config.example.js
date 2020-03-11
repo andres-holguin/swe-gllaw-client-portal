@@ -6,5 +6,9 @@ export default {
   db: {
     uri: ''//place the URI of your mongo database here.
   }, 
+  jwt: {
+    secret: '',
+    expiryTime: 300
+  },
   port: 5000
 };
