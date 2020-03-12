@@ -9,7 +9,7 @@ const secret = config.jwt.secret;
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
 export interface UserRequest {
     email: string,
-    userName: string,
+    username: string,
     password: string,
 }
 
@@ -25,6 +25,13 @@ interface UserRegistration {
     email: string,
     username: string,
     password: string,
+}
+
+const isTokenValid = (token: string) => {
+    //if (error) ?
+    jwt.verify(token, secret, (err, decoded) => {
+        console.log(decoded);
+    })
 }
 
 const generateToken = (username: string) => {
@@ -75,9 +82,8 @@ export const read = (name: String, res) => {
 };
 
 export const verifyUser = (req, res) => {
-    let u: UserRequest = req.body.u_req;
-    let valid  = false;
-    User.findOne({username: u.userName}, (err, user) => {
+    let u: UserRequest = req.body;
+    User.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
@@ -89,12 +95,12 @@ export const verifyUser = (req, res) => {
             if (bcrypt.compareSync(u.password, hash)) {
                 console.log("user confirmed");
                 
-                const accessToken = generateToken(u.userName);
+                const accessToken = generateToken(u.username);
                 res.json({accessToken: accessToken});
                 
             } else {
                 console.log("User not confirmed");
-                return res.status(401).json({usernotfound: "You dont have access"});
+                return res.status(401).json({authenticationerror: "Incorrect Password."});
             }
         }
     });
@@ -103,7 +109,7 @@ export const verifyUser = (req, res) => {
 /* Update a listing*/
 export const update = (req, res) => {
     let u_req: UserRequest = req.body.u_req;
-   User.findOneAndUpdate({username: u_req.userName}, {
+   User.findOneAndUpdate({username: u_req.username}, {
        username: req.user.username
    });
 }

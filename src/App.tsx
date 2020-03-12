@@ -10,7 +10,7 @@ import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Selector from './views/Selector/Selector';
 
 
-const App = () => {
+const App = (props) => {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const App = () => {
 
   const onLoad = () => {
     // check if the user is authenticated
-    setTimeout(() => userHasAuthenticated(true), 500);
+    setTimeout(() => userHasAuthenticated(false), 500);
   }
 
   console.log('isAuthenticated', isAuthenticated)
@@ -30,7 +30,7 @@ const App = () => {
         <UnauthenticatedRoute
             path="/Login"
             component={Login}
-            appProps={{ isAuthenticated }}
+            appProps={{ isAuthenticated, userHasAuthenticated }}
         />
         <AuthenticatedRoute
             path="/Calendar"
