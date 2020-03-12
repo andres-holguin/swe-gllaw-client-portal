@@ -19,31 +19,39 @@ interface newPasswordRequest {
     newPassword: string,
 }
 
+interface UserRegistration {
+    firstname: string,
+    lastname: string,
+    email: string,
+    username: string,
+    password: string,
+}
+
 const generateToken = (username: string) => {
 
     const tok = {name: username};
     const accessToken = jwt.sign(tok, secret);
     console.log(accessToken);
     return accessToken;
-   // const token  = jwt.
 }
 
 /* Create a listing */
 export const create = async (req, res, isAdmin) => {
     let err:any = {};
-    let user_req: UserRequest = req.body.u_req;
-    console.log(user_req);
-    let hashedPassword = bcrypt.hashSync(user_req.password, saltRounds);
+    let newUser: UserRegistration = req.body;
+    console.log(newUser);
+    let hashedPassword = bcrypt.hashSync(newUser.password, saltRounds);
     console.log(hashedPassword);
-    User.findOne({username: user_req.userName.toLowerCase()}).then(user => {
-        
+    User.findOne({username: newUser.username.toLowerCase()}).then(user => {
         if (user){
-            console.log("User already exisit");
+            console.log("User already exist");
             err.user = "User already exists"; //TODO send back a response.
         } else {
             User.create({ 
-                username: user_req.userName.toLowerCase(),
-                email: user_req.email.toLowerCase(),
+                firstname: newUser.firstname,
+                lastname: newUser.lastname,
+                username: newUser.username.toLowerCase(),
+                email: newUser.email.toLowerCase(),
                 password: hashedPassword,
                 isAdmin: isAdmin,
             }).then( (d)  => {
