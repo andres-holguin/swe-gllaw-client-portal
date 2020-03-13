@@ -2,15 +2,14 @@ import * as users from "./controllers/UserController";
 
 const bcrypt  = require("bcrypt");
 export const login = async (req, res) =>  {
-    let valid = await users.verifyUser(req, res);
-    console.log("Password valid: ", valid);
+    users.verifyUser(req, res);
+  //  console.log("Password valid: ", valid);
 }
 
 export const register = (req, res) => {
     let u_req = req.body.u_req;
     console.log(u_req);
     users.create(req, res, false);
-    res.send("User created");
 }
 
 export const registerAdmin = (req, res) => {
