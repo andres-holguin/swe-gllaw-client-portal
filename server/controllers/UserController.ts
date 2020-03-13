@@ -42,33 +42,40 @@ const generateToken = (username: string) => {
     return accessToken;
 }
 
+const hashPass = (plaintextPassword: string): string  => {
+   return bcrypt.hashSync(plaintextPassword, saltRounds);
+}
+
 /* Create a listing */
 export const create = async (req, res, isAdmin) => {
     let err:any = {};
     let newUser: UserRegistration = req.body;
     console.log(newUser);
+    let newPassword: string;
     let hashedPassword = bcrypt.hashSync(newUser.password, saltRounds);
     console.log(hashedPassword);
-    User.findOne({username: newUser.username.toLowerCase()}).then(user => {
-        if (user){
-            console.log("User already exist");
-            err.user = "User already exists"; //TODO send back a response.
-        } else {
+    User.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
+            if (user) return res.status(401).json({userExist: "User Already Exist"});
+            
+            else {
+            newPassword = await isAdmin ? hashPass("TESTTESTTEST") : hashedPassword;
+            console.log("PASS: ", newPassword);
             User.create({ 
                 firstname: newUser.firstname,
                 lastname: newUser.lastname,
                 username: newUser.username.toLowerCase(),
                 email: newUser.email.toLowerCase(),
-                password: hashedPassword,
+                password: newPassword,
                 isAdmin: isAdmin,
+                newUser: true,
             }).then( (d)  => {
                 d.save();
-                            console.log("Saved");
+                console.log("Saved");
+                res.status(200).json({usercreated: "User Created"});
             });
         }
     });
 }
-
 /* Show the current listing */
 export const read = (name: String, res) => {
     User.findOne({username: name.toLowerCase()}).then(user => {
@@ -81,27 +88,29 @@ export const read = (name: String, res) => {
     })
 };
 
-export const verifyUser = (req, res) => {
+export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
     User.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
-            return res.status(404).json({userNotFound: "User not found"});
+            return res.status(403).json({authenticationerror: "Incorrect Username or Password"}); //Possibly change this status to a 401
         } else {
             console.log(u); 
             console.log(user.toObject());
             let hash = user.toObject().password;
-            if (bcrypt.compareSync(u.password, hash)) {
+            bcrypt.compare(u.password, hash, (err, authenticated) => {
+                if (err) return res.json(err);
+                if (authenticated) {
                 console.log("user confirmed");
                 
                 const accessToken = generateToken(u.username);
                 res.json({accessToken: accessToken});
-                
-            } else {
-                console.log("User not confirmed");
-                return res.status(401).json({authenticationerror: "Incorrect Password."});
-            }
+                } else {
+                    console.log("User not confirmed");
+                    return res.status(403).json({authenticationerror: "Incorrect Username or Password."});
+                }
+            });
         }
     });
 

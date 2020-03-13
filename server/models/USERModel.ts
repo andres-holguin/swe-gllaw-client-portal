@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   email: {type : String, required: true},
   password: {type : String, required: true},
   isAdmin: {type : Boolean, required: true},
-  //progress: {type : Array, required: true}
+  newUser: {type: Boolean}, //This is for when we want to force a password change
 });
 
 export default mongoose.model('users', userSchema);

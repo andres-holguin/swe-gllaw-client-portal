@@ -6,7 +6,7 @@ const loginRouter = express.Router();
 
 loginRouter.post("/register", register);
 
-loginRouter.post("/:Login", (req, res) => {
+loginRouter.post("/login", (req, res) => {
     login(req, res);
    // res.json(req.body);
 });
