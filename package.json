@@ -39,7 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd server && concurrently \"tsc -w\" \"nodemon dist/server.js\""
+    "server": "cd server && concurrently \"tsc -w\" \"nodemon dist/server.js\"",
+    "dev": "concurrently \"npm run server\" \"npm start\""
   },
   "eslintConfig": {
     "extends": "react-app"
