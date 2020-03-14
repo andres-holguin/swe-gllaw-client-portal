@@ -8,17 +8,23 @@
     ],
     "scripts": {
         "client": "cd client && npm run start",
-        "server": "cd server && npm run start",
-        "dev": "concurrently \"npm run server\" \"npm run client\"",
-        "heroku-postbuild": "cd client && npm run build",
+        "server-dev": "cd server && npm run dev",
+        "start": "cd server && npm run server",
+        "dev": "concurrently \"npm run server-dev\" \"npm run client\"",
+        "heroku-postbuild": "npm run install-all && npm run build",
         "install-client": "cd client && npm install",
         "install-server": "cd server && npm install",
-        "install-all": "concurrently \"npm run install-client\" \"npm run install-server\""
+        "install-all": "npm install && concurrently \"npm run install-client\" \"npm run install-server\"",
+        "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\""
     },
     "devDependencies": {
-        "concurrently": "^5.1.0"
+        "@types/node": "^13.9.1",
+        "concurrently": "^5.1.0",
+        "nodemon": "^2.0.2",
+        "typescript": "^3.8.3"
     },
     "dependencies": {
-        "axios": "^0.19.2"
+        "axios": "^0.19.2",
+        "node": "^13.10.1"
     }
 }
