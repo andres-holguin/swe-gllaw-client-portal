@@ -14,6 +14,8 @@
 server/src/config/config.js
 server/dist
 
+# Configuration
+.env
 # production
 /build
 client/build
