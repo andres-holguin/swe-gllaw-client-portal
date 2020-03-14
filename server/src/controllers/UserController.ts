@@ -1,9 +1,9 @@
 /* Dependencies */
 import User from '../models/USERModel';
 import config from '../config/config';
-const bcrypt = require("bcrypt");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
 
-const jwt = require("jsonwebtoken");
 const secret = config.jwt.secret;
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
