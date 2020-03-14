@@ -4,18 +4,18 @@ const path = require('path'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
     bodyParser = require('body-parser');
-    const config = require('./config');
+    //const config = require('./config');
 module.exports.init = () => {
     /* 
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI || config.default.db.uri, {
+    mongoose.connect(process.env.DB_URI, { //|| config.default.db.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
     mongoose.set('useCreateIndex', true);
-    mongoose.set('useFindAndModify', false);
+    mongoose.set('useFindAndModify', false); 
 
     // initialize app
     const app = express();

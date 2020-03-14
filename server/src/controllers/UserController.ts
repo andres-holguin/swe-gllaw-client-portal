@@ -1,10 +1,10 @@
 /* Dependencies */
 import User from '../models/USERModel';
-import config from '../config/config';
+//import config from '../config/config';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 
-const secret = config.jwt.secret;
+const secret = process.env.JWT_SECRET; //
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
 export interface UserRequest {
