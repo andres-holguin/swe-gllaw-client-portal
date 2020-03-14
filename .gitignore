@@ -11,7 +11,7 @@
 /coverage
 
 #Server Development
-server/config/config.js
+server/src/config/config.js
 server/dist
 
 # production
