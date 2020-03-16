@@ -19,7 +19,6 @@ const Login = (props) => {
         setUseDeat({...useDeat, 
                    [event.target.name]: event.target.value})
         console.log(useDeat[event.target.name]);
-        //setUseDeat()
     }
     const sendLoginRequest = async () => {
 
@@ -55,6 +54,7 @@ const Login = (props) => {
                 <input 
                 name='password'
                 placeholder='Password'
+                type="password"
                 onChange={handleChange}/>
             </form>
             <button onClick={sendLoginRequest}>Login</button>

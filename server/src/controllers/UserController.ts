@@ -46,26 +46,35 @@ const hashPass = (plaintextPassword: string): string  => {
    return bcrypt.hashSync(plaintextPassword, saltRounds);
 }
 
+const randomPassword = async () => {
+
+    let length = Math.floor(Math.random() * 32);
+    let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let pass = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        pass += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return pass;
+}
+
 /* Create a listing */
 export const create = async (req, res, isAdmin) => {
     let err:any = {};
     let newUser: UserRegistration = req.body;
     console.log(newUser);
     let newPassword: string;
-    let hashedPassword = bcrypt.hashSync(newUser.password, saltRounds);
-    console.log(hashedPassword);
     User.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
             if (user) return res.status(401).json({userExist: "User Already Exist"});
             
             else {
-            newPassword = await isAdmin ? hashPass("TESTTESTTEST") : hashedPassword;
-            console.log("PASS: ", newPassword);
+            newPassword = await  randomPassword()
+            console.log("PASS: ", newPassword); // I need a way to give this password to the user.
             User.create({ 
                 firstname: newUser.firstname,
                 lastname: newUser.lastname,
                 username: newUser.username.toLowerCase(),
                 email: newUser.email.toLowerCase(),
-                password: newPassword,
+                password: hashPass(newPassword),
                 isAdmin: isAdmin,
                 newUser: true,
             }).then( (d)  => {
