@@ -25,6 +25,12 @@ Configuration Variables are stored in a .env file in the project root.
 
 In the project directory, you can run:
 
+### `npm run start`
+
+Run the app in production mode. <br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Uses the build from react files and the server so no live changes are available.
+
 ### `npm run dev`
 
 Runs the app in the development mode.<br />
