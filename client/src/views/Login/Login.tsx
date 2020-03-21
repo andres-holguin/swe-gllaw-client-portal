@@ -22,6 +22,8 @@ const Login = (props) => {
         //setUseDeat()
     }
     const sendLoginRequest = async () => {
+        props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+
 
         await axios.post('/api/user/login', {
                 username: useDeat.username,
@@ -37,8 +39,6 @@ const Login = (props) => {
                 }
             });
     };
-
-    
 
     const redirect = () => {
         history.push('/Calendar')
