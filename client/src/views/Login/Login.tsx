@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import { MdSend } from 'react-icons/md';
 import { isPropsEqual } from '@fullcalendar/core';
+import './Login.css'
+
 const axios = require("axios");
 interface user {
     username: string,
@@ -46,7 +48,21 @@ const Login = (props) => {
 
     return (
         <div className='login'>
-            <p>Login</p>
+
+            
+
+         
+            <div className='logo'>
+
+            <img src = "https://www.gonzalolaw.com/wp-content/uploads/2019/01/GonzaloLawLogo.png"
+            
+           
+
+            />
+
+            </div>
+
+            <h4>Please Sign In</h4>
             <form>
                 <input 
                 name="username"
@@ -57,7 +73,7 @@ const Login = (props) => {
                 placeholder='Password'
                 onChange={handleChange}/>
             </form>
-            <button onClick={sendLoginRequest}>Login</button>
+            <button id="login-button" onClick={sendLoginRequest}>Login</button>
             <button onClick={redirect}>redirecting to home</button>
         </div>
     )
