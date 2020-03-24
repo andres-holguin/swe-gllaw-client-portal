@@ -74,7 +74,7 @@ const Login = (props) => {
                 onChange={handleChange}/>
             </form>
             <button id="login-button" onClick={sendLoginRequest}>Login</button>
-            <button onClick={redirect}>redirecting to home</button>
+            
         </div>
     )
 }

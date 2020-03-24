@@ -20,10 +20,11 @@ const InputField: React.FC<Props> = (props) => {
         <div className='inputField'>
             <form>
                 <input
+                
                     name={props.name}
                     ref={register({required: props.required, maxLength: 20})} 
                     style={{ borderColor: props.border }}
-                    className='form-control'
+                    className='inputComp'
                     type={props.type}
                     placeholder={props.placeholder}
                     value={props.value}
