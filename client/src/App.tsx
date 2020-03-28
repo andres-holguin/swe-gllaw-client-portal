@@ -8,6 +8,7 @@ import Documents from './views/Documents/Documents'
 import UnauthenticatedRoute from './components/Routes/UnauthenticatedRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Selector from './views/Selector/Selector';
+import Account from './views/Account/Account';
 
 
 const App = (props) => {
@@ -27,6 +28,9 @@ const App = (props) => {
   return (
     <div>
       <Switch>
+        <Route exact path="/">
+          <Redirect to="/Login" />
+        </Route>
         <UnauthenticatedRoute
             path="/Login"
             component={Login}
@@ -45,6 +49,11 @@ const App = (props) => {
         <AuthenticatedRoute
             path="/Selector"
             component={Selector}
+            appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+            path="/Account"
+            component={Account}
             appProps={{ isAuthenticated }}
         />
       </Switch>

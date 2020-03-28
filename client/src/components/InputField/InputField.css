@@ -1,0 +1,22 @@
+.inputComp {
+    height: 30px;
+    width: 250px;
+    border-radius: 3.5px;
+    border-style:solid;
+    border-color:lightgrey;
+    border-width: 1px;
+    
+
+    
+
+}
+
+.inputField {
+    padding: 1%;
+    background-color: whitesmoke;
+    
+
+
+}
+
+

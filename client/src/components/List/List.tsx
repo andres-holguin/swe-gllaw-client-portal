@@ -1,5 +1,6 @@
 import React from 'react';
 import Data from './Data';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 interface Props {
     data: any,
@@ -7,15 +8,17 @@ interface Props {
 }
 
 const List: React.FC<Props> = (props) => {
-    console.log(props.data)
-
-    const res = props.data.filter(element => element.name.includes(props.target));
+    const res = props.data//.filter(element => element.name.includes(props.target));
 
     return (
         <div>
-            <ul>
-                {res.map((el) => <Data name={el.name} key={el.key}/>)}
-            </ul>
+            <ListGroup as='ul'variant='flush'>
+                {res.map((el, index) =>
+                <ListGroup.Item action as='li'>
+                    {index}. {el}
+                </ListGroup.Item>
+                )}
+            </ListGroup>
         </div>
     )
 }

@@ -18,6 +18,7 @@ const NavBar = () => {
                     <Link className = "nav-link" to='/Calendar'>Calendar</Link>
                     <Link className = "nav-link" to='/Documents'>Documents</Link>
                     <Link className = "nav-link" to='/Selector'>Switch Project</Link>
+                    <Link className = "nav-link" to='/Account'>Account</Link>
                 </div>
             </div>
             <div className='progressBar'>
