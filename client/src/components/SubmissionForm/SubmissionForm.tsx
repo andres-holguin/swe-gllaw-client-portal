@@ -9,8 +9,8 @@ const onSubmit = (event:any, data: any) => {
   };
   
   return (
-    <form className = "submission-form" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className = "form-header">Create User</h2>
+    <form className="submission-form" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="form-header">Create User</h2>
         <input 
           style={{ display: 'block', margin: 20 }}
           type="text" 

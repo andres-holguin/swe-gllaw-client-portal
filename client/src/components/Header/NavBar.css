@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: flex-start;
     padding: 1%;
-    /* border-bottom: 3px solid #ACA59D; */
+    border-bottom: 1px solid #ACA59D;
 }
 
 .nav-logo {
@@ -44,6 +44,7 @@
 
 .progressBar {
     width: 100%;
-    border-bottom: 3px solid #ACA59D;
-    padding-left: 1rem;
+    border-bottom: 1px solid #ACA59D;
+    padding: 1rem;
+    background-color: white;
 }
