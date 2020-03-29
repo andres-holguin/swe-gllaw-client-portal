@@ -1,8 +1,6 @@
 ## [Admin Documentation](documentation/Admin_Info.md)
 Please click the link above to view how to administrate the application.
 
-<<<<<<< Updated upstream
-=======
 # Application Wireframe
 ![GL Law Portal Wireframe](documentation/images/design/Wireframe.png)
 
@@ -16,7 +14,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
->>>>>>> Stashed changes
 ## Available Scripts
 
 In the project directory, you can run:

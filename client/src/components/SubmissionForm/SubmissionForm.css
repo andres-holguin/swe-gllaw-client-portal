@@ -1,0 +1,8 @@
+.submission-form{
+    background-color: whitesmoke;
+    max-width: 250px;
+    margin: 20px auto; 
+    padding: 20px;
+    align-content: center;
+    border: 2px solid #000000;
+}

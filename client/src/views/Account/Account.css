@@ -1,0 +1,25 @@
+.acctHeader {
+    border-bottom: 1px solid #ACA59D;
+    background-color: whitesmoke;
+}
+
+.col {
+	float: left;
+	width: 50%;
+	padding: 10px;
+}
+
+.content {
+    justify-content: space-around;
+    max-width: 100%;
+    flex: none;
+}
+
+.heading {
+    font-size: 25px;
+    color: black;
+}
+
+.saveChanges {
+    float: right;
+}

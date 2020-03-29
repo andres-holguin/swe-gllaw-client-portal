@@ -1,0 +1,199 @@
+/* Dependencies */
+import User from '../models/USERModel';
+//import config from '../config/config';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
+
+const secret = process.env.JWT_SECRET; //
+
+const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
+export interface UserRequest {
+    email: string,
+    username: string,
+    password: string,
+}
+
+interface newPasswordRequest {
+    username: string,
+    oldPassword: string,
+    newPassword: string,
+}
+
+interface UserRegistration {
+    firstname: string,
+    lastname: string,
+    email: string,
+    username: string,
+    password: string,
+}
+
+const isTokenValid = (token: string) => {
+    //if (error) ?
+    jwt.verify(token, secret, (err, decoded) => {
+        console.log(decoded);
+    })
+}
+
+const generateToken = (username: string) => {
+
+    const tok = {name: username};
+    const accessToken = jwt.sign(tok, secret);
+    console.log(accessToken);
+    return accessToken;
+}
+
+const hashPass = (plaintextPassword: string): string  => {
+   return bcrypt.hashSync(plaintextPassword, saltRounds);
+}
+
+const randomPassword = async () => {
+
+    let length = Math.floor(Math.random() * 32);
+    let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let pass = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        pass += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return pass;
+}
+
+/* Create a listing */
+export const create = async (req, res, isAdmin) => {
+    let err:any = {};
+    let newUser: UserRegistration = req.body;
+    console.log(newUser);
+    let newPassword: string;
+    User.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
+            if (user) return res.status(401).json({userExist: "User Already Exist"});
+            
+            else {
+            newPassword = await  randomPassword()
+            console.log("PASS: ", newPassword); // I need a way to give this password to the user.
+            User.create({ 
+                firstname: newUser.firstname,
+                lastname: newUser.lastname,
+                username: newUser.username.toLowerCase(),
+                email: newUser.email.toLowerCase(),
+                password: hashPass(newPassword),
+                isAdmin: isAdmin,
+                newUser: true,
+            }).then( (d)  => {
+                d.save();
+                console.log("Saved");
+                res.status(200).json({usercreated: "User Created"});
+            });
+        }
+    });
+}
+/* Show the current listing */
+export const read = (name: String, res) => {
+    User.findOne({username: name.toLowerCase()}).then(user => {
+        if (!user) {
+            console.log("User does not exist");
+        } else {
+            console.log("User exists");
+            res.result = user;
+        }
+    })
+};
+
+export const verifyUser = async (req, res) => {
+    let u: UserRequest = req.body;
+    User.findOne({username: u.username.toLowerCase()}, (err, user) => {
+
+        if (!user) {
+            console.log("Oops");
+            return res.status(403).json({authenticationerror: "Incorrect Username or Password"}); //Possibly change this status to a 401
+        } else {
+            console.log(u); 
+            console.log(user.toObject());
+            let hash = user.toObject().password;
+            bcrypt.compare(u.password, hash, (err, authenticated) => {
+                if (err) return res.json(err);
+                if (authenticated) {
+                console.log("user confirmed");
+                
+                const accessToken = generateToken(u.username);
+                res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
+                    httpOnly: true}).status(200).json({accessToken: accessToken});
+                } else {
+                    console.log("User not confirmed");
+                    return res.status(403).json({authenticationerror: "Incorrect Username or Password."});
+                }
+            });
+        }
+    });
+
+}
+/* Update a listing*/
+export const update = (req, res) => {
+    let u_req: string = req.body.u_req.username;
+    User.findOneAndUpdate({username: u_req}, req.body);
+}
+
+export const changePassword = (w: newPasswordRequest) => {
+        
+}
+
+export const resetPassword = (hmm: newPasswordRequest) => {
+    let user = hmm.username;
+    //let userDocument  = getUser(user);
+    User.updateOne({username: user}, {
+        
+    })
+}
+
+/* Delete a listing */
+export const remove = (req, res) => {
+    User.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
+        if (err) throw err;
+        if (!result) {
+            console.log("No user by that name exist.")
+            res.status(404).json({nouser: "No user by that name exist."});
+        }
+        
+    });
+};
+
+export const getUserID = (username: string) => {
+    let  out: number = -1; // Document
+    User.findOne({username: username}).exec().then( (u) => {
+        if (u) {
+            console.log(u._id);
+            out = u.toObject()._id;
+        } else {
+            out = -1;
+        }
+        return out;
+    });
+}
+
+const isAdmin = (username: string) => { //Replace this function
+    User.findOne({username: username}, (err, u) => {
+        if (err) throw err;
+        if (!u) {
+            console.log("No account with that name exist.");
+            return true;
+        } else {
+            if(u.toObject().isAdmin) {
+                console.log("is admin.");
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+}
+const deleteUser = (req, res) => {
+    //Im gonna need to check if the user is an admin.
+    //req.body.u_req;
+}
+
+
+/* Retreive all the directory listings*/
+export const list = (req, res) => {
+    User.find({},function(err,data){
+        if(err) throw err;
+        res.send(data);
+   }).sort({code : 1});
+};
