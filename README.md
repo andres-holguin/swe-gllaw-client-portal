@@ -1,18 +1,22 @@
-# Make sure you create a branch for your commits! DO NOT COMMIT TO MASTER, YOU WILL HAVE A BAD TIME.
+## [Admin Documentation](documentation/Admin_Info.md)
+Please click the link above to view how to administrate the application.
+
+<<<<<<< Updated upstream
+=======
+# Application Wireframe
+![GL Law Portal Wireframe](documentation/images/design/Wireframe.png)
+
+# System Context Model
+![GL Law Portal System Context Model](documentation/images/design/System_Context.png)
+
+# User Storyboard
+![GL Law Portal User Storyboard](documentation/images/design/User_Storyboard.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
-# Application Wireframe
-![GL Law Portal Wireframe](documentation/images/Wireframe.png)
-
-# System Context Model
-![GL Law Portal System Context Model](documentation/images/System_Context.png)
-
-# User Storyboard
-![GL Law Portal User Storyboard](documentation/images/User_Storyboard.png)
-
+>>>>>>> Stashed changes
 ## Available Scripts
 
 In the project directory, you can run:
