@@ -18,6 +18,12 @@ Instructions used to [add TypeScript to the project](https://create-react-app.de
 
 In the project directory, you can run:
 
+### `npm install-all`
+Installs all dependencies for both the server and the client bases.
+
+### `npm run dev`
+Starts the development application with the server.
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
