@@ -114,7 +114,8 @@ export const verifyUser = async (req, res) => {
                 console.log("user confirmed");
                 
                 const accessToken = generateToken(u.username);
-                res.json({accessToken: accessToken});
+                res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
+                    httpOnly: true}).status(200).json({accessToken: accessToken});
                 } else {
                     console.log("User not confirmed");
                     return res.status(403).json({authenticationerror: "Incorrect Username or Password."});
@@ -126,10 +127,12 @@ export const verifyUser = async (req, res) => {
 }
 /* Update a listing*/
 export const update = (req, res) => {
-    let u_req: UserRequest = req.body.u_req;
-   User.findOneAndUpdate({username: u_req.username}, {
-       username: req.user.username
-   });
+    let u_req: string = req.body.u_req.username;
+    User.findOneAndUpdate({username: u_req}, req.body);
+}
+
+export const changePassword = (w: newPasswordRequest) => {
+        
 }
 
 export const resetPassword = (hmm: newPasswordRequest) => {
