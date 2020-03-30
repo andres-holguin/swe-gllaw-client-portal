@@ -57,13 +57,13 @@ export const create = async (req, res, isAdmin) => {
     let newPassword: string;
     let hashedPassword = bcrypt.hashSync(newUser.password, saltRounds);
     console.log(hashedPassword);
-    User.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
+    users.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
             if (user) return res.status(401).json({userExist: "User Already Exist"});
             
             else {
             newPassword = await isAdmin ? hashPass("TESTTESTTEST") : hashedPassword;
             console.log("PASS: ", newPassword);
-            User.create({ 
+            user.create({ 
                 firstname: newUser.firstname,
                 lastname: newUser.lastname,
                 username: newUser.username.toLowerCase(),
@@ -81,7 +81,7 @@ export const create = async (req, res, isAdmin) => {
 }
 /* Show the current listing */
 export const read = (name: String, res) => {
-    User.findOne({username: name.toLowerCase()}).then(user => {
+    users.findOne({username: name.toLowerCase()}).then(user => {
         if (!user) {
             console.log("User does not exist");
         } else {
@@ -93,7 +93,7 @@ export const read = (name: String, res) => {
 
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
-    User.findOne({username: u.username.toLowerCase()}, (err, user) => {
+    users.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
@@ -121,7 +121,7 @@ export const verifyUser = async (req, res) => {
 /* Update a listing*/
 export const update = (req, res) => {
     let u_req: UserRequest = req.body.u_req;
-   User.findOneAndUpdate({username: u_req.username}, {
+   users.findOneAndUpdate({username: u_req.username}, {
        username: req.user.username
    });
 }
@@ -129,14 +129,14 @@ export const update = (req, res) => {
 export const resetPassword = (hmm: newPasswordRequest) => {
     let user = hmm.username;
     //let userDocument  = getUser(user);
-    User.updateOne({username: user}, {
+    users.updateOne({username: user}, {
         
     })
 }
 
 /* Delete a listing */
 export const remove = (req, res) => {
-    User.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
+    users.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
         if (err) throw err;
         if (!result) {
             console.log("No user by that name exist.")
@@ -148,7 +148,7 @@ export const remove = (req, res) => {
 
 export const getUserID = (username: string) => {
     let  out: number = -1; // Document
-    User.findOne({username: username}).exec().then( (u) => {
+    users.findOne({username: username}).exec().then( (u) => {
         if (u) {
             console.log(u._id);
             out = u.toObject()._id;
@@ -160,7 +160,7 @@ export const getUserID = (username: string) => {
 }
 
 const isAdmin = (username: string) => { //Replace this function
-    User.findOne({username: username}, (err, u) => {
+    users.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
             console.log("No account with that name exist.");
@@ -183,7 +183,7 @@ const deleteUser = (req, res) => {
 
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
-    User.find({},function(err,data){
+    users.find({},function(err,data){
         if(err) throw err;
         res.send(data);
    });
@@ -201,12 +201,12 @@ export const updateCalender = (req, res) => {
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
     let calendarData;
-    User.find({username: username}, function(err,data){
+    users.find({username: username}, function(err,data){
         if(err) throw err;
         calendarData = data;
     });
     calendarData.push(req.body.data)//param1 may need to be changed
-    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+    users.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
 };
 
 export const getCalender = (req, res) => {
@@ -220,7 +220,7 @@ export const getCalender = (req, res) => {
     }
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
-    User.find({username: username}, function(err,data){
+    users.find({username: username}, function(err,data){
         if(err) throw err;
         res.send(data);
     });
