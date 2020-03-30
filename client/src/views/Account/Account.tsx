@@ -26,7 +26,7 @@ const Account: React.FC<Props> = (props) => {
     const _handleSubmit = () => {
         let cookie = cookies.parse(document.cookie);
         console.log(cookies);
-        let point = "/api/user/" + cookie["_uid"] + "/reset_password";
+        let point = "/api/user/" + cookie["_uid"] + "/change_password";
         let request = {
             oldpassword: currentPassword,
             newPassword: newPassword,

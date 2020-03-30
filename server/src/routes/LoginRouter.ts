@@ -22,7 +22,7 @@ loginRouter.get("/me", (req, res) => {
     }
 });
 
-loginRouter.put("/:id/reset_password", (req: express.Request, res: express.Response) => { //The user id should be sent along with with the old and new password
+loginRouter.put("/:id/change_password", (req: express.Request, res: express.Response) => { //The user id should be sent along with with the old and new password
     console.log("nice");
     user.changePassword(req, res, req.params.id);
 });
