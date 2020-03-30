@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   password: {type : String, required: true},
   isAdmin: {type : Boolean, required: true},
   newUser: {type: Boolean}, //This is for when we want to force a password change
+  calenderEntrys: [String]//for storing calender stuff
 });
 
-export default mongoose.model('users', userSchema);
+export default mongoose.model('User', userSchema);
