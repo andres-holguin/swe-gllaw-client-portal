@@ -20,6 +20,10 @@ loginRouter.get("/Selector", (req, res) => {
     list(req,res);
 });
 
+loginRouter.post("/Selector", (req, res) => {
+    register(req, res);
+});
+
 
 loginRouter.get("/Calender", (req, res) => {
     getCalender(req,res);

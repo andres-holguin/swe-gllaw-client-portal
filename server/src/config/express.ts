@@ -1,4 +1,5 @@
 import loginRouter from '../routes/LoginRouter'
+import config from './config.js';
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
@@ -10,7 +11,7 @@ module.exports.init = () => {
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI, { //|| config.default.db.uri, {
+    mongoose.connect(config.db.uri,{//process.env.DB_URI, { //|| config.default.db.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
