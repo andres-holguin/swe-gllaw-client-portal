@@ -1,6 +1,6 @@
 var clientId = '19a74451-cf77-4f79-97d7-147e5952c5a6';
 var clientSecret = 'J=hkAgR6BAe6x@SLwPdAb24k-UAOnCu[';
-var redirectUri = 'https://15465bff.ngrok.io/authorize';
+var redirectUri = 'https://e9119daa.ngrok.io/authorize';
 
 var scopes = [ // what permissions our app needs
     'openid', // allows autho process to give us display name of user + email addie
@@ -30,12 +30,13 @@ const oauth2 = require('simple-oauth2').create(credentials);
           scope: scopes.join(' ')
         });
         console.log('');
-        console.log('authUri: ', redirectUri)
-        console.log('Generated auth url: ' + returnVal);
+        //console.log('authUri: ', redirectUri)
+        //console.log('Generated auth url: ' + returnVal);
         return returnVal;
       },
 
       getTokenFromCode: function(auth_code, callback, request, response) {
+        console.log('GETTING TOKEN FROM CODE')
         console.log('authcode: ', auth_code)
         console.log('redir ', redirectUri)
         oauth2.authCode.getToken({ // uses oauth2 lib to get the token

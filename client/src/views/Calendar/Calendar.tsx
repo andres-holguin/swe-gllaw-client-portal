@@ -27,14 +27,16 @@ const Calendar = () => {
             await axios.get('/api/outlook/calendar')
             .then(function (response) {
                 // handle success
+                console.log('RESPONE: ', response.data)
                 setSignInPage(response.data)
-                console.log(response.data);
             })
         }
 
         getSignInPage();
 
     }, [])
+
+    console.log('SIGN IN PAGE URL: ', signInPage);
 
     const _handleCloseModal = () => {
         setVisible(false)
@@ -53,9 +55,9 @@ const Calendar = () => {
     return (
         <>
             <NavBar />
-            <form action={signInPage}>
-                <input type="submit" value="Sign in to Outlook" /> 
-            </form>
+            <a href={signInPage}>
+                <button onClick={() => console.log('button says sign in page is...', signInPage)}>Outlook</button>
+            </a>
             <div className='demo-app'>
                 <div className='demo-app-top'> 
                 </div>

@@ -19,7 +19,7 @@ outlookRouter.use(session({
 
 outlookRouter.get('/calendar', function(req, res) {
     console.log('IM HEREEE AND READY 2 SEND')
-    authHelper.getAuthUrl()
+    //console.log(authHelper.getAuthUrl())
     res.send(authHelper.getAuthUrl());
 });
 
@@ -34,7 +34,7 @@ outlookRouter.get('/authorize', function(req, res) { // happens at the redirect
     else {
         // redirect to home
         console.log('/authorize called without a code parameter, redirecting to login');
-        res.redirect('/');
+        res.redirect('/Login');
     }
 });
 
@@ -49,7 +49,7 @@ function tokenReceived(req, res, error, token) {
       req.session.access_token = token.token.access_token;
       req.session.refresh_token = token.token.access_token;
       req.session.email = authHelper.getEmailFromIdToken(token.token.id_token);
-      res.redirect('/logincomplete'); // this is what happens last
+      res.redirect('/documents'); // this is what happens last
     }
 }
   
