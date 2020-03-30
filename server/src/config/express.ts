@@ -1,5 +1,4 @@
 import loginRouter from '../routes/LoginRouter'
-import config from './config.js';
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),

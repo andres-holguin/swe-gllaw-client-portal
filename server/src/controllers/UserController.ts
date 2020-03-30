@@ -90,7 +90,7 @@ export const create = async (req, res, isAdmin) => {
 }
 /* Show the current listing */
 export const read = (name: String, res) => {
-    users.findOne({username: name.toLowerCase()}).then(user => {
+    User.findOne({username: name.toLowerCase()}).then(user => {
         if (!user) {
             console.log("User does not exist");
         } else {
@@ -102,7 +102,7 @@ export const read = (name: String, res) => {
 
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
-    users.findOne({username: u.username.toLowerCase()}, (err, user) => {
+    User.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
@@ -141,14 +141,14 @@ export const changePassword = (w: newPasswordRequest) => {
 export const resetPassword = (hmm: newPasswordRequest) => {
     let user = hmm.username;
     //let userDocument  = getUser(user);
-    users.updateOne({username: user}, {
+    User.updateOne({username: user}, {
         
     })
 }
 
 /* Delete a listing */
 export const remove = (req, res) => {
-    users.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
+    User.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
         if (err) throw err;
         if (!result) {
             console.log("No user by that name exist.")
@@ -160,7 +160,7 @@ export const remove = (req, res) => {
 
 export const getUserID = (username: string) => {
     let  out: number = -1; // Document
-    users.findOne({username: username}).exec().then( (u) => {
+    User.findOne({username: username}).exec().then( (u) => {
         if (u) {
             console.log(u._id);
             out = u.toObject()._id;
@@ -172,7 +172,7 @@ export const getUserID = (username: string) => {
 }
 
 const isAdmin = (username: string) => { //Replace this function
-    users.findOne({username: username}, (err, u) => {
+    User.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
             console.log("No account with that name exist.");
@@ -195,7 +195,7 @@ const deleteUser = (req, res) => {
 
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
-    users.find({},function(err,data){
+    User.find({},function(err,data){
         if(err) throw err;
         res.send(data);
    });
@@ -213,12 +213,12 @@ export const updateCalender = (req, res) => {
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
     let calendarData;
-    users.find({username: username}, function(err,data){
+    User.find({username: username}, function(err,data){
         if(err) throw err;
         calendarData = data;
     });
     calendarData.push(req.body.data)//param1 may need to be changed
-    users.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
 };
 
 export const getCalender = (req, res) => {
@@ -232,7 +232,7 @@ export const getCalender = (req, res) => {
     }
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
-    users.find({username: username}, function(err,data){
+    User.find({username: username}, function(err,data){
         if(err) throw err;
         res.send(data);
     });
