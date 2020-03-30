@@ -72,6 +72,14 @@ Expected Input:
    }
    ```
 
+## `/logout`
+
+Server side clears token from client cookies.
+
+Expected Input: N/A
+
+
+
 ## `/:id/change_password`
 
 In this case id is the mongodb user id
@@ -95,6 +103,7 @@ Expected Input
 
 Output is entirely based on jwt in cookie and whether it exist or is valid
  Expected Input:
+
   * N/A
 
 Expected Output:
