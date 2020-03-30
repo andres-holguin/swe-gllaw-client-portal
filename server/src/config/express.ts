@@ -11,7 +11,7 @@ module.exports.init = () => {
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(config.db.uri,{//process.env.DB_URI, { //|| config.default.db.uri, {
+    mongoose.connect(process.env.DB_URI, { //|| config.default.db.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
@@ -29,7 +29,8 @@ module.exports.init = () => {
 
     // LoginRouter
     app.use('/api/user', loginRouter);
-
+    app.use('/',loginRouter);
+    //app.use('/debug',loginRouter);
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
         app.use(express.static(path.join(__dirname, '../../../client/build')));
