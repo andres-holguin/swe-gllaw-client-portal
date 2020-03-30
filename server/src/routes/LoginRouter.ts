@@ -12,6 +12,10 @@ loginRouter.post("/login", (req, res) => {
    // res.json(req.body);
 });
 
+loginRouter.post("/logout", (req, res) => {
+    res.clearCookie('"jwt"').json({loggedout: "Logged out"}); // Removes token from client logging them out.
+} )
+
 loginRouter.get("/me", (req, res) => {
     //This makes sure that the user is logged in.
     console.log(req.cookies["jwt"]);
@@ -23,9 +27,12 @@ loginRouter.get("/me", (req, res) => {
 });
 
 loginRouter.put("/:id/change_password", (req: express.Request, res: express.Response) => { //The user id should be sent along with with the old and new password
-    console.log("nice");
     user.changePassword(req, res, req.params.id);
 });
+
+loginRouter.post("/id/reset_password", (req: express.Request, res: express.Response) => {
+
+})
 
 loginRouter.put("/update", (req, res) => {
     update(req, res);
