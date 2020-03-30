@@ -15,20 +15,20 @@ loginRouter.put("/update", (req, res) => {
     update(req, res);
 });
 
+
+
+
 loginRouter.get("/Calender", (req, res) => {
     
-
 
 });
 
 loginRouter.post("/Calender", (req, res) => {
 
 
-    
 });
 
 loginRouter.delete("/Calender", (req, res) => {
-
 
 
 });
