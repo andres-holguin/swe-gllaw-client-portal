@@ -12,4 +12,4 @@ const userSchema = new mongoose.Schema({
   calenderEntrys: [String]//for storing calender stuff
 });
 
-export default mongoose.model('users', userSchema);
+export default mongoose.model('User', userSchema);

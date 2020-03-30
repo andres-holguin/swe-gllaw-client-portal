@@ -3,6 +3,9 @@ import User from '../models/USERModel';
 //import config from '../config/config';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
+import mongoose from 'mongoose';
+
+
 
 const secret = process.env.JWT_SECRET; //
 
@@ -183,7 +186,7 @@ export const list = (req, res) => {
     User.find({},function(err,data){
         if(err) throw err;
         res.send(data);
-   }).sort({code : 1});
+   });
 };
 
 export const updateCalender = (req, res) => {
@@ -222,5 +225,24 @@ export const getCalender = (req, res) => {
         res.send(data);
     });
 };
+
+
+export const debugCreate = (req, res) => {
+    console.log(req.params);
+    let toAdd = new User(
+    {   
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email:    req.body.email,
+        password: "123",
+        isAdmin: false,
+        newUser: true //This is for when we want to force a password change
+    });
+    toAdd.save();
+    res.send(toAdd);
+};
+
+
 
 
