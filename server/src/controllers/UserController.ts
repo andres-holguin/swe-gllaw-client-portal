@@ -202,7 +202,7 @@ export const updateCalender = (req, res) => {
         if(err) throw err;
         calendarData = data;
     });
-    calendarData.push(req.param1)//param1 may need to be changed
+    calendarData.push(req.param1+req.param2)//param1 may need to be changed
     User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
 };
 

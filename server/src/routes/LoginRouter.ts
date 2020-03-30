@@ -1,5 +1,5 @@
 
-import {update, updateCalender, getCalender} from "../controllers/UserController"
+import {update, updateCalender, getCalender,list} from "../controllers/UserController"
 import {login, register} from "../user"
 import express  from 'express'
 const loginRouter = express.Router();
@@ -16,11 +16,13 @@ loginRouter.put("/update", (req, res) => {
 });
 
 
+loginRouter.get("/Selector", (req, res) => {
+    list(req,res);
+});
 
 
 loginRouter.get("/Calender", (req, res) => {
     getCalender(req,res);
-
 });
 
 loginRouter.post("/Calender", (req, res) => {
