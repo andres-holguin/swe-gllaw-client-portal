@@ -3,9 +3,7 @@ const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser');
-
+    bodyParser = require('body-parser');
     //const config = require('./config');
 module.exports.init = () => {
     /* 
@@ -18,11 +16,9 @@ module.exports.init = () => {
     });
     mongoose.set('useCreateIndex', true);
     mongoose.set('useFindAndModify', false); 
-    
-    
+
     // initialize app
     const app = express();
-    app.use(cookieParser());
 
     // enable request logging for development debugging
     app.use(morgan('dev'));

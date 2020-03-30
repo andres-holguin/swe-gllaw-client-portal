@@ -9,12 +9,10 @@ import UnauthenticatedRoute from './components/Routes/UnauthenticatedRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Selector from './views/Selector/Selector';
 import Account from './views/Account/Account';
-import axios, { AxiosResponse } from 'axios';
 
 
 const App = (props) => {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
-  const [userToken, setUserToken] = useState("");
 
   useEffect(() => {
     onLoad();
@@ -22,13 +20,7 @@ const App = (props) => {
 
   const onLoad = () => {
     // check if the user is authenticated
-    axios.get("/api/user/me").then((res: AxiosResponse) => {
-     if(res.status === 200) {
-         userHasAuthenticated(true);
-      }
-    //  userHasAuthenticated(true);
-  });
-    //setTimeout(() => userHasAuthenticated(false), 500);
+    setTimeout(() => userHasAuthenticated(false), 500);
   }
 
   console.log('isAuthenticated', isAuthenticated)
@@ -42,7 +34,7 @@ const App = (props) => {
         <UnauthenticatedRoute
             path="/Login"
             component={Login}
-            appProps={{ isAuthenticated, userHasAuthenticated, setUserToken}}
+            appProps={{ isAuthenticated, userHasAuthenticated }}
         />
         <AuthenticatedRoute
             path="/Calendar"

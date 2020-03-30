@@ -23,7 +23,9 @@ const Login = (props) => {
         console.log(useDeat[event.target.name]);
     }
     const sendLoginRequest = async () => {
-       // props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+        props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+
+
         await axios.post('/api/user/login', {
                 username: useDeat.username,
                 password: useDeat.password
