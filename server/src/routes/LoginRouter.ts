@@ -19,17 +19,15 @@ loginRouter.put("/update", (req, res) => {
 
 
 loginRouter.get("/Calender", (req, res) => {
-    
+    getCalender(req,res);
 
 });
 
 loginRouter.post("/Calender", (req, res) => {
     updateCalender(req, res);
-
 });
 
 loginRouter.delete("/Calender", (req, res) => {
-    getCalender(req,res);
 });
 
 module.exports = loginRouter;
