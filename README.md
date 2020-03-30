@@ -1,12 +1,31 @@
-# Make sure you create a branch for your commits! DO NOT COMMIT TO MASTER, YOU WILL HAVE A BAD TIME.
+## [Admin Documentation](documentation/Admin_Info.md)
+Please click the link above to view how to administrate the application.
+
+# Application Wireframe
+![GL Law Portal Wireframe](documentation/images/design/Wireframe.png)
+
+# System Context Model
+![GL Law Portal System Context Model](documentation/images/design/System_Context.png)
+
+# User Storyboard
+![GL Law Portal User Storyboard](documentation/images/design/User_Storyboard.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
+# Getting Started
+Please view [SeparateBases.md](documentation/SeperateBases.md) for a guide on how to set up the environment for deployment.
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install-all`
+Installs all dependencies for both the server and the client bases.
+
+### `npm run dev`
+Starts the development application with the server.
 
 ### `yarn start`
 

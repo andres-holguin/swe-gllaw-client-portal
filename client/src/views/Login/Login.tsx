@@ -21,12 +21,9 @@ const Login = (props) => {
         setUseDeat({...useDeat, 
                    [event.target.name]: event.target.value})
         console.log(useDeat[event.target.name]);
-        //setUseDeat()
     }
     const sendLoginRequest = async () => {
-        props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
-
-
+       // props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
         await axios.post('/api/user/login', {
                 username: useDeat.username,
                 password: useDeat.password
@@ -71,6 +68,7 @@ const Login = (props) => {
                 <input 
                 name='password'
                 placeholder='Password'
+                type="password"
                 onChange={handleChange}/>
             </form>
             <button id="login-button" onClick={sendLoginRequest}>Login</button>
