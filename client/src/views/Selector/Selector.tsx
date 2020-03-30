@@ -39,9 +39,9 @@ const Selector = () => {
     const addProject = (data)=>{
         let newData = tableData;
         let obj = [
-            data.First + ' ' + data.Last,
+            data.firstname + ' ' + data.lastname,
             'SWE',
-            data.Email,
+            data.email,
             date,
             1
         ]
