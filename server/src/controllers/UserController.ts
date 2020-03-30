@@ -185,3 +185,42 @@ export const list = (req, res) => {
         res.send(data);
    }).sort({code : 1});
 };
+
+export const updateCalender = (req, res) => {
+    const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+      jwt.verify(cookie, secret, (err, decoded) => {
+     if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+    let calendarData;
+    User.find({username: username}, function(err,data){
+        if(err) throw err;
+        calendarData = data;
+    });
+    calendarData.push(req.param1)//param1 may need to be changed
+    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+};
+
+export const getCalender = (req, res) => {
+    const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+      jwt.verify(cookie, secret, (err, decoded) => {
+     if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+    User.find({username: username}, function(err,data){
+        if(err) throw err;
+        res.send(data);
+    });
+};
+
+
