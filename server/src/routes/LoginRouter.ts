@@ -1,8 +1,9 @@
 
 import {update} from "../controllers/UserController"
+import * as user from "../controllers/UserController";
 import {login, register} from "../user"
-import express  from 'express'
-const loginRouter = express.Router();
+import * as express  from 'express'
+const loginRouter: express.Router = express.Router();
 
 loginRouter.post("/register", register);
 
@@ -17,13 +18,13 @@ loginRouter.get("/me", (req, res) => {
     if (req.cookies["jwt"] !== undefined) {
         res.status(200).send();
     } else {
-        res.status(403).send();
+        res.status(401).send();
     }
 });
 
-loginRouter.put("/:id/reset_password", (req, res) => { //The user id should be sent along with with the old and new password
+loginRouter.put("/:id/reset_password", (req: express.Request, res: express.Response) => { //The user id should be sent along with with the old and new password
     console.log("nice");
-    res.status(401).send();
+    user.changePassword(req, res, req.params.id);
 });
 
 loginRouter.put("/update", (req, res) => {
@@ -31,9 +32,5 @@ loginRouter.put("/update", (req, res) => {
 });
 
 
-
-
-
-
-module.exports = loginRouter;
+//module.exports = loginRouter;
 export default loginRouter;

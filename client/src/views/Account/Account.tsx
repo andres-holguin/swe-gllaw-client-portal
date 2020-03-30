@@ -4,11 +4,15 @@ import NavBar from '../../components/Header/NavBar'
 import './Account.css'
 import InputField from '../../components/InputField/InputField'
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
+import axios from 'axios';
 
 interface Props {
 
 }
-
+interface newPasswordRequest {
+    oldPassword: string,
+    newPassword: string,
+};
 const Account: React.FC<Props> = (props) => {
     const [newPassword, setNewPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
@@ -16,18 +20,28 @@ const Account: React.FC<Props> = (props) => {
     const [correct, toggleCorrect] = useState(true)
     const [equal, toggleEqual] = useState(true)
 
-    let password = 'anna'
 
+    //let password = 'anna'
+    const cookies = require('cookie');
     const _handleSubmit = () => {
-        if (currentPassword !== password) {
-            toggleCorrect(false)
-        } else toggleCorrect(true)
-
-        if (newPassword !== retypePassword) {
-            toggleEqual(false)
-        } else toggleEqual(true)
+        let cookie = cookies.parse(document.cookie);
+        console.log(cookies);
+        let point = "/api/user/" + cookie["_uid"] + "/reset_password";
+        let request = {
+            oldpassword: currentPassword,
+            newPassword: newPassword,
+        }
+        
+        axios.put(point, request).then(res => {
+            console.log(res.status);
+            if (res.status === 204) {
+                toggleCorrect(true);
+            } else {
+                toggleCorrect(false);
+            }
+        }
+        );
     }
-
     const _handleForm = (e) => {
         e.preventDefault()
     }
@@ -56,7 +70,7 @@ const Account: React.FC<Props> = (props) => {
                                     <p>Looks like this password is incorrect. Try again.</p>
                                 </div>
                             )
-                        }
+                        } 
                         <InputField
                             type='password'
                             placeholder='New Password'
