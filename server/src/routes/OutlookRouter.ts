@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 
 const outlookRouter = express.Router();
 
+outlookRouter.use(express.static('static'));
+
 outlookRouter.use(bodyParser.json());
 
 // Set up cookies and sessions to save tokens

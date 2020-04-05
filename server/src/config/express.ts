@@ -33,6 +33,10 @@ module.exports.init = () => {
     // OutlookRouter
     app.use('/api/outlook', outlookRouter)
 
+    // app.get("*", (req, res) => {
+    //     res.sendFile(path.join(__dirname, "../../../client/index.html"));
+    // });
+
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
         app.use(express.static(path.join(__dirname, '../../../client/build')));

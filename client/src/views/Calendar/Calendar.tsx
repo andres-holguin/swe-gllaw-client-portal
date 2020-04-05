@@ -27,7 +27,7 @@ const Calendar = () => {
             await axios.get('/api/outlook/calendar')
             .then(function (response) {
                 // handle success
-                console.log('RESPONE: ', response.data)
+                console.log('RESPONSE: ', response.data)
                 setSignInPage(response.data)
             })
         }

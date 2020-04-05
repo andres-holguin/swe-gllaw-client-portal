@@ -1,6 +1,6 @@
 var clientId = '19a74451-cf77-4f79-97d7-147e5952c5a6';
 var clientSecret = 'J=hkAgR6BAe6x@SLwPdAb24k-UAOnCu[';
-var redirectUri = 'https://e9119daa.ngrok.io/authorize';
+var redirectUri = 'https://08b7b0b5.ngrok.io/authorize';
 
 var scopes = [ // what permissions our app needs
     'openid', // allows autho process to give us display name of user + email addie
