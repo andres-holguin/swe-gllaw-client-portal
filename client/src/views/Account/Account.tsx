@@ -42,6 +42,14 @@ const Account: React.FC<Props> = (props) => {
         }
         );
     }
+
+    const _handleLogout = async () => {
+        await axios.post('/api/user/logout')
+        .then(res => {
+            console.log(res.data);
+        });
+    }
+
     const _handleForm = (e) => {
         e.preventDefault()
     }
@@ -103,6 +111,13 @@ const Account: React.FC<Props> = (props) => {
                         text='Save Changes'
                         disabled={false}
                     />
+                </div>
+                <div className='content'> 
+                        <SubmitButton
+                            onClick={_handleLogout}
+                            text='Logout'
+                            disabled={false}
+                        />
                 </div>
             </div>  
         </>
