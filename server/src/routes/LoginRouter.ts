@@ -13,7 +13,7 @@ loginRouter.post("/login", (req, res) => {
 });
 
 loginRouter.post("/logout", (req, res) => {
-    res.clearCookie('"jwt"').json({loggedout: "Logged out"}); // Removes token from client logging them out.
+    res.clearCookie("jwt").json({loggedout: "Logged out"}); // Removes token from client logging them out.
 } )
 
 loginRouter.get("/me", (req, res) => {
