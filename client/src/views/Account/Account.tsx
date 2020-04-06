@@ -6,6 +6,7 @@ import InputField from '../../components/InputField/InputField'
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
 import axios from 'axios';
 
+
 interface Props {
 
 }
@@ -19,7 +20,6 @@ const Account: React.FC<Props> = (props) => {
     const [currentPassword, setCurrentPassword] = useState('')
     const [correct, toggleCorrect] = useState(true)
     const [equal, toggleEqual] = useState(true)
-
 
     //let password = 'anna'
     const cookies = require('cookie');
@@ -47,6 +47,8 @@ const Account: React.FC<Props> = (props) => {
         await axios.post('/api/user/logout')
         .then(res => {
             console.log(res.data);
+            console.log('redirecting...')
+            window.location.reload(false); // force a refresh so it goes back to logout screen
         });
     }
 
