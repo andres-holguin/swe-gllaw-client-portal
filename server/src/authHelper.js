@@ -1,6 +1,6 @@
 var clientId = '19a74451-cf77-4f79-97d7-147e5952c5a6';
 var clientSecret = 'J=hkAgR6BAe6x@SLwPdAb24k-UAOnCu[';
-var redirectUri = 'https://08b7b0b5.ngrok.io/authorize';
+var redirectUri = 'http://localhost:3001/api/outlook/authorize';
 
 var scopes = [ // what permissions our app needs
     'openid', // allows autho process to give us display name of user + email addie
@@ -35,26 +35,25 @@ const oauth2 = require('simple-oauth2').create(credentials);
         return returnVal;
       },
 
-      getTokenFromCode: function(auth_code, callback, request, response) {
+      getTokenFromCode: async function(auth_code, callback, request, response) {
         console.log('GETTING TOKEN FROM CODE')
         console.log('authcode: ', auth_code)
         console.log('redir ', redirectUri)
-        oauth2.authCode.getToken({ // uses oauth2 lib to get the token
-          code: auth_code,
-          redirect_uri: redirectUri,
-          scope: scopes.join(' ')
-          }, function (error, result) {
-            if (error) {
-              console.log('Access token error: ', error);
-              callback(request ,response, error, null);
-            }
-            else {
-              var token = oauth2.accessToken.create(result);
-              console.log('');
-              console.log('Token created: ', token.token);
-              callback(request, response, null, token);
-            }
+        console.log("authCode from oauth2:", oauth2.authorizationCode)
+        try {
+          const result = await oauth2.authorizationCode.getToken({
+              code: auth_code,
+              redirect_uri: redirectUri,
+              scope: scopes.join(' ')
           });
+          const token = await oauth2.accessToken.create(result);
+          console.log('');
+          console.log('Token created: ', token.token);
+          callback(request, response, null, token);
+        } 
+        catch (error) {
+            console.log('Access Token Error', error.message);
+        }
       },
 
       getEmailFromIdToken: function(id_token) {

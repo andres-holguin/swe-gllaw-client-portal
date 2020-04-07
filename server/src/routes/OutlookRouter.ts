@@ -20,14 +20,14 @@ outlookRouter.use(session({
 }));
 
 outlookRouter.get('/calendar', function(req, res) {
-    console.log('IM HEREEE AND READY 2 SEND')
+    console.log('IM HERE AND READY 2 SEND')
     //console.log(authHelper.getAuthUrl())
     res.send(authHelper.getAuthUrl());
 });
 
 outlookRouter.get('/authorize', function(req, res) { // happens at the redirect
     console.log('HERE', req.query.code)
-    var authCode = req.query.code; // chec for code apram - gives us auth code needed to exchange for token
+    var authCode = req.query.code; // chec for code param - gives us auth code needed to exchange for token
     if (authCode) {
         console.log('');
         console.log('Retrieved auth code in /authorize: ' + authCode);
@@ -36,7 +36,7 @@ outlookRouter.get('/authorize', function(req, res) { // happens at the redirect
     else {
         // redirect to home
         console.log('/authorize called without a code parameter, redirecting to login');
-        res.redirect('/Login');
+        res.redirect('/Calendar');
     }
 });
 
@@ -51,7 +51,7 @@ function tokenReceived(req, res, error, token) {
       req.session.access_token = token.token.access_token;
       req.session.refresh_token = token.token.access_token;
       req.session.email = authHelper.getEmailFromIdToken(token.token.id_token);
-      res.redirect('/documents'); // this is what happens last
+      res.redirect('http://localhost:3000/Documents'); // this is what happens last
     }
 }
   
