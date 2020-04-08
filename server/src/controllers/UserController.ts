@@ -5,8 +5,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
-import mongoose from 'mongoose';
 
+
+const crupt = require("crypto");
 
 
 const secret = process.env.JWT_SECRET; //
@@ -53,6 +54,33 @@ const generateToken = (username: string) => {
 const hashPass = (plaintextPassword: string): string  => {
    return bcrypt.hashSync(plaintextPassword, saltRounds);
 }
+
+export const reset_password = async (req, res): Promise<string> => {
+
+   // const exist = await userExist({email: req.body.email});
+    let out = "";
+    await User.findOne({email: req.body.email}, (err, u) => {
+            if (err) return res.status(500).json({error: "An Error occured. Please try again."});
+    
+
+            res.status(200).json({message: "Email was sent to " + u.toObject().email + "."})
+
+            
+        }).then(u => {
+
+            let payload = {
+                id: u.id,
+                email: u.toObject().email,
+            }
+    
+            out =  jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: "1h"
+            });
+        });
+    
+    return out;
+}
+
 
 const randomPassword = async () => {
 
@@ -104,6 +132,12 @@ export const read = (name: String, res) => {
         }
     })
 };
+
+export const userExist = async (field): Promise<boolean> => {
+    const doc = await User.findOne(field);
+    
+    return doc ? true : false;
+}
 
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;

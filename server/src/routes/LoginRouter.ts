@@ -30,8 +30,9 @@ loginRouter.put("/:id/change_password", (req: express.Request, res: express.Resp
     user.changePassword(req, res, req.params.id);
 });
 
-loginRouter.post("/id/reset_password", (req: express.Request, res: express.Response) => {
-
+loginRouter.post("/reset_password", (req: express.Request, res: express.Response) => {
+    // Iwill need to send an email from the mail server
+    res.json({});
 })
 
 loginRouter.put("/update", (req, res) => {

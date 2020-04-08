@@ -1,5 +1,8 @@
 import loginRouter from '../routes/LoginRouter'
 import outlookRouter from '../routes/OutlookRouter';
+import mailRouter from '../routes/MailRouter'
+import authRouter from '../routes/AuthRouter';
+//import DocumentRouter from '../routes/DocumentRouter'
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
@@ -31,12 +34,16 @@ module.exports.init = () => {
     // body parsing middleware
     app.use(bodyParser.json());
 
+    app.use('/api/mail', mailRouter);
+
     // LoginRouter
     app.use('/api/user', loginRouter);
 
     // OutlookRouter
-    app.use('/api/outlook', outlookRouter)
+    app.use('/api/outlook', outlookRouter);
 
+    app.use('/api/auth', authRouter);
+    //app.use('/debug',loginRouter);
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
         app.use(express.static(path.join(__dirname, '../../../client/build')));
