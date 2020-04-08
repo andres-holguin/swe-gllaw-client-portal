@@ -1,5 +1,3 @@
-var clientId = '19a74451-cf77-4f79-97d7-147e5952c5a6';
-var clientSecret = 'J=hkAgR6BAe6x@SLwPdAb24k-UAOnCu[';
 var redirectUri = 'http://localhost:3001/api/outlook/authorize';
 
 var scopes = [ // what permissions our app needs
@@ -11,8 +9,8 @@ var scopes = [ // what permissions our app needs
 
 var credentials = {
     client: {
-      id: clientId,
-      secret: clientSecret
+      id: process.env.ID,
+      secret: process.env.CLIENT_SECRET
     },
     auth: {
       tokenHost: 'https://login.microsoftonline.com',
