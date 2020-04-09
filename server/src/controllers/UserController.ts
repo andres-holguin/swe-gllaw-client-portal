@@ -247,7 +247,7 @@ export const updateCalender = (req, res) => {
         if(err) throw err;
         calendarData = data;
     });
-    calendarData.push(req.body.data)//param1 may need to be changed
+    calendarData.push(req.body.calenderEntrys)//param1 may need to be changed
     User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
 };
 
@@ -264,6 +264,7 @@ export const getCalender = (req, res) => {
     let username = getUserNamefromCookie(Tok);
     User.find({username: username}, function(err,data){
         if(err) throw err;
+        data.
         res.send(data);
     });
 };
