@@ -1,5 +1,6 @@
-import loginRouter from '../routes/LoginRouter'
+import loginRouter from '../routes/LoginRouter';
 import outlookRouter from '../routes/OutlookRouter';
+import calenderRouter from '../routes/CalenderRouter';
 const path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
@@ -33,9 +34,13 @@ module.exports.init = () => {
 
     // LoginRouter
     app.use('/api/user', loginRouter);
+    
+    //calender router
+    app.use('/',calenderRouter);
+
 
     // OutlookRouter
-    app.use('/api/outlook', outlookRouter)
+    app.use('/api/outlook', outlookRouter);
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
