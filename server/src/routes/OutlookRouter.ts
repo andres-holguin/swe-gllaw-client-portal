@@ -3,6 +3,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var authHelper = require('../authHelper');
 var bodyParser = require('body-parser');
+var outlook = require('node-outlook');
+var moment = require('moment');
 
 const outlookRouter = express.Router();
 
@@ -19,7 +21,7 @@ outlookRouter.use(session({
     saveUninitialized: false 
 }));
 
-outlookRouter.get('/calendar', function(req, res) {
+outlookRouter.get('/authurl', function(req, res) {
     console.log('IM HERE AND READY 2 SEND')
     //console.log(authHelper.getAuthUrl())
     res.send(authHelper.getAuthUrl());
@@ -36,7 +38,7 @@ outlookRouter.get('/authorize', function(req, res) { // happens at the redirect
     else {
         // redirect to home
         console.log('/authorize called without a code parameter, redirecting to login');
-        res.redirect('/Calendar');
+        //res.redirect('/Calendar');
     }
 });
 
@@ -48,12 +50,138 @@ function tokenReceived(req, res, error, token) {
     }
     else {
       // save tokens in session
+      console.log("IM HEEREEEEREEEEEEEEE WOOHOOOOOOOOOOOOOO")
       req.session.access_token = token.token.access_token;
       req.session.refresh_token = token.token.access_token;
       req.session.email = authHelper.getEmailFromIdToken(token.token.id_token);
-      res.redirect('http://localhost:3000/Documents'); // this is what happens last
+      res.redirect('http://localhost:3000/Calendar'); // this is what happens last
     }
 }
+
+// ??? 
+outlookRouter.get('/Calendar', function(req, res) {
+    let access_token = req.session.access_token;
+    let refresh_token = req.session.access_token;
+    let email = req.session.email;
+    
+    if (access_token === undefined || refresh_token === undefined) {
+      console.log('/logincomplete called while not logged in');
+      res.redirect('/');
+      return;
+    }
+    console.log('sending email...', email)
+    res.send(email);
+  });
+
+  outlookRouter.get('/refreshtokens', function(req, res) {
+    var refresh_token = req.session.refresh_token;
+    if (refresh_token === undefined) {
+      console.log('no refresh token in session');
+      res.redirect('/');
+    }
+    else {
+      authHelper.getTokenFromRefreshToken(refresh_token, tokenReceived, req, res);
+    }
+  });
+
+  outlookRouter.get('/sync', function(req, res) {
+    var token = req.session.access_token;
+    var email = req.session.email;
+    if (token === undefined || email === undefined) {
+      console.log('/sync called while not logged in');
+      res.redirect('/');
+      return;
+    }
+    
+    // Set the endpoint to API v2
+    outlook.base.setApiEndpoint('https://outlook.office.com/api/v2.0');
+    // Set the user's email as the anchor mailbox
+    outlook.base.setAnchorMailbox(req.session.email);
+    // Set the preferred time zone
+    outlook.base.setPreferredTimeZone('Eastern Standard Time');
+    
+    // Use the syncUrl if available
+    var requestUrl = req.session.syncUrl;
+    if (requestUrl === undefined) {
+      // Calendar sync works on the CalendarView endpoint
+      requestUrl = outlook.base.apiEndpoint() + '/Me/CalendarView';
+    }
+    
+    // Set up our sync window from midnight on the current day to
+    // midnight 7 days from now.
+    var startDate = moment().startOf('day');
+    var endDate = moment(startDate).add(7, 'days');
+    // The start and end date are passed as query parameters
+    var params = {
+      startDateTime: startDate.toISOString(),
+      endDateTime: endDate.toISOString()
+    };
+    
+    // Set the required headers for sync
+    var headers = {
+      Prefer: [ 
+        // Enables sync functionality
+        'odata.track-changes',
+        // Requests only 5 changes per response
+        'odata.maxpagesize=5'
+      ]
+    };
+    
+    var apiOptions = {
+      url: requestUrl,
+      token: token,
+      headers: headers,
+      query: params
+    };
+    
+    outlook.base.makeApiCall(apiOptions, function(error, response) {
+      if (error) {
+        console.log(JSON.stringify(error));
+        res.send(JSON.stringify(error));
+      }
+      else {
+        if (response.statusCode !== 200) {
+          console.log('API Call returned ' + response.statusCode);
+          res.send('API Call returned ' + response.statusCode);
+        }
+        else {
+          var nextLink = response.body['@odata.nextLink'];
+          if (nextLink !== undefined) {
+            req.session.syncUrl = nextLink;
+          }
+          var deltaLink = response.body['@odata.deltaLink'];
+          if (deltaLink !== undefined) {
+            req.session.syncUrl = deltaLink;
+          }
+          res.send(email);
+        }
+      }
+    });
+  });
+
+  outlookRouter.get('/createitem', function(req, res) {
+    var newEvent = {
+      "Subject": "Discuss the Calendar REST API",
+      "Body": {
+          "ContentType": "HTML",
+          "Content": "I think it will meet our requirements!"
+      },
+    };
+    
+    let createEventParameters = {
+      token: req.session.access_token,
+      event: newEvent
+    };
+    
+    outlook.calendar.createEvent(createEventParameters, function (error, event) {
+      if(error) {
+          console.log(error);                 
+      } else {
+          console.log(event);
+          res.send('Success!')                         
+      }
+    });
+  });
   
 module.exports = outlookRouter;
 export default outlookRouter;
