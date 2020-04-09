@@ -33,7 +33,30 @@ const Calendar = () => {
             })
         }
 
+        // next, retrieve all of the new calendar events an admin has added, if they're a client
+        // if client
+            // retrieve and update events
+            // update outlook
+        const updateOutlookCalendar = async () => {
+            events.map(e => {
+                let newEvent = {
+                    "Subject": e.title,
+                    "Body": {
+                        "ContentType": "HTML",
+                        "Content": "I think it will meet our requirements!"
+                    },
+                    "Start": {
+                        "DateTime": e.start,
+                        "TimeZone": "Eastern Standard Time"
+                    },
+                };
+                //createEvent(newEvent)
+            })
+            // need a way to only grab the newest events
+        }
+
         getSignInPage();
+        //updateOutlookCalendar();
 
     }, [])
 
@@ -55,10 +78,23 @@ const Calendar = () => {
     }
 
     const createEvent = async () => {
-        await axios.get('/api/outlook/createitem')
+        var newEvent = {
+            "Subject": "SWEengineering!!!!!! class",
+            "Body": {
+                "ContentType": "HTML",
+                "Content": "I think it will meet our requirements!"
+            },
+        };
+
+        console.log('making axios req')
+        await axios.post('/api/outlook/createitem', {
+            newEvent: newEvent
+        })
         .then(function (res) {
             console.log(res.data)
-        })
+        }).catch(error => {
+            console.log(error.response)
+        });
     }
 
     console.log('email: ', email)
@@ -84,7 +120,7 @@ const Calendar = () => {
             }
         };
 
-        await axios.post('/api/user/Calender/', updatedListing);
+        await axios.post('/Calender/', updatedListing);
     }
 
     return (

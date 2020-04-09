@@ -11,6 +11,7 @@ const outlookRouter = express.Router();
 outlookRouter.use(express.static('static'));
 
 outlookRouter.use(bodyParser.json());
+outlookRouter.use(bodyParser.urlencoded({ extended: true }));
 
 // Set up cookies and sessions to save tokens
 outlookRouter.use(cookieParser());
@@ -159,18 +160,22 @@ outlookRouter.get('/Calendar', function(req, res) {
     });
   });
 
-  outlookRouter.get('/createitem', function(req, res) {
+  outlookRouter.post('/createitem', function(req, res) {
     var newEvent = {
-      "Subject": "Discuss the Calendar REST API",
+      "Subject": "SWE class",
       "Body": {
           "ContentType": "HTML",
           "Content": "I think it will meet our requirements!"
       },
     };
+
+    console.log('in post request YEAH HERE I AM')
+
+    console.log(req.body)
     
     let createEventParameters = {
       token: req.session.access_token,
-      event: newEvent
+      event: req.body.newEvent
     };
     
     outlook.calendar.createEvent(createEventParameters, function (error, event) {

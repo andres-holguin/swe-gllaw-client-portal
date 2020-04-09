@@ -48,25 +48,5 @@ loginRouter.post("/Selector", (req, res) => {
 });
 
 
-loginRouter.get("/Calender", (req, res) => {
-    getCalender(req,res);
-});
-
-loginRouter.post("/Calender", (req, res) => {
-    console.log('going to update calendar!')
-    updateCalender(req, res);
-});
-
-loginRouter.post("/debug", (req, res) => {
-    debugCreate(req,res);
-});
-
-loginRouter.get("/debug", (req, res) => {
-    list(req,res);
-});
-
-loginRouter.delete("/Calender", (req, res) => {
-});
-
 //module.exports = loginRouter;
 export default loginRouter;
