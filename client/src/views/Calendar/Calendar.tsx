@@ -20,11 +20,12 @@ const Calendar = () => {
     const [events, setEvents] = useState([
         { title: 'Meet with SWE Group', start: new Date() }
     ])
+    const [email, setEmail] = useState('')
 
     useEffect(() => {
         const getSignInPage = async () => {
             console.log('in signinpage function, about to get request')
-            await axios.get('/api/outlook/calendar')
+            await axios.get('/api/outlook/authurl')
             .then(function (response) {
                 // handle success
                 console.log('RESPONSE: ', response.data)
@@ -36,6 +37,31 @@ const Calendar = () => {
 
     }, [])
 
+    const _handleOutlookLogin = async () => {
+        console.log('HEREEEEEE')
+        // await axios.get('/api/outlook/logincomplete')
+        // .then(function (res) {
+        //     //console.log(res.data)
+        //     setEmail(res.data)
+        // })
+    }
+
+    const _handleCalendarSync = async () => {
+        await axios.get('/api/outlook/sync')
+        .then(function (res) {
+            console.log(res.data)
+            setEmail(res.data)
+        })
+    }
+
+    const createEvent = async () => {
+        await axios.get('/api/outlook/createitem')
+        .then(function (res) {
+            console.log(res.data)
+        })
+    }
+
+    console.log('email: ', email)
     console.log('SIGN IN PAGE URL: ', signInPage);
 
     const _handleCloseModal = () => {
@@ -56,8 +82,10 @@ const Calendar = () => {
         <>
             <NavBar />
             <a href={signInPage}>
-                <button onClick={() => console.log('button says sign in page is...', signInPage)}>Outlook</button>
+                <button onClick={_handleOutlookLogin}>Outlook</button>
             </a>
+            <button onClick={_handleCalendarSync}>Sync Calendar to Outlook</button>
+            <button onClick={createEvent}>Create Event</button>
             <div className='demo-app'>
                 <div className='demo-app-top'> 
                 </div>
