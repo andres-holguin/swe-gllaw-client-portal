@@ -35,15 +35,18 @@ const oauth2 = require('simple-oauth2').create(credentials);
 
       getTokenFromCode: async function(auth_code, callback, request, response) {
         console.log('GETTING TOKEN FROM CODE')
-        console.log('authcode: ', auth_code)
-        console.log('redir ', redirectUri)
         console.log("authCode from oauth2:", oauth2.authorizationCode)
         try {
+          console.log('IN TRY')
+          console.log(scopes.join(' '))
+          console.log('authcode: ', auth_code)
+          console.log('redir ', redirectUri)
           const result = await oauth2.authorizationCode.getToken({
               code: auth_code,
               redirect_uri: redirectUri,
               scope: scopes.join(' ')
           });
+          console.log('ATTEMPTING TO CREATE')
           const token = await oauth2.accessToken.create(result);
           console.log('');
           console.log('Token created: ', token.token);
