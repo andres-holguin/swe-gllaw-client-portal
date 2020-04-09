@@ -243,11 +243,11 @@ export const updateCalender = (req, res) => {
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
     let calendarData;
-    User.find({username: username}, function(err,data){
+    User.findOne({username: username}, function(err,data){
         if(err) throw err;
-        calendarData = data;
+        calendarData = data.toObject().calenderEntrys;
     });
-    calendarData.push(req.body.data)//param1 may need to be changed
+    calendarData.push(req.body.calenderEntrys);
     User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
 };
 
@@ -262,9 +262,9 @@ export const getCalender = (req, res) => {
     }
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
-    User.find({username: username}, function(err,data){
+    User.findOne({username: username}, function(err,data){
         if(err) throw err;
-        res.send(data);
+        res.send(data.toObject().calenderEntrys);
     });
 };
 
