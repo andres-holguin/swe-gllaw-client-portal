@@ -7,7 +7,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import './main.scss'
 import Modal from '../../components/modal/Modal';
 import NavBar from '../../components/Header/NavBar';
-import SubmitButton from '../../components/SubmitButton/SubmitButton';
+//import SubmitButton from '../../components/SubmitButton/SubmitButton';
 
 const axios = require("axios")
 
@@ -74,8 +74,17 @@ const Calendar = () => {
         setDate(day)
     }
 
-    const addEvent = (e) => {
-        setEvents([...events, e])
+    const addEvent = async (event) => {
+        setEvents([...events, event])
+
+        const updatedListing = {
+            calenderEntrys : {
+                title: event.title,
+                data: event.start
+            }
+        };
+
+        await axios.post('/api/user/Calender/', updatedListing);
     }
 
     return (

@@ -232,7 +232,8 @@ export const list = (req, res) => {
 };
 
 export const updateCalender = (req, res) => {
-    const jwt = require("json-web-token");
+    console.log("HERE")
+    //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
       jwt.verify(cookie, secret, (err, decoded) => {
@@ -252,7 +253,7 @@ export const updateCalender = (req, res) => {
 };
 
 export const getCalender = (req, res) => {
-    const jwt = require("json-web-token");
+    //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
       jwt.verify(cookie, secret, (err, decoded) => {

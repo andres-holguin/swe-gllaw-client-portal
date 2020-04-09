@@ -53,6 +53,7 @@ loginRouter.get("/Calender", (req, res) => {
 });
 
 loginRouter.post("/Calender", (req, res) => {
+    console.log('going to update calendar!')
     updateCalender(req, res);
 });
 
