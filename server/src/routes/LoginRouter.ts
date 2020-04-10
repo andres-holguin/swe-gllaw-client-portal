@@ -13,13 +13,16 @@ loginRouter.post("/login", (req, res) => {
 });
 
 loginRouter.post("/logout", (req, res) => {
-    res.clearCookie("jwt").json({loggedout: "Logged out"}); // Removes token from client logging them out.
-} )
+    res.clearCookie("_uid").clearCookie("jwt").json({loggedout: "Logged out"}); // Removes token from client logging them out.
+});
 
 loginRouter.get("/me", (req, res) => {
-    //This makes sure that the user is logged in.
+
     console.log(req.cookies["jwt"]);
-    if (req.cookies["jwt"] !== undefined) {
+    if (req.cookies["jwt"] !== undefined) { //Change this to check if the jwt is expired.
+        
+        
+        
         res.status(200).send();
     } else {
         res.status(401).send();
@@ -31,7 +34,7 @@ loginRouter.put("/:id/change_password", (req: express.Request, res: express.Resp
 });
 
 loginRouter.post("/reset_password", (req: express.Request, res: express.Response) => {
-    // Iwill need to send an email from the mail server
+    // I will need to send an email from the mail server
     res.json({});
 })
 

@@ -6,10 +6,6 @@ import bcrypt from "bcrypt"
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
 
-
-const crupt = require("crypto");
-
-
 const secret = process.env.JWT_SECRET; //
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
@@ -57,7 +53,6 @@ const hashPass = (plaintextPassword: string): string  => {
 
 export const reset_password = async (req, res): Promise<string> => {
 
-   // const exist = await userExist({email: req.body.email});
     let out = "";
     await User.findOne({email: req.body.email}, (err, u) => {
             if (err) return res.status(500).json({error: "An Error occured. Please try again."});
@@ -149,8 +144,6 @@ export const verifyUser = async (req, res) => {
             console.log("Oops");
             return res.status(403).json({authenticationerror: "Incorrect Username or Password"}); //Possibly change this status to a 401
         } else {
-            console.log(u); 
-            console.log(user.toObject());
             let hash = user.toObject().password;
 
 
@@ -178,10 +171,6 @@ export const update = (req, res) => {
     let u_req: string = req.body.u_req.username;
     User.findOneAndUpdate({username: u_req}, req.body);
 };
-//Update the specific document that we wnat to change
-const updateByObject = (u: MongooseDocument, newContent: any) => {
-
-}
 
 export const changePassword = async (req: Request, res: Response, id: string) =>  {
     let newRequest: newPasswordRequest = req.body
@@ -210,7 +199,6 @@ export const changePassword = async (req: Request, res: Response, id: string) =>
             } );
         }
     });
-    //doc.name
 }
 /* Delete a listing */
 export const remove = (req, res) => {
@@ -237,7 +225,7 @@ export const getUserID = (username: string) => {
     });
 }
 
-const isAdmin = (username: string) => { //Replace this function
+export const isAdmin = (username: string) => { //Replace this function
     User.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
@@ -253,11 +241,6 @@ const isAdmin = (username: string) => { //Replace this function
         }
     });
 }
-const deleteUser = (req, res) => {
-    //Im gonna need to check if the user is an admin.
-    //req.body.u_req;
-}
-
 
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
