@@ -27,9 +27,7 @@ mailRouter.post('/reset_pass', async (req: express.Request, res: express.Respons
     req.body.email;
 
     const token = await user.reset_password(req, res);
-   // const token = crypto.randomBytes(32).toString('base64');
     console.log(token);
-   // res.send(token);
     nodemailergun.sendMail({
         from: 'no_reply@sandboxefd613a7ef1f487c9303aacbf3ca8e3d.mailgun.org',
         to: req.body.email,

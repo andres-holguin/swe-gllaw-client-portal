@@ -67,7 +67,9 @@ export const reset_password = async (req, res): Promise<string> => {
 
             
         }).then(u => {
-
+            if(!u) {
+                return res.status(401).json({error: "User does not exist for this email."})
+            }
             let payload = {
                 id: u.id,
                 email: u.toObject().email,
