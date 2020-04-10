@@ -1,31 +1,30 @@
 import loginRouter from '../routes/LoginRouter'
 import outlookRouter from '../routes/OutlookRouter';
-import mailRouter from '../routes/MailRouter'
+import mailRouter from '../routes/MailRouter';
 import authRouter from '../routes/AuthRouter';
-//import DocumentRouter from '../routes/DocumentRouter'
+import documentRouter from '../routes/DocumentRouter';
+import express from 'express';
 const path = require('path'),
-    express = require('express'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser');
-
-    //const config = require('./config');
 module.exports.init = () => {
     /* 
         connect to database
         - reference README for db uri
     */
-    mongoose.connect(process.env.DB_URI, { //|| config.default.db.uri, {
+    mongoose.connect(process.env.DB_URI, { 
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
+
+   // mongoose.connect(connection);
     mongoose.set('useCreateIndex', true);
     mongoose.set('useFindAndModify', false); 
-    
-    
-    // initialize app
+
     const app = express();
+
     app.use(cookieParser());
 
     // enable request logging for development debugging
@@ -42,7 +41,11 @@ module.exports.init = () => {
     // OutlookRouter
     app.use('/api/outlook', outlookRouter);
 
+    //Auth Router for forgotten passwords, may move login, register into this.
     app.use('/api/auth', authRouter);
+
+    //Document Router
+    app.use('/api/document', documentRouter);
     //app.use('/debug',loginRouter);
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
