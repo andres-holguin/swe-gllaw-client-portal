@@ -60,7 +60,7 @@ function tokenReceived(req, res, error, token) {
 }
 
 // ??? 
-outlookRouter.get('/Calendar', function(req, res) {
+outlookRouter.get('/logincomplete', function(req, res) {
     let access_token = req.session.access_token;
     let refresh_token = req.session.access_token;
     let email = req.session.email;

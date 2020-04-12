@@ -9,7 +9,7 @@ const UnathenticatedRoute = ({ component: C, appProps, ...rest }) => {
             render={props =>
                 !appProps.isAuthenticated
                     ? <C {...props} {...appProps} />
-                    : <Redirect to='/Calendar' />
+                    : <Redirect to='/Selector' />
             }
         />  
     )

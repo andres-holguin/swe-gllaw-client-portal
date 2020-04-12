@@ -45,20 +45,9 @@ const Login = (props) => {
 
     return (
         <div className='login'>
-
-            
-
-         
             <div className='logo'>
-
-            <img src = "https://www.gonzalolaw.com/wp-content/uploads/2019/01/GonzaloLawLogo.png"
-            
-           
-
-            />
-
+                <img src = "https://www.gonzalolaw.com/wp-content/uploads/2019/01/GonzaloLawLogo.png"/>
             </div>
-
             <h4>Please Sign In</h4>
             <form>
                 <input 

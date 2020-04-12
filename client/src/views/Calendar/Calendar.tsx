@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import moment from 'moment'
 
 import './main.scss'
 import Modal from '../../components/modal/Modal';
@@ -17,6 +18,8 @@ const Calendar = () => {
     const [visible, setVisible] = useState(false)
     const [date, setDate] = useState(new Date())
     const [signInPage, setSignInPage] = useState('')
+    var today = new Date();
+    today.setHours(today.getHours() + 4);
     const [events, setEvents] = useState([
         { title: 'Meet with SWE Group', start: new Date() }
     ])
@@ -60,30 +63,30 @@ const Calendar = () => {
 
     }, [])
 
-    const _handleOutlookLogin = async () => {
-        console.log('HEREEEEEE')
-        // await axios.get('/api/outlook/logincomplete')
-        // .then(function (res) {
-        //     //console.log(res.data)
-        //     setEmail(res.data)
-        // })
-    }
-
     const _handleCalendarSync = async () => {
         await axios.get('/api/outlook/sync')
         .then(function (res) {
-            console.log(res.data)
+            //console.log(res.data)
             setEmail(res.data)
         })
     }
 
-    const createEvent = async () => {
+    const createEvent = async (event) => {
+        let startDateStringUtc = moment(event.start).toISOString();
+        startDateStringUtc = startDateStringUtc.substring(0, startDateStringUtc.length - 5);
+        console.log('THIS EVENT STARTS AT: ', startDateStringUtc)
+        console.log('event title: ', event.title)
+
         var newEvent = {
-            "Subject": "SWEengineering!!!!!! class",
+            "Subject": event.title,
             "Body": {
                 "ContentType": "HTML",
                 "Content": "I think it will meet our requirements!"
             },
+            "Start": {
+                "DateTime": startDateStringUtc,
+                "TimeZone": "Eastern Standard Time"
+            }
         };
 
         console.log('making axios req')
@@ -113,6 +116,9 @@ const Calendar = () => {
     const addEvent = async (event) => {
         setEvents([...events, event])
 
+        //console.log('THIS STARTS AT ', event.start)
+        //console.log('AND ENDS AT ', event.end)
+
         const updatedListing = {
             calenderEntrys : {
                 title: event.title,
@@ -120,15 +126,18 @@ const Calendar = () => {
             }
         };
 
-        await axios.post('/Calender/', updatedListing);
+        //console.log('NEW EVENT: ', event.title)
+
+        //await axios.post('/Calender/', updatedListing);
+
+        // not sure if clients should be able to add events here, but just to display that it adds the event
+        // to you outlook calendar, i have it create an event on the calendar as well
+        createEvent(event);
     }
 
     return (
         <>
             <NavBar />
-            <a href={signInPage}>
-                <button onClick={_handleOutlookLogin}>Outlook</button>
-            </a>
             <button onClick={_handleCalendarSync}>Sync Calendar to Outlook</button>
             <button onClick={createEvent}>Create Event</button>
             <div className='demo-app'>
@@ -146,6 +155,7 @@ const Calendar = () => {
                         plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]} 
                         events={events}
                         dateClick={_handleDateClick}
+                        displayEventEnd={false}
                     />
                 </div>
             </div>

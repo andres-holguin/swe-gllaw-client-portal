@@ -4,12 +4,14 @@ import NavBar from '../../components/Header/NavBar'
 import './Account.css'
 import InputField from '../../components/InputField/InputField'
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
-import axios from 'axios';
+import OutlookLogin from '../../components/OutlookLogin/OutlookLogin';
 
+import axios from 'axios';
 
 interface Props {
 
 }
+
 interface newPasswordRequest {
     oldPassword: string,
     newPassword: string,
@@ -59,11 +61,9 @@ const Account: React.FC<Props> = (props) => {
     return (
         <>
             <NavBar />
-            <div className='col'>
-                <div className='acctHeader'>
-                    <p className='heading'>Account</p>
-                </div>
+            <div className='leftcol'>
                 <div className='content'> 
+                    <p className='heading'>Account</p>
                     <form onSubmit={_handleForm}>
                         <InputField
                             border={ correct ? 'lightgrey' : 'red' }
@@ -106,22 +106,27 @@ const Account: React.FC<Props> = (props) => {
                             )
                         }
                     </form>
+                    <div className='saveChanges'>
+                        <SubmitButton
+                            onClick={_handleSubmit}
+                            text='Save Changes'
+                            disabled={false}
+                        />
+                    </div>
                 </div>
-                <div className='saveChanges'>
+            </div>
+            <div className='rightcol'>
+                <div className='content'> 
+                    <OutlookLogin/>
+                <div className='logout'>
                     <SubmitButton
-                        onClick={_handleSubmit}
-                        text='Save Changes'
+                        onClick={_handleLogout}
+                        text='Logout'
                         disabled={false}
                     />
                 </div>
-                <div className='content'> 
-                        <SubmitButton
-                            onClick={_handleLogout}
-                            text='Logout'
-                            disabled={false}
-                        />
                 </div>
-            </div>  
+            </div>
         </>
     )
 }
