@@ -4,6 +4,7 @@ import mailRouter from '../routes/MailRouter';
 import authRouter from '../routes/AuthRouter';
 import documentRouter from '../routes/DocumentRouter';
 import express from 'express';
+import caseRouter from '../routes/CaseRouter';
 const path = require('path'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
@@ -38,6 +39,7 @@ module.exports.init = () => {
     // LoginRouter
     app.use('/api/user', loginRouter);
 
+    app.use('/api/case', caseRouter);
     // OutlookRouter
     app.use('/api/outlook', outlookRouter);
 

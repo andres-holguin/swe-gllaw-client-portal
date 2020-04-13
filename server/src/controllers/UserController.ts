@@ -39,9 +39,9 @@ const isTokenValid = (token: string) => {
     })
 }
 
-const generateToken = (username: string) => {
+const generateToken = (username: string, role: string) => {
 
-    const tok = {name: username};
+    const tok = {name: username, role};
     const accessToken = jwt.sign(tok, secret);
     console.log(accessToken);
     return accessToken;
@@ -79,7 +79,7 @@ export const reset_password = async (req, res): Promise<string> => {
 }
 
 
-const randomPassword = async () => {
+const randomPassword = async () => {//No olonger being used.
 
     let length = Math.floor(Math.random() * 32);
     let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -153,8 +153,8 @@ export const verifyUser = async (req, res) => {
                 
                 if (authenticated) {
                     console.log("user confirmed");
-                
-                    const accessToken = generateToken(u.username);
+                    let role: string = user.toObject().isAdmin ? "admin" : "user"; 
+                    const accessToken = generateToken(u.username, role);
                     res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
                     httpOnly: true}).status(200).json({accessToken: accessToken});
                 } else {
