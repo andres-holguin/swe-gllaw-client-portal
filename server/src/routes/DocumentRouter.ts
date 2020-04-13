@@ -7,8 +7,6 @@ import { GridFSBucket, ObjectID } from 'mongodb';
 
 const documentRouter = express.Router();
 
-
-
 const connection = mongoose.createConnection(process.env.DB_URI, { 
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -22,7 +20,7 @@ connection.once('open', () => {
 
 const storage = new GridFsStorage({
     db: connection,
-    bucketName: "uploads",
+    bucketName: "documents",
     file: (req, file) => {
         return new Promise((resolve, reject) => {
             const fileInfo= {
@@ -35,16 +33,19 @@ const storage = new GridFsStorage({
     }
 });
 
-
 let upload = multer({
     storage: storage
 });
 
+documentRouter.route('/upload').post(upload.single('doc'), (req: express.Request, res: express.Response) => {
+    if(req.file === undefined) {
+        res.status(400).json({error: "Invalid File format."})
+    } else {
+        res.status(200).json({message: "file transfer successful"}); // if there is an error if will be caught before this.
 
-documentRouter.post('/upload', upload.single('doc'), (req: express.Request, res: express.Response) => {
-  res.json({message: "file transfer successful"}); // if there is an error if will be caught before this.
+    }
+    //console.log("File --", req.file)
 });
-
 
 documentRouter.get('/:document_id/', (req: express.Request, res: express.Response) => {
     const bucket = new GridFSBucket(storage.db);
