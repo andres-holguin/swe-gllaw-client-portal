@@ -162,10 +162,18 @@ outlookRouter.get('/logincomplete', function(req, res) {
 
   outlookRouter.post('/createitem', function(req, res) {
     var newEvent = {
-      "Subject": "SWE class",
+      "Subject": "Discuss the Calendar REST API",
       "Body": {
-          "ContentType": "HTML",
-          "Content": "I think it will meet our requirements!"
+        "ContentType": "HTML",
+        "Content": "I think it will meet our requirements!"
+      },
+      "Start": {
+        "DateTime": "2020-04-03T18:00:00",
+        "TimeZone": "Eastern Standard Time"
+      },
+      "End": {
+        "DateTime": "2020-04-03T19:00:00",
+        "TimeZone": "Eastern Standard Time"
       },
     };
 
