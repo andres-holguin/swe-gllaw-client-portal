@@ -5,7 +5,7 @@ import './SubmitButton.css'
 interface Props {
     onClick: any,
     text: string,
-    disabled: boolean
+    disabled: boolean,
 }
 
 const SubmitButton: React.FC<Props> = (props) => {

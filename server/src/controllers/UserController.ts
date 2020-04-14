@@ -3,6 +3,11 @@ import User from '../models/USERModel';
 //import config from '../config/config';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
+import {Request, Response}  from 'express';
+import { MongooseDocument } from 'mongoose';
+import mongoose from 'mongoose';
+
+
 
 const secret = process.env.JWT_SECRET; //
 
@@ -14,8 +19,7 @@ export interface UserRequest {
 }
 
 interface newPasswordRequest {
-    username: string,
-    oldPassword: string,
+    oldpassword: string,
     newPassword: string,
 }
 
@@ -30,7 +34,11 @@ interface UserRegistration {
 const isTokenValid = (token: string) => {
     //if (error) ?
     jwt.verify(token, secret, (err, decoded) => {
-        console.log(decoded);
+        if (decoded) {
+            return true;
+        } else {
+            return false;
+        }
     })
 }
 
@@ -108,13 +116,17 @@ export const verifyUser = async (req, res) => {
             console.log(u); 
             console.log(user.toObject());
             let hash = user.toObject().password;
+
+
             bcrypt.compare(u.password, hash, (err, authenticated) => {
                 if (err) return res.json(err);
-                if (authenticated) {
-                console.log("user confirmed");
                 
-                const accessToken = generateToken(u.username);
-                res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
+                
+                if (authenticated) {
+                    console.log("user confirmed");
+                
+                    const accessToken = generateToken(u.username);
+                    res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
                     httpOnly: true}).status(200).json({accessToken: accessToken});
                 } else {
                     console.log("User not confirmed");
@@ -129,20 +141,41 @@ export const verifyUser = async (req, res) => {
 export const update = (req, res) => {
     let u_req: string = req.body.u_req.username;
     User.findOneAndUpdate({username: u_req}, req.body);
+};
+//Update the specific document that we wnat to change
+const updateByObject = (u: MongooseDocument, newContent: any) => {
+
 }
 
-export const changePassword = (w: newPasswordRequest) => {
-        
-}
+export const changePassword = async (req: Request, res: Response, id: string) =>  {
+    let newRequest: newPasswordRequest = req.body
+    console.log(req.body);
+    let doc = await User.findById(id, (err, user) => {
+        if (err) throw err;
+        if (!user) {
+            return res.status(404).json({authenticationerror: "No user by that id exist"});
+        } else {
+            let hash = user.toObject().password;
+            bcrypt.compare(newRequest.oldpassword, hash, (err, authenticated ) => {
+                if (err) throw err;
 
-export const resetPassword = (hmm: newPasswordRequest) => {
-    let user = hmm.username;
-    //let userDocument  = getUser(user);
-    User.updateOne({username: user}, {
-        
-    })
-}
+                if (!authenticated) {
+                    return res.status(403).json({authentication_error: "Incorrect password"});
+                } else {
+                    let newPass = hashPass(newRequest.newPassword);
+                    User.updateOne(user, {password: newPass}, {
+                        new: true,
+                    }, (err, u) => {
+                        if (err) throw err;
+                    });
 
+                    return res.status(204).send();           
+                }
+            } );
+        }
+    });
+    //doc.name
+}
 /* Delete a listing */
 export const remove = (req, res) => {
     User.findOneAndDelete({username: req.body.u_req.userName}, (err, result) => {
@@ -195,5 +228,64 @@ export const list = (req, res) => {
     User.find({},function(err,data){
         if(err) throw err;
         res.send(data);
-   }).sort({code : 1});
+   });
 };
+
+export const updateCalender = (req, res) => {
+    console.log("HERE")
+    //const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+      jwt.verify(cookie, secret, (err, decoded) => {
+     if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+    let calendarData;
+    User.findOne({username: username}, function(err,data){
+        if(err) throw err;
+        calendarData = data.toObject().calenderEntrys;
+    });
+    calendarData.push(req.body.calenderEntrys);
+    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+};
+
+export const getCalender = (req, res) => {
+    //const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+      jwt.verify(cookie, secret, (err, decoded) => {
+     if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+    User.findOne({username: username}, function(err,data){
+        if(err) throw err;
+        res.send(data.toObject().calenderEntrys);
+    });
+};
+
+
+export const debugCreate = (req, res) => {
+    console.log(req.params);
+    let toAdd = new User(
+    {   
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email:    req.body.email,
+        password: "123",
+        isAdmin: false,
+        newUser: true //This is for when we want to force a password change
+    });
+    toAdd.save();
+    res.send(toAdd);
+};
+
+
+
+

@@ -28,8 +28,29 @@ const Selector = () => {
             'ly@aol.com',
             date,
             5
+        ], [
+            'Yashiyah',
+            'backend SWE',
+            'lyyyy@aol.com',
+            date,
+            1
         ]
     ])
+    const addProject = (data)=>{
+        let newData = tableData;
+        let obj = [
+            data.firstname + ' ' + data.lastname,
+            'SWE',
+            data.email,
+            date,
+            1
+        ]
+        newData.push(obj);
+        setTableData(newData);
+        setFilterText(' ');
+        setFilterText('');
+        console.log(tableData);
+    }
 
     const filterUpdate = (val) => {
         setFilterText(val)
@@ -46,7 +67,7 @@ const Selector = () => {
                 data={tableData}
                 target={filterText}
             />
-            <SubmissionForm/>
+            <SubmissionForm addProject = {addProject}/>
         </div>
     )
 }

@@ -69,3 +69,12 @@
     padding-left: 1rem;
     padding-top: 1rem;
 }
+
+.startTime {
+    float: left;
+}
+
+.endTime {
+    float: right;
+    padding-right: 150px;
+}

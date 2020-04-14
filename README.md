@@ -14,6 +14,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
+# Getting Started
+Please view [SeparateBases.md](documentation/SeperateBases.md) for a guide on how to set up the environment for deployment.
+
 ## Available Scripts
 
 In the project directory, you can run:

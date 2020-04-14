@@ -1,18 +1,32 @@
 .acctHeader {
     border-bottom: 1px solid #ACA59D;
     background-color: whitesmoke;
+    padding-left: 20px;
 }
 
-.col {
+.leftcol {
 	float: left;
 	width: 50%;
-	padding: 10px;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.rightcol {
+	float: right;
+	width: 50%;
+    padding-top: 20px;
+    padding-right: 20px;
 }
 
 .content {
     justify-content: space-around;
     max-width: 100%;
     flex: none;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    height: 275px;
+    padding-left: 30px;
+    padding-top: 20px;
 }
 
 .heading {
@@ -22,4 +36,13 @@
 
 .saveChanges {
     float: right;
+    bottom:0px;
+    padding-right: 20px;
+}
+
+.logout {
+    float: right;
+    bottom:0px;
+    padding-top: 120px;
+    padding-right: 20px;
 }

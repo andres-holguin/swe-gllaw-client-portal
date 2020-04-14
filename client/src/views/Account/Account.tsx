@@ -4,11 +4,18 @@ import NavBar from '../../components/Header/NavBar'
 import './Account.css'
 import InputField from '../../components/InputField/InputField'
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
+import OutlookLogin from '../../components/OutlookLogin/OutlookLogin';
+
+import axios from 'axios';
 
 interface Props {
 
 }
 
+interface newPasswordRequest {
+    oldPassword: string,
+    newPassword: string,
+};
 const Account: React.FC<Props> = (props) => {
     const [newPassword, setNewPassword] = useState('')
     const [retypePassword, setRetypePassword] = useState('')
@@ -16,16 +23,35 @@ const Account: React.FC<Props> = (props) => {
     const [correct, toggleCorrect] = useState(true)
     const [equal, toggleEqual] = useState(true)
 
-    let password = 'anna'
-
+    //let password = 'anna'
+    const cookies = require('cookie');
     const _handleSubmit = () => {
-        if (currentPassword !== password) {
-            toggleCorrect(false)
-        } else toggleCorrect(true)
+        let cookie = cookies.parse(document.cookie);
+        console.log(cookies);
+        let point = "/api/user/" + cookie["_uid"] + "/change_password";
+        let request = {
+            oldpassword: currentPassword,
+            newPassword: newPassword,
+        }
+        
+        axios.put(point, request).then(res => {
+            console.log(res.status);
+            if (res.status === 204) {
+                toggleCorrect(true);
+            } else {
+                toggleCorrect(false);
+            }
+        }
+        );
+    }
 
-        if (newPassword !== retypePassword) {
-            toggleEqual(false)
-        } else toggleEqual(true)
+    const _handleLogout = async () => {
+        await axios.post('/api/user/logout')
+        .then(res => {
+            console.log(res.data);
+            console.log('redirecting...')
+            window.location.reload(false); // force a refresh so it goes back to logout screen
+        });
     }
 
     const _handleForm = (e) => {
@@ -35,11 +61,9 @@ const Account: React.FC<Props> = (props) => {
     return (
         <>
             <NavBar />
-            <div className='col'>
-                <div className='acctHeader'>
-                    <p className='heading'>Account</p>
-                </div>
+            <div className='leftcol'>
                 <div className='content'> 
+                    <p className='heading'>Account</p>
                     <form onSubmit={_handleForm}>
                         <InputField
                             border={ correct ? 'lightgrey' : 'red' }
@@ -56,7 +80,7 @@ const Account: React.FC<Props> = (props) => {
                                     <p>Looks like this password is incorrect. Try again.</p>
                                 </div>
                             )
-                        }
+                        } 
                         <InputField
                             type='password'
                             placeholder='New Password'
@@ -82,15 +106,27 @@ const Account: React.FC<Props> = (props) => {
                             )
                         }
                     </form>
+                    <div className='saveChanges'>
+                        <SubmitButton
+                            onClick={_handleSubmit}
+                            text='Save Changes'
+                            disabled={false}
+                        />
+                    </div>
                 </div>
-                <div className='saveChanges'>
+            </div>
+            <div className='rightcol'>
+                <div className='content'> 
+                    <OutlookLogin/>
+                <div className='logout'>
                     <SubmitButton
-                        onClick={_handleSubmit}
-                        text='Save Changes'
+                        onClick={_handleLogout}
+                        text='Logout'
                         disabled={false}
                     />
                 </div>
-            </div>  
+                </div>
+            </div>
         </>
     )
 }

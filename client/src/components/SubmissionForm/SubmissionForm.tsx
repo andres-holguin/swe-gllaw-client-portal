@@ -2,13 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import './SubmissionForm.css'
-export default function SubmissionForm() {
+export default function SubmissionForm(props) {
 const { register, handleSubmit, errors, reset, getValues } = useForm();
 const onSubmit = (event:any, data: any) => {
     console.log(getValues());
     const newUser = getValues();
     console.log(newUser)
     registerUser(newUser);
+    props.addProject(newUser);
+    reset();
   };
 
   const registerUser = async (newUser) => {
