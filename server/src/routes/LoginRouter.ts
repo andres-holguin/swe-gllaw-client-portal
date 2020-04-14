@@ -3,6 +3,7 @@ import {update, updateCalender, getCalender,list, debugCreate} from "../controll
 import * as user from "../controllers/UserController";
 import {login, register} from "../user"
 import * as express  from 'express'
+import * as util from '../controllers/util';
 const loginRouter: express.Router = express.Router();
 
 loginRouter.post("/register", register);
@@ -20,8 +21,6 @@ loginRouter.get("/me", (req, res) => {
 
     console.log(req.cookies["jwt"]);
     if (req.cookies["jwt"] !== undefined) { //Change this to check if the jwt is expired.
-        
-        
         
         res.status(200).send();
     } else {
@@ -42,6 +41,14 @@ loginRouter.put("/update", (req, res) => {
     update(req, res);
 });
 
+loginRouter.get('/cases', (req: express.Request, res: express.Response) => {
+    user.listCases(req, res);
+})
+
+loginRouter.post('/cases', (req: express.Request, res: express.Response) => 
+{
+    user.assignCase(req, res);
+});
 
 loginRouter.get("/Selector", (req, res) => {
     list(req,res);

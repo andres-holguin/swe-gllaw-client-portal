@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
-
+import * as express from 'express';
 const secret = process.env.JWT_SECRET; //
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
@@ -45,6 +45,18 @@ const generateToken = (username: string, role: string) => {
     const accessToken = jwt.sign(tok, secret);
     console.log(accessToken);
     return accessToken;
+}
+
+const findFromJWT = async (req: express.Request, res: express.Response ) => {//: Promise<string> => {
+    let token = req.cookies['jwt'];
+    let name = new Promise<string>((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            
+            if(err) throw reject("No token provided");
+                 resolve(decoded.name);
+            });
+    });
+   return name;
 }
 
 const hashPass = (plaintextPassword: string): string  => {
@@ -225,6 +237,8 @@ export const getUserID = (username: string) => {
     });
 }
 
+
+
 export const isAdmin = (username: string) => { //Replace this function
     User.findOne({username: username}, (err, u) => {
         if (err) throw err;
@@ -250,6 +264,39 @@ export const list = (req, res) => {
    });
 };
 
+export const listCases = async (req: express.Request, res: express.Response) => {
+    let username: string = await findFromJWT(req, res);
+    console.log(username);
+    User.findOne({username: username}, (err, user) => {
+        
+        if(user){
+        console.log(user.toObject().cases);
+        res.status(200).json({
+            active: {
+                cases: user.toObject().cases
+            }
+        })
+        }
+    });
+}
+
+export const assignCase = (req: express.Request, res: express.Response) => {
+    let user = req.body.username;
+    
+    let newCase: string = req.body.case;
+
+    
+    User.findOneAndUpdate({username: user}, 
+        { $push: {cases: newCase}}, (err, success) => {
+            if (err) {
+                return res.status(500).json({error: "An error occured please try again."});
+
+            }
+            else {
+                res.status(200).json({message: 'Successfully added case ' + newCase + ' to ' + user});
+            }
+        });
+}
 export const updateCalender = (req, res) => {
     const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
