@@ -69,6 +69,7 @@ const Calendar = () => {
         .then(function (res) {
             console.log(res.data)
             setEmail(res.data)
+            alert('Your calendar has successfully synced to Outlook.')
         }).catch(error => {
             alert('Make sure you have logged into Outlook in the Account tab.')
             console.log(error.response)
