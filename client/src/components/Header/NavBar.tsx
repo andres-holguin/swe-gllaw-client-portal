@@ -21,6 +21,11 @@ useEffect(() => {previousBtn= document.getElementById('previousBtn');
                 nextBtn = document.getElementById('nextBtn');
                 content  = document.getElementById('content');
                 bullets  = [...document.querySelectorAll('.bullet')];
+                if(currentStep === 1){
+                    previousBtn.disabled = true;
+                   }
+
+
             }, []);
 
 
@@ -29,10 +34,11 @@ const MAX_STEPS = 7;
 let currentStep = 1;
 
        const next = () => {
+        
     const currentBullet = bullets[currentStep - 1];
     console.log("Here");
     currentBullet.classList.add('completed');
-    console.log(bullets);
+    
     currentStep++;
     previousBtn.disabled = false;
     if(currentStep === MAX_STEPS){
@@ -49,6 +55,7 @@ const prev = () => {
    previousBullet.classList.remove('finalstep');
    previousBullet.classList.remove('completed');
    currentStep--;
+   console.log(currentStep);
    nextBtn.disabled = false;
    
 
