@@ -10,9 +10,12 @@ const Calendar = new mongoose.Schema({
 })
 
 const caseSchema = new mongoose.Schema({
-    calendarID: String, 
+   // calendarID: String, 
+    Name: {type: String, required: true},
+    Description: {type: String, required: true},
+    isActive: {type: Boolean, required: true},
     documentIDS: [Document],
-    progress: Number
+    progress: {type: String, required: true}
 });
 
-export default mongoose.model('Case');
+export default mongoose.model('Case', caseSchema);
