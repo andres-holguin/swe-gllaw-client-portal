@@ -50,12 +50,16 @@ const Login = (props) => {
     let z;
     let p;
     let r;
+    let Lbutton;
+    let Rbutton;
 
     useEffect(() => {x = document.getElementById("loginpage");
     y = document.getElementById("registerpage");
     z = document.getElementById("btn");
     p = document.getElementById("passwordpage");
     r = document.getElementById("loginpage");
+    Lbutton = document.getElementById("Lbutton");
+    Rbutton = document.getElementById("Rbutton");
 
 },[]);
    
@@ -78,14 +82,13 @@ const Login = (props) => {
      const passpage = () => {
          x.style.left = "-400px";
          p.style.left = "50px";
+         Rbutton.disabled = true;
+         Lbutton.disabled = true;
+         
 
 
      }
-     const loginpagenorm = () => {
-         r.style.left = "50px";
-
-     }
-
+     
                 
 
 
@@ -143,11 +146,7 @@ const Login = (props) => {
 
 
                  <form id = "passwordpage" className = "input-group">
-                 
-                     <input 
-                    name="username"
-                    placeholder='Username'
-                    onChange={handleChange}/>
+              
                     <input
                     name="email"
                     placeholder='Email'
