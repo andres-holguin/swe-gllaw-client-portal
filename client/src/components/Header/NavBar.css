@@ -42,9 +42,135 @@
     border-style: solid;
 }
 
-.progressBar {
-    width: 100%;
-    border-bottom: 1px solid #ACA59D;
-    padding: 1rem;
-    background-color: white;
+.hidden {
+    display: none;
 }
+
+button {
+    padding: 5px 10px ;
+    border: 1px solid black;
+    transition: 250ms background-color;
+}
+
+button:hover{
+    cursor: pointer;
+    background-color:orange;
+    color: white;
+}
+
+button:disabled:hover{
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.progressBar {
+    max-width: 100%;
+    border-bottom: 0.5px solid black;
+    background-color: whitesmoke;
+    
+   
+    
+    
+}
+
+#stepProgressBar{
+    display: flex;
+    margin-bottom: 1px;
+    justify-content: space-between;
+    margin-left: 10px;
+   
+}
+
+.step {
+    text-align: center;
+    text-indent: 0.43em;
+    width: 100%;
+    padding: 10px;
+   
+   
+   
+    
+
+    
+    
+    
+
+    
+
+    
+
+}
+
+h6.step-text {
+   
+    color:darkblue;
+    font-size: 14.5px;
+    text-align: center;
+    
+
+}
+
+.bullet {
+    height: 20;
+    width: 26px;
+    border-radius: 100%;
+    border: 1.8px solid orange;
+    display: inline-flex;
+    position: relative;
+    transition: background-color 500ms;
+    line-height: 22px;
+}
+
+.bullet.completed {
+    color: white;
+    background-color: orange;
+    display: inline-flex;
+
+}
+
+.bullet.completed::after{
+    content: '';
+    position: absolute;
+    width: 100px;
+    background-color: orange;
+    height: 1.2px;
+    right: -170px;
+    bottom: 10px;
+}
+
+.bullet.finalstep{
+    color: white;
+    background-color: orange;
+    display: inline-flex;
+}
+
+#previousBtn{
+    width: 60px;
+    height: 28px;
+    font-size: 11px;
+    margin: 5px;
+   
+}
+
+#nextBtn{
+    width: 55px;
+    height: 28px;
+    font-size: 11px;
+    
+}
+
+#main{
+  text-align: center;
+  display: inline-block;
+  position: absolute;
+  top: 12.7%;
+  left: 37%;
+  right: 37%;
+  margin-top: 85px;
+   
+}
+

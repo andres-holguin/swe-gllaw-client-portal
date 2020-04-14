@@ -13,22 +13,38 @@ interface Props {
 
 const Modal: React.FC<Props> = (props) => {
     const [event, setEvent] = useState('')
-    const [time, setTime] = useState('')
+    const [startTime, setStartTime] = useState('')
+    const [endTime, setEndTime] = useState('')
 
     const setTimeAndDate = () => {
-        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
-        let minute = parseInt(time.substring(3))
-        let d = props.date.date
-        d.setHours(hour)
-        d.setMinutes(minute)
+        let start = formatDate(startTime)
+        setStartTime(startTime)
+
+        let end = formatDate(endTime)
+        setEndTime(endTime)
+
         let e = {
             title: event,
-            start: d
+            start: start,
+            end: end
         }
+
         props.addEvent(e)
-        setTime('')
+
+        setStartTime('')
+        setEndTime('')
         setEvent('')
         props.closeModal()
+    }
+
+    const formatDate = (time) => {
+        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
+        let minute = parseInt(time.substring(3))
+        let d = new Date(props.date.date);
+        d.setHours(hour)
+        d.setMinutes(minute)
+
+        return d;
     }
 
     return (
@@ -58,14 +74,26 @@ const Modal: React.FC<Props> = (props) => {
                                 />
                             </form>
                         </div>
-                        <TimePicker
-                            className='timePicker'
-                            isOpen={true}
-                            onChange={(time) => setTime(time)}
-                            clockIcon={null}
-                            clearIcon={null}
-                            disableClock={true}
-                        />
+                        <div className='startTime'>
+                            <TimePicker
+                                className='timePicker'
+                                isOpen={true}
+                                onChange={(time) => setStartTime(time)}
+                                clockIcon={null}
+                                clearIcon={null}
+                                disableClock={true}
+                            />
+                        </div>
+                        <div className='endTime'>
+                            <TimePicker
+                                className='timePicker'
+                                isOpen={true}
+                                onChange={(time) => setEndTime(time)}
+                                clockIcon={null}
+                                clearIcon={null}
+                                disableClock={true}
+                            />
+                        </div>
                         <div className='addButton'>
                             <button onClick={setTimeAndDate} className='addButtonStyle'>Add Event</button>
                         </div>

@@ -1,10 +1,11 @@
-import loginRouter from '../routes/LoginRouter'
+import loginRouter from '../routes/LoginRouter';
 import outlookRouter from '../routes/OutlookRouter';
 import mailRouter from '../routes/MailRouter';
 import authRouter from '../routes/AuthRouter';
 import documentRouter from '../routes/DocumentRouter';
 import express from 'express';
 import caseRouter from '../routes/CaseRouter';
+import calenderRouter from '../routes/CalenderRouter';
 const path = require('path'),
     mongoose = require('mongoose'),
     morgan = require('morgan'),
@@ -38,6 +39,9 @@ module.exports.init = () => {
 
     // LoginRouter
     app.use('/api/user', loginRouter);
+    
+    //calender router
+    app.use('/',calenderRouter);
 
     app.use('/api/case', caseRouter);
     // OutlookRouter

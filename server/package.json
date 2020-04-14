@@ -23,6 +23,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/express-session": "^1.17.0",
     "@types/simple-oauth2": "^2.5.2",
     "bcrypt": "^4.0.1",
     "cookie-parser": "^1.4.5",
@@ -33,6 +34,7 @@
     "jest": "^25.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
+    "moment": "^2.24.0",
     "mongoose": "^5.9.4",
     "mongoose-gridfs": "^1.2.34",
     "morgan": "^1.9.1",
