@@ -9,3 +9,13 @@
 .outlookSync {
     padding-left: 15px;
 }
+
+.calendarColumn {
+    float: left;
+	width: 80%;
+}
+
+.modalColumn {
+    float: right;
+    width: 20%;
+}

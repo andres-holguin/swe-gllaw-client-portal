@@ -69,7 +69,19 @@ const Calendar = () => {
         .then(function (res) {
             console.log(res.data)
             setEmail(res.data)
-        })
+        }).catch(error => {
+            alert('Make sure you have logged into Outlook in the Account tab.')
+            console.log(error.response)
+        });
+    }
+
+    const refresh = async () => {
+        await axios.get('/api/outlook/refreshtokens')
+        .then(function (res) {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.response)
+        });
     }
 
     const createEvent = async (event) => {
@@ -113,14 +125,10 @@ const Calendar = () => {
     }
 
     const addEvent = async (event) => {
-        console.log('ADDING EVENT...:')
         console.log(event.start)
         console.log(event.end)
 
         setEvents([...events, event])
-
-        //console.log('THIS STARTS AT ', event.start)
-        //console.log('AND ENDS AT ', event.end)
 
         const updatedListing = {
             calenderEntrys : {
@@ -141,12 +149,11 @@ const Calendar = () => {
     return (
         <>
             <NavBar />
+            {/* <button onClick={refresh}>refresh token</button> */}
             <div className='demo-app'>
                 <div className='outlookSync'>
                     <p className='sync'>Sync Calendar to Outlook.</p>
                     <button className='outlookButton' onClick={_handleCalendarSync}>Sync</button>
-                </div>
-                <div className='demo-app-top'> 
                 </div>
                 <div className='demo-app-calendar'>
                     <Modal
