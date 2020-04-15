@@ -18,7 +18,9 @@ const onSubmit = (event:any, data: any) => {
       firstname: newUser.firstname,
       lastname: newUser.lastname,
       username: newUser.username,
-      email: newUser.email
+      email: newUser.email,
+      password: newUser.password
+      
     }).then(res => {
       console.log(res.data);
       console.log(res.data);

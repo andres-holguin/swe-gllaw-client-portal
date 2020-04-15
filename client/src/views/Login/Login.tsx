@@ -24,7 +24,7 @@ const Login = (props) => {
         console.log(useDeat[event.target.name]);
     }
     const sendLoginRequest = async () => {
-        // props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+         props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
         await axios.post('/api/user/login', {
                 username: useDeat.username,
                 password: useDeat.password
@@ -33,6 +33,7 @@ const Login = (props) => {
                 console.log(res.data);
 
                 if (res.data.accessToken != undefined) {
+                   // history.push('/Calendar');
                     props.userHasAuthenticated(true);
                 } else {
                     console.log("Password incorrect");
@@ -53,11 +54,10 @@ const Login = (props) => {
     let Lbutton;
     let Rbutton;
 
-    useEffect(() => {x = document.getElementById("loginpage");
+  useEffect(() => {x = document.getElementById("loginpage");
     y = document.getElementById("registerpage");
     z = document.getElementById("btn");
     p = document.getElementById("passwordpage");
-    r = document.getElementById("loginpage");
     Lbutton = document.getElementById("Lbutton");
     Rbutton = document.getElementById("Rbutton");
 
@@ -87,7 +87,7 @@ const Login = (props) => {
          
 
 
-     }
+     } 
      
                 
 
@@ -133,15 +133,13 @@ const Login = (props) => {
                 placeholder='Password'
                 type="password"
                 onChange={handleChange}/>
-
-               <button id="login-button" onClick={sendLoginRequest}>Login</button>
+                <button id="login-button" type="button" onClick={sendLoginRequest}>Login</button>
 
                <br></br><br></br>
-
-               <a href = "#" onClick={passpage}  >Forgot password?</a>
+              <a href = "#" onClick={passpage}  >Forgot password?</a> 
 
                 </form>
-                
+
                 
 
 
@@ -152,13 +150,23 @@ const Login = (props) => {
                     placeholder='Email'
                     onChange={handleChange}/>
                     
-                 <button id="password-button" onClick={sendLoginRequest}>Submit</button>
+                 <button id="password-button" type = "button" >Submit</button>
 
                     </form>
                 
 
                <form id = "registerpage" className = "input-group">
 
+                   <input 
+                    name="firstname"
+                    placeholder='Firstname'
+                    onChange={handleChange}/>
+
+                   <input 
+                    name="lastname"
+                    placeholder='Lastname'
+                    onChange={handleChange}/>
+                     
                      <input 
                     name="username"
                     placeholder='Username'
@@ -174,7 +182,7 @@ const Login = (props) => {
                     onChange={handleChange}/>
                     
                     
-<button id="register-button" onClick={sendLoginRequest} type="button">Register</button>
+<button id="register-button" type = "button" >Register</button>
 
                     </form>
             
