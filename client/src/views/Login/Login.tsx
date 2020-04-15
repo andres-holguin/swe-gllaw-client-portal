@@ -160,6 +160,16 @@ const Login = (props) => {
 
                <form id = "registerpage" className = "input-group">
 
+                   <input 
+                    name="firstname"
+                    placeholder='Firstname'
+                    onChange={handleChange}/>
+
+                   <input 
+                    name="lastname"
+                    placeholder='Lastname'
+                    onChange={handleChange}/>
+                     
                      <input 
                     name="username"
                     placeholder='Username'
