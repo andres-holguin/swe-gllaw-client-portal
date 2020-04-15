@@ -16,7 +16,12 @@ const Documents = () => {
     
     const onSubmit = () =>{
         const document = getValues().datafile[0];
-        axios.post('/api/document/upload', document)
+       // console.log(document);
+
+        const data = new FormData();
+        data.append('doc', document);
+        console.log(data);
+        axios.post('/api/document/upload', data)
           .then(function (response) {
             console.log(response);
           })
