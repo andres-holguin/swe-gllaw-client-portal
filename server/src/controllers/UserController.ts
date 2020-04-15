@@ -5,10 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
-import mongoose from 'mongoose';
-
-
-
+import * as express from 'express';
 const secret = process.env.JWT_SECRET; //
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
@@ -42,19 +39,59 @@ const isTokenValid = (token: string) => {
     })
 }
 
-const generateToken = (username: string) => {
+const generateToken = (username: string, role: string) => {
 
-    const tok = {name: username};
+    const tok = {name: username, role};
     const accessToken = jwt.sign(tok, secret);
     console.log(accessToken);
     return accessToken;
+}
+
+const findFromJWT = async (req: express.Request, res: express.Response ) => {//: Promise<string> => {
+    let token = req.cookies['jwt'];
+    let name = new Promise<string>((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            
+            if(err) throw reject("No token provided");
+                 resolve(decoded.name);
+            });
+    });
+   return name;
 }
 
 const hashPass = (plaintextPassword: string): string  => {
    return bcrypt.hashSync(plaintextPassword, saltRounds);
 }
 
-const randomPassword = async () => {
+export const reset_password = async (req, res): Promise<string> => {
+
+    let out = "";
+    await User.findOne({email: req.body.email}, (err, u) => {
+            if (err) return res.status(500).json({error: "An Error occured. Please try again."});
+    
+
+            res.status(200).json({message: "Email was sent to " + u.toObject().email + "."})
+
+            
+        }).then(u => {
+            if(!u) {
+                return res.status(401).json({error: "User does not exist for this email."})
+            }
+            let payload = {
+                id: u.id,
+                email: u.toObject().email,
+            }
+    
+            out =  jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: "1h"
+            });
+        });
+    
+    return out;
+}
+
+
+const randomPassword = async () => {//No olonger being used.
 
     let length = Math.floor(Math.random() * 32);
     let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -105,6 +142,12 @@ export const read = (name: String, res) => {
     })
 };
 
+export const userExist = async (field): Promise<boolean> => {
+    const doc = await User.findOne(field);
+    
+    return doc ? true : false;
+}
+
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
     User.findOne({username: u.username.toLowerCase()}, (err, user) => {
@@ -113,8 +156,6 @@ export const verifyUser = async (req, res) => {
             console.log("Oops");
             return res.status(403).json({authenticationerror: "Incorrect Username or Password"}); //Possibly change this status to a 401
         } else {
-            console.log(u); 
-            console.log(user.toObject());
             let hash = user.toObject().password;
 
 
@@ -124,8 +165,8 @@ export const verifyUser = async (req, res) => {
                 
                 if (authenticated) {
                     console.log("user confirmed");
-                
-                    const accessToken = generateToken(u.username);
+                    let role: string = user.toObject().isAdmin ? "admin" : "user"; 
+                    const accessToken = generateToken(u.username, role);
                     res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
                     httpOnly: true}).status(200).json({accessToken: accessToken});
                 } else {
@@ -142,10 +183,6 @@ export const update = (req, res) => {
     let u_req: string = req.body.u_req.username;
     User.findOneAndUpdate({username: u_req}, req.body);
 };
-//Update the specific document that we wnat to change
-const updateByObject = (u: MongooseDocument, newContent: any) => {
-
-}
 
 export const changePassword = async (req: Request, res: Response, id: string) =>  {
     let newRequest: newPasswordRequest = req.body
@@ -174,7 +211,6 @@ export const changePassword = async (req: Request, res: Response, id: string) =>
             } );
         }
     });
-    //doc.name
 }
 /* Delete a listing */
 export const remove = (req, res) => {
@@ -201,7 +237,9 @@ export const getUserID = (username: string) => {
     });
 }
 
-const isAdmin = (username: string) => { //Replace this function
+
+
+export const isAdmin = (username: string) => { //Replace this function
     User.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
@@ -217,11 +255,6 @@ const isAdmin = (username: string) => { //Replace this function
         }
     });
 }
-const deleteUser = (req, res) => {
-    //Im gonna need to check if the user is an admin.
-    //req.body.u_req;
-}
-
 
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
@@ -231,6 +264,39 @@ export const list = (req, res) => {
    });
 };
 
+export const listCases = async (req: express.Request, res: express.Response) => {
+    let username: string = await findFromJWT(req, res);
+    console.log(username);
+    User.findOne({username: username}, (err, user) => {
+        
+        if(user){
+        console.log(user.toObject().cases);
+        res.status(200).json({
+            active: {
+                cases: user.toObject().cases
+            }
+        })
+        }
+    });
+}
+
+export const assignCase = (req: express.Request, res: express.Response) => {
+    let user = req.body.username;
+    
+    let newCase: string = req.body.case;
+
+    
+    User.findOneAndUpdate({username: user}, 
+        { $push: {cases: newCase}}, (err, success) => {
+            if (err) {
+                return res.status(500).json({error: "An error occured please try again."});
+
+            }
+            else {
+                res.status(200).json({message: 'Successfully added case ' + newCase + ' to ' + user});
+            }
+        });
+}
 export const updateCalender = (req, res) => {
     console.log("HERE")
     //const jwt = require("json-web-token");

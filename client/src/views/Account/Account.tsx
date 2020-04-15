@@ -23,7 +23,6 @@ const Account: React.FC<Props> = (props) => {
     const [correct, toggleCorrect] = useState(true)
     const [equal, toggleEqual] = useState(true)
 
-    //let password = 'anna'
     const cookies = require('cookie');
     const _handleSubmit = () => {
         let cookie = cookies.parse(document.cookie);

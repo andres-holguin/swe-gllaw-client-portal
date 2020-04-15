@@ -7,15 +7,17 @@
 .leftcol {
 	float: left;
 	width: 50%;
-    padding-top: 20px;
+    padding-top: 50px;
     padding-left: 20px;
+    padding-right: 10px;
 }
 
 .rightcol {
 	float: right;
 	width: 50%;
-    padding-top: 20px;
+    padding-top: 50px;
     padding-right: 20px;
+    padding-left: 10px;
 }
 
 .content {
@@ -24,7 +26,7 @@
     flex: none;
     background-color: whitesmoke;
     border-radius: 5px;
-    height: 275px;
+    height: 300px;
     padding-left: 30px;
     padding-top: 20px;
 }
@@ -38,11 +40,13 @@
     float: right;
     bottom:0px;
     padding-right: 20px;
+    padding-bottom: 20px;
 }
 
 .logout {
     float: right;
     bottom:0px;
-    padding-top: 120px;
+    padding-top: 135px;
     padding-right: 20px;
+    padding-bottom: 10px;
 }

@@ -16,48 +16,35 @@ const Modal: React.FC<Props> = (props) => {
     const [startTime, setStartTime] = useState('')
     const [endTime, setEndTime] = useState('')
 
-    function formatStartDate(time) {
-        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
-        let minute = parseInt(time.substring(3))
-        let d = props.date.date
-        d.setHours(hour)
-        d.setMinutes(minute)
-
-        console.log('the time is: ', d)
-
-        return d;
-    }
-
-    function formatEndDate(time) {
-        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
-        let minute = parseInt(time.substring(3))
-        let d = props.date.date
-        d.setHours(hour)
-        d.setMinutes(minute)
-
-        console.log('the time is: ', d)
-
-        return d;
-    }
-
     const setTimeAndDate = () => {
-        let start = formatStartDate(startTime)
-        setStartTime(start)
+        let start = formatDate(startTime)
+        setStartTime(startTime)
 
-        //let end = formatEndDate(endTime)
-        //setEndTime(end)
+        let end = formatDate(endTime)
+        setEndTime(endTime)
 
         let e = {
             title: event,
             start: start,
-            //end: end
+            end: end
         }
 
         props.addEvent(e)
+
         setStartTime('')
         setEndTime('')
         setEvent('')
         props.closeModal()
+    }
+
+    const formatDate = (time) => {
+        let hour = parseInt(time.substring(0,2)) // 13:51 -> 13
+        let minute = parseInt(time.substring(3))
+        let d = new Date(props.date.date);
+        d.setHours(hour)
+        d.setMinutes(minute)
+
+        return d;
     }
 
     return (

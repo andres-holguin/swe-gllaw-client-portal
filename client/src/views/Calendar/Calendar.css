@@ -1,0 +1,21 @@
+.outlookButton {
+    background-color: #3373EB;
+    color: white;
+    height: 40px;
+    width: 100px;
+    font-size: 20px;
+}
+
+.outlookSync {
+    padding-left: 15px;
+}
+
+.calendarColumn {
+    float: left;
+	width: 80%;
+}
+
+.modalColumn {
+    float: right;
+    width: 20%;
+}

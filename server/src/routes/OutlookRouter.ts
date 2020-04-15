@@ -53,7 +53,7 @@ function tokenReceived(req, res, error, token) {
       // save tokens in session
       console.log("IM HEEREEEEREEEEEEEEE WOOHOOOOOOOOOOOOOO")
       req.session.access_token = token.token.access_token;
-      req.session.refresh_token = token.token.access_token;
+      req.session.refresh_token = token.token.refresh_token;
       req.session.email = authHelper.getEmailFromIdToken(token.token.id_token);
       res.redirect('http://localhost:3000/Calendar'); // this is what happens last
     }
@@ -62,7 +62,7 @@ function tokenReceived(req, res, error, token) {
 // ??? 
 outlookRouter.get('/logincomplete', function(req, res) {
     let access_token = req.session.access_token;
-    let refresh_token = req.session.access_token;
+    let refresh_token = req.session.refresh_token;
     let email = req.session.email;
     
     if (access_token === undefined || refresh_token === undefined) {
@@ -161,16 +161,6 @@ outlookRouter.get('/logincomplete', function(req, res) {
   });
 
   outlookRouter.post('/createitem', function(req, res) {
-    var newEvent = {
-      "Subject": "SWE class",
-      "Body": {
-          "ContentType": "HTML",
-          "Content": "I think it will meet our requirements!"
-      },
-    };
-
-    console.log('in post request YEAH HERE I AM')
-
     console.log(req.body)
     
     let createEventParameters = {

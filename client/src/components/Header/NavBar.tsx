@@ -5,11 +5,6 @@ import './NavBar.css';
 import ProgressBar from '../ProgressBar/ProgressBar'
 import logo from '../../images/GonzaloLawLogo.png';
 
-
-
-
-
-
 const NavBar = () => {
     const [progressPercent, setProgressPercent] = useState(10)
 
@@ -70,25 +65,18 @@ let currentStep = 1;
 
        }
 
-      const prev = () => {
+const prev = () => {
    const previousBullet = bullets[currentStep - 2];
    previousBullet.classList.remove('finalstep');
    previousBullet.classList.remove('completed');
    currentStep--;
    console.log(currentStep);
    nextBtn.disabled = false;
-   if(currentStep === 1){
-    previousBtn.disabled = true;
-   }
    
 
 
 
 }
-
-
-
-
 
 
     return (

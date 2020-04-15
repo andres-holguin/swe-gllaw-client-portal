@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import moment from 'moment'
 
 import './main.scss'
+import './Calendar.css'
 import Modal from '../../components/modal/Modal';
 import NavBar from '../../components/Header/NavBar';
 //import SubmitButton from '../../components/SubmitButton/SubmitButton';
@@ -21,7 +22,7 @@ const Calendar = () => {
     var today = new Date();
     today.setHours(today.getHours() + 4);
     const [events, setEvents] = useState([
-        { title: 'Meet with SWE Group', start: new Date() }
+        { title: 'Meet with SWE Group', start: new Date(), end: new Date() }
     ])
     const [email, setEmail] = useState('')
 
@@ -66,16 +67,27 @@ const Calendar = () => {
     const _handleCalendarSync = async () => {
         await axios.get('/api/outlook/sync')
         .then(function (res) {
-            //console.log(res.data)
+            console.log(res.data)
             setEmail(res.data)
-        })
+            alert('Your calendar has successfully synced to Outlook.')
+        }).catch(error => {
+            alert('Make sure you have logged into Outlook in the Account tab.')
+            console.log(error.response)
+        });
+    }
+
+    const refresh = async () => {
+        await axios.get('/api/outlook/refreshtokens')
+        .then(function (res) {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.response)
+        });
     }
 
     const createEvent = async (event) => {
-        let startDateStringUtc = moment(event.start).toISOString();
-        startDateStringUtc = startDateStringUtc.substring(0, startDateStringUtc.length - 5);
-        console.log('THIS EVENT STARTS AT: ', startDateStringUtc)
-        console.log('event title: ', event.title)
+        let dateStartTime = moment(event.start).format("YYYY-MM-DDTHH:mm:ss");
+        let dateEndTime = moment(event.end).format("YYYY-MM-DDTHH:mm:ss");
 
         var newEvent = {
             "Subject": event.title,
@@ -84,9 +96,13 @@ const Calendar = () => {
                 "Content": "I think it will meet our requirements!"
             },
             "Start": {
-                "DateTime": startDateStringUtc,
+                "DateTime": dateStartTime,
                 "TimeZone": "Eastern Standard Time"
-            }
+            },
+              "End": {
+                "DateTime": dateEndTime,
+                "TimeZone": "Eastern Standard Time"
+            },
         };
 
         console.log('making axios req')
@@ -100,24 +116,20 @@ const Calendar = () => {
         });
     }
 
-    console.log('email: ', email)
-    console.log('SIGN IN PAGE URL: ', signInPage);
-
     const _handleCloseModal = () => {
         setVisible(false)
     }
 
     const _handleDateClick = (day : any) => {
-        console.log('setting true')
         setVisible(true)
         setDate(day)
     }
 
     const addEvent = async (event) => {
-        setEvents([...events, event])
+        console.log(event.start)
+        console.log(event.end)
 
-        //console.log('THIS STARTS AT ', event.start)
-        //console.log('AND ENDS AT ', event.end)
+        setEvents([...events, event])
 
         const updatedListing = {
             calenderEntrys : {
@@ -138,10 +150,11 @@ const Calendar = () => {
     return (
         <>
             <NavBar />
-            <button onClick={_handleCalendarSync}>Sync Calendar to Outlook</button>
-            <button onClick={createEvent}>Create Event</button>
+            {/* <button onClick={refresh}>refresh token</button> */}
             <div className='demo-app'>
-                <div className='demo-app-top'> 
+                <div className='outlookSync'>
+                    <p className='sync'>Sync Calendar to Outlook.</p>
+                    <button className='outlookButton' onClick={_handleCalendarSync}>Sync</button>
                 </div>
                 <div className='demo-app-calendar'>
                     <Modal
