@@ -8,30 +8,49 @@ import logo from '../../images/GonzaloLawLogo.png';
 const NavBar = () => {
     const [progressPercent, setProgressPercent] = useState(10)
 
-    let previousBtn; 
-    let nextBtn; 
-    let content; 
-    let bullets; 
+    const [bullets,setBullets] = useState([] as Element[]);
+    const [previousBtn, setpreviousBtn] = useState<any>(null);
+    const [nextBtn, setnextBtn] = useState<any>(null);
 
-useEffect(() => {previousBtn= document.getElementById('previousBtn');
-            if(currentStep === 1){
+
+ 
+    
+   
+    
+
+useEffect(() => {setpreviousBtn(document.getElementById('previousBtn'));
+
+              
+                setBullets([...document.querySelectorAll('.bullet')]);
+                setnextBtn(document.getElementById('nextBtn'));
+               
+
+}, []);
+
+               
+
+        useEffect(() => {
+
+            if (nextBtn && bullets.length > 0){
+                nextBtn.disabled = false;
+            }else if(nextBtn) nextBtn.disabled = true;
+            
+            if(previousBtn && currentStep === 1){
                 previousBtn.disabled = true;
-            }
+               }
+            
+            
+            
+        
 
-                nextBtn = document.getElementById('nextBtn');
-                content  = document.getElementById('content');
-                bullets  = [...document.querySelectorAll('.bullet')];
-                if(currentStep === 1){
-                    previousBtn.disabled = true;
-                   }
-
-
-            }, []);
+               
+   }, [bullets, nextBtn, previousBtn]);
 
 
 
 const MAX_STEPS = 7;
 let currentStep = 1;
+
 
        const next = () => {
         
@@ -57,6 +76,10 @@ const prev = () => {
    currentStep--;
    console.log(currentStep);
    nextBtn.disabled = false;
+   if(currentStep === 1){
+       previousBtn.disabled=true;
+   }
+   
    
 
 
