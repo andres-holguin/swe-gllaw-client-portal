@@ -13,22 +13,22 @@ const NavBar = () => {
     let content; 
     let bullets; 
 
-useEffect(() => {previousBtn= document.getElementById('previousBtn');
-            if(currentStep === 1){
-                previousBtn.disabled = true;
-            }
+useEffect(() => {
+    previousBtn= document.getElementById('previousBtn');
+    
+    if(currentStep === 1){
+        previousBtn.disabled = true;
+    }
 
-                nextBtn = document.getElementById('nextBtn');
-                content  = document.getElementById('content');
-                bullets  = [...document.querySelectorAll('.bullet')];
-            }, []);
-
-
+    nextBtn = document.getElementById('nextBtn');
+    content  = document.getElementById('content');
+    bullets  = [...document.querySelectorAll('.bullet')];
+}, []);
 
 const MAX_STEPS = 7;
 let currentStep = 1;
 
-       const next = () => {
+const next = () => {
     const currentBullet = bullets[currentStep - 1];
     console.log("Here");
     currentBullet.classList.add('completed');
@@ -40,9 +40,7 @@ let currentStep = 1;
         currentBullet.classList.add('finalstep');
         nextBtn.disabled = true;
     }
-
-
-       }
+}
 
 const prev = () => {
    const previousBullet = bullets[currentStep - 2];
@@ -50,19 +48,14 @@ const prev = () => {
    previousBullet.classList.remove('completed');
    currentStep--;
    nextBtn.disabled = false;
-   
-
-
-
 }
-
 
     return (
         <div>
             <div className = "header">
-                <Link className = "nav-title" to="/">
+                <a className = "nav-title" href="https://www.gonzalolaw.com/">
                     <img className = "nav-logo" src={logo} alt="Gonzalo Law Logo" />
-                </Link>
+                </a>
                 <div className = "nav-items">
                     <Link className = "nav-link" to='/Calendar'>Calendar</Link>
                     <Link className = "nav-link" to='/Documents'>Documents</Link>
@@ -71,14 +64,11 @@ const prev = () => {
                 </div>
             </div>
             <div className='progressBar'>
-
                 <div id="stepProgressBar">
                     <div className="step">
                         <h6 className="step-text"> IP </h6>
                         <div className="bullet" id = "1"> 1 </div>
-                        
                     </div>
-
                     <div className="step">
                         <h6 className="step-text"> Initial Intake </h6>
                         <div className="bullet"> 2 </div>
@@ -101,21 +91,10 @@ const prev = () => {
                     </div>
 
                     <div id="main">
-                    
-                        <button id="previousBtn" onClick = {prev} >Previous</button>
-                        <button id="nextBtn" onClick = {next} >Next</button>
-                       
-
+                        <button id="previousBtn" onClick = {prev} className="progress-bar-button">Previous</button>
+                        <button id="nextBtn" onClick = {next} className="progress-bar-button">Next</button>
                     </div>
-
-
-
-
                 </div>
-
-
-                
-
             </div>
         </div>
     )

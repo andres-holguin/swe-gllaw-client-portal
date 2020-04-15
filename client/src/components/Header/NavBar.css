@@ -1,10 +1,11 @@
 .header {
-    background: white;
+    background: whitesmoke;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     padding: 1%;
-    border-bottom: 1px solid #ACA59D;
+    border-bottom: 1px solid whitesmoke;
+
 }
 
 .nav-logo {
@@ -12,10 +13,6 @@
     height: 75px;
     width: 175px;
     padding: 5%;
-}
-
-.nav-logo:hover {
-
 }
 
 .nav-items {
@@ -26,7 +23,7 @@
 }
 
 .nav-link {
-    background-color: white;
+    background-color: whitesmoke;
     color: #DF791E;
     padding: 14px 25px;
     text-align: center;
@@ -69,12 +66,10 @@ button:disabled:hover{
 
 .progressBar {
     max-width: 100%;
-    border-bottom: 0.5px solid black;
-    background-color: whitesmoke;
-    
-   
-    
-    
+    background-color: whitesmoke; 
+    padding-bottom: 40px;
+    border-bottom: .3px solid whitesmoke;
+
 }
 
 #stepProgressBar{
@@ -82,7 +77,10 @@ button:disabled:hover{
     margin-bottom: 1px;
     justify-content: space-between;
     margin-left: 10px;
-   
+}
+
+.progress-bar-button {
+    border-radius: 3px;
 }
 
 .step {
@@ -90,28 +88,12 @@ button:disabled:hover{
     text-indent: 0.43em;
     width: 100%;
     padding: 10px;
-   
-   
-   
-    
-
-    
-    
-    
-
-    
-
-    
-
 }
 
 h6.step-text {
-   
     color:darkblue;
     font-size: 14.5px;
     text-align: center;
-    
-
 }
 
 .bullet {
@@ -171,6 +153,5 @@ h6.step-text {
   left: 37%;
   right: 37%;
   margin-top: 85px;
-   
 }
 
