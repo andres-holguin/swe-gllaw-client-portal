@@ -174,7 +174,7 @@ const Login = (props) => {
                     onChange={handleChange}/>
                     
                     
-<button id="register-button" onClick={sendLoginRequest}>Register</button>
+<button id="register-button" onClick={sendLoginRequest} type="button">Register</button>
 
                     </form>
             
