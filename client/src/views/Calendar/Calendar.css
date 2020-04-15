@@ -1,9 +1,11 @@
-.outlookButton {
+.outlookSyncButton {
     background-color: #3373EB;
     color: white;
     height: 40px;
-    width: 100px;
+    width: 150px;
     font-size: 20px;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .outlookSync {

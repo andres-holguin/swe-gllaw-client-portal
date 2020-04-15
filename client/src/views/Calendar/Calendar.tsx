@@ -153,8 +153,8 @@ const Calendar = () => {
             {/* <button onClick={refresh}>refresh token</button> */}
             <div className='demo-app'>
                 <div className='outlookSync'>
-                    <p className='sync'>Sync Calendar to Outlook.</p>
-                    <button className='outlookButton' onClick={_handleCalendarSync}>Sync</button>
+                    {/* <p className='sync'>Sync Calendar to Outlook.</p> */}
+                    <button className='outlookSyncButton' onClick={_handleCalendarSync}>Outlook Sync</button>
                 </div>
                 <div className='demo-app-calendar'>
                     <Modal

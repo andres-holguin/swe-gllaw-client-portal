@@ -15,7 +15,7 @@ const caseSchema = new mongoose.Schema({
     Description: {type: String, required: true},
     isActive: {type: Boolean, required: true},
     documentIDS: [Document],
-    progress: {type: String, required: true}
+    progress: {type: Number, default: 0,  required: true}
 });
 
 export default mongoose.model('Case', caseSchema);
