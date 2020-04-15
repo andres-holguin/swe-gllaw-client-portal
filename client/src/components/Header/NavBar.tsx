@@ -34,9 +34,13 @@ useEffect(() => {setpreviousBtn(document.getElementById('previousBtn'));
             if (nextBtn && bullets.length > 0){
                 nextBtn.disabled = false;
             }else if(nextBtn) nextBtn.disabled = true;
+            
             if(previousBtn && currentStep === 1){
                 previousBtn.disabled = true;
                }
+            
+            
+            
         
 
                
@@ -72,6 +76,10 @@ const prev = () => {
    currentStep--;
    console.log(currentStep);
    nextBtn.disabled = false;
+   if(currentStep === 1){
+       previousBtn.disabled=true;
+   }
+   
    
 
 
