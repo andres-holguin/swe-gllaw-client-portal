@@ -24,7 +24,7 @@ const Login = (props) => {
         console.log(useDeat[event.target.name]);
     }
     const sendLoginRequest = async () => {
-        // props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+         props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
         await axios.post('/api/user/login', {
                 username: useDeat.username,
                 password: useDeat.password
@@ -58,7 +58,6 @@ const Login = (props) => {
     y = document.getElementById("registerpage");
     z = document.getElementById("btn");
     p = document.getElementById("passwordpage");
-    r = document.getElementById("loginpage");
     Lbutton = document.getElementById("Lbutton");
     Rbutton = document.getElementById("Rbutton");
 
@@ -136,8 +135,6 @@ const Login = (props) => {
                 onChange={handleChange}/>
                 <button id="login-button" type="button" onClick={sendLoginRequest}>Login</button>
 
-
-
                <br></br><br></br>
               <a href = "#" onClick={passpage}  >Forgot password?</a> 
 
@@ -153,7 +150,7 @@ const Login = (props) => {
                     placeholder='Email'
                     onChange={handleChange}/>
                     
-                 <button id="password-button" onClick={sendLoginRequest}>Submit</button>
+                 <button id="password-button" type = "button" >Submit</button>
 
                     </form>
                 
@@ -175,7 +172,7 @@ const Login = (props) => {
                     onChange={handleChange}/>
                     
                     
-<button id="register-button" onClick={sendLoginRequest}>Register</button>
+<button id="register-button" type = "button" >Register</button>
 
                     </form>
             
