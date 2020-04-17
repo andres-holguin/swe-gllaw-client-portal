@@ -39,9 +39,10 @@ const isTokenValid = (token: string) => {
     })
 }
 
-const assignAdmin = (req, res) => {
-    let username = req.body.name;
-    updateOne(name, {isAdmin: true});
+export const assignAdmin = async (req, res) => {
+    let name = req.body.name;
+    await User.findOneAndUpdate({username:name}, {isAdmin: true});
+    res.status(200).json({message: name +' is now an admin.'});
 }
 
 const generateToken = (username: string, role: string) => {
