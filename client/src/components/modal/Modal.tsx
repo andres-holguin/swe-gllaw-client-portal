@@ -20,8 +20,14 @@ const Modal: React.FC<Props> = (props) => {
         let start = formatDate(startTime)
         setStartTime(startTime)
 
-        let end = formatDate(endTime)
-        setEndTime(endTime)
+        let end;
+        if (endTime === '') {
+            setEndTime(startTime);
+            end = start;
+        } else {
+            end = formatDate(endTime)
+            setEndTime(endTime)
+        }
 
         let e = {
             title: event,
