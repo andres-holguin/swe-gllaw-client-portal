@@ -249,7 +249,30 @@ export const getUserID = (username: string) => {
 
 
 
+
+
+
+export const fetchIsAdmin = (req: express.Request, res: express.Response) => { 
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+    jwt.verify(cookie, secret, (err, decoded) => {
+    if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+    User.findOne({username: username}, function(err,data){
+        if(err) throw err;
+        res.send(data.toObject().isAdmin);
+    });
+}
+
+
 export const isAdmin = (username: string) => { //Replace this function
+    
+    
+    
     User.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
