@@ -351,8 +351,8 @@ export const updateCalender =async (req, res) => {
        calendarData = data.toObject().calenderEntrys;
        calendarData.push(req.body.calenderEntrys);   
     });
-   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
-   res.status(200).json({message: 'Successfully added new Calender Entry to ' + username});
+   await User.findOneAndUpdate({username: req.body.username}, {calenderEntrys: calendarData});
+   res.status(200).json({message: 'Successfully added new Calender Entry to ' + req.body.username});
 };
 
 export const getCalender = (req, res) => {
