@@ -1,4 +1,4 @@
-import {update, updateCalender, getCalender,list, debugCreate,deleteFromCalender} from "../controllers/UserController"
+import {update, updateCalender, getCalender,list, debugCreate,deleteFromCalender,assignAdmin} from "../controllers/UserController"
 import * as user from "../controllers/UserController";
 import {login, register} from "../user"
 import * as express  from 'express'
@@ -13,15 +13,17 @@ calenderRouter.post("/edit", (req, res) => {
     updateCalender(req, res);
 });
 
-/*
+
 calenderRouter.post("/debug", (req, res) => {
-    debugCreate(req,res);
+    //assignAdmin(req,res);
+    //debugCreate(req,res);
 });
 
+
 calenderRouter.get("/debug", (req, res) => {
-    list(req,res);
+    //list(req,res);
 });
-*/
+
 
 calenderRouter.delete("/edit", (req, res) => {
     deleteFromCalender(req,res);

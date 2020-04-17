@@ -39,9 +39,10 @@ const isTokenValid = (token: string) => {
     })
 }
 
-const assignAdmin = (req, res) => {
-    let username = req.body.name;
-    updateOne(name, {isAdmin: true});
+export const assignAdmin = async (req, res) => {
+    let name = req.body.name;
+    await User.findOneAndUpdate({username:name}, {isAdmin: true});
+    res.status(200).json({message: name +' is now an admin.'});
 }
 
 const generateToken = (username: string, role: string) => {
@@ -380,7 +381,7 @@ export const deleteFromCalender =async (req, res) => {
     let username = getUserNamefromCookie(Tok);
 
    function checkvalue(val) {
-    if(val.date != req.body.calenderEntrys.date || val.title != req.body.calenderEntrys.title)
+    if(val.start != req.body.calenderEntrys.start || val.title != req.body.calenderEntrys.title || val.end != req.body.calenderEntrys.end)
     {
         return true;
     }
