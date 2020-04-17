@@ -386,7 +386,7 @@ export const deleteFromCalender =async (req, res) => {
     let username = getUserNamefromCookie(Tok);
 
    function checkvalue(val) {
-    if(val.date != req.body.calenderEntrys.date || val.title != req.body.calenderEntrys.title)
+    if(val.start != req.body.calenderEntrys.start || val.title != req.body.calenderEntrys.title || val.end != req.body.calenderEntrys.end)
     {
         return true;
     }
