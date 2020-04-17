@@ -335,7 +335,7 @@ export const assignCase = (req: express.Request, res: express.Response) => {
 export const updateCalender =async (req, res) => {
     //console.log("HERE")
     //const jwt = require("json-web-token");
-    const secret = process.env.JWT_SECRET;
+    /*const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
       jwt.verify(cookie, secret, (err, decoded) => {
      if (err) throw err;
@@ -343,10 +343,10 @@ export const updateCalender =async (req, res) => {
         });
     }
     let Tok =req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
+    let username = getUserNamefromCookie(Tok);*/
    
    let calendarData;
-   await User.findOne({username: username}, function(err,data){
+   await User.findOne({username: req.body.username}, function(err,data){
        if(err) throw err;
        calendarData = data.toObject().calenderEntrys;
        calendarData.push(req.body.calenderEntrys);   
@@ -357,7 +357,7 @@ export const updateCalender =async (req, res) => {
 
 export const getCalender = (req, res) => {
     //const jwt = require("json-web-token");
-    const secret = process.env.JWT_SECRET;
+    /*const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
       jwt.verify(cookie, secret, (err, decoded) => {
      if (err) throw err;
@@ -365,8 +365,8 @@ export const getCalender = (req, res) => {
         });
     }
     let Tok = req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
-    User.findOne({username: username}, function(err,data){
+    let username = getUserNamefromCookie(Tok);*/
+    User.findOne({username: req.body.username}, function(err,data){
         if(err) throw err;
         res.send(data.toObject().calenderEntrys);
     });
@@ -375,7 +375,7 @@ export const getCalender = (req, res) => {
 export const deleteFromCalender =async (req, res) => {
     //console.log("HERE")
     //const jwt = require("json-web-token");
-    const secret = process.env.JWT_SECRET;
+    /*const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
       jwt.verify(cookie, secret, (err, decoded) => {
      if (err) throw err;
@@ -383,7 +383,7 @@ export const deleteFromCalender =async (req, res) => {
         });
     }
     let Tok =req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
+    let username = getUserNamefromCookie(Tok);*/
 
    function checkvalue(val) {
     if(val.start != req.body.calenderEntrys.start || val.title != req.body.calenderEntrys.title || val.end != req.body.calenderEntrys.end)
@@ -396,11 +396,11 @@ export const deleteFromCalender =async (req, res) => {
     }
    }
    let calendarData;
-   await User.findOne({username: username}, function(err,data){
+   await User.findOne({username: req.body.username}, function(err,data){
        if(err) throw err;
        calendarData = data.toObject().calenderEntrys.filter(checkvalue);
     });
-   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+   await User.findOneAndUpdate({username: req.body.username}, {calenderEntrys: calendarData});
    res.status(200).json({message: 'Successfully removed the Calender Entry'});
 };
 
