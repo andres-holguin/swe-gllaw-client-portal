@@ -307,8 +307,9 @@ export const assignCase = (req: express.Request, res: express.Response) => {
             }
         });
 }
-export const updateCalender = (req, res) => {
-    console.log("HERE")
+
+export const updateCalender =async (req, res) => {
+    //console.log("HERE")
     //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
@@ -319,13 +320,15 @@ export const updateCalender = (req, res) => {
     }
     let Tok =req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
-    let calendarData;
-    User.findOne({username: username}, function(err,data){
-        if(err) throw err;
-        calendarData = data.toObject().calenderEntrys;
+   
+   let calendarData;
+   await User.findOne({username: username}, function(err,data){
+       if(err) throw err;
+       calendarData = data.toObject().calenderEntrys;
+       calendarData.push(req.body.calenderEntrys);   
     });
-    calendarData.push(req.body.calenderEntrys);
-    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+   res.status(200).json({message: 'Successfully added new Calender Entry to ' + username});
 };
 
 export const getCalender = (req, res) => {
@@ -337,7 +340,7 @@ export const getCalender = (req, res) => {
         return decoded.username;
         });
     }
-    let Tok =req.cookies["jwt"];
+    let Tok = req.cookies["jwt"];
     let username = getUserNamefromCookie(Tok);
     User.findOne({username: username}, function(err,data){
         if(err) throw err;
@@ -345,6 +348,37 @@ export const getCalender = (req, res) => {
     });
 };
 
+export const deleteFromCalender =async (req, res) => {
+    //console.log("HERE")
+    //const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+    const getUserNamefromCookie = (cookie) => {
+      jwt.verify(cookie, secret, (err, decoded) => {
+     if (err) throw err;
+        return decoded.username;
+        });
+    }
+    let Tok =req.cookies["jwt"];
+    let username = getUserNamefromCookie(Tok);
+
+   function checkvalue(val) {
+    if(val.date != req.body.calenderEntrys.date || val.title != req.body.calenderEntrys.title)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+   }
+   let calendarData;
+   await User.findOne({username: username}, function(err,data){
+       if(err) throw err;
+       calendarData = data.toObject().calenderEntrys.filter(checkvalue);
+    });
+   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+   res.status(200).json({message: 'Successfully removed the Calender Entry'});
+};
 
 export const debugCreate = (req, res) => {
     console.log(req.params);

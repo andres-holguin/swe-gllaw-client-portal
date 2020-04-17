@@ -41,7 +41,7 @@ module.exports.init = () => {
     app.use('/api/user', loginRouter);
     
     //calender router
-    app.use('/',calenderRouter);
+    app.use('/api/calender',calenderRouter);
 
     app.use('/api/case', caseRouter);
     // OutlookRouter
