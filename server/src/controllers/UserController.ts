@@ -247,11 +247,6 @@ export const getUserID = (username: string) => {
     });
 }
 
-
-
-
-
-
 export const fetchIsAdmin = (req: express.Request, res: express.Response) => { 
     const secret = process.env.JWT_SECRET;
     const getUserNamefromCookie = (cookie) => {
