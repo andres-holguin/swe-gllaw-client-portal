@@ -33,6 +33,7 @@ const Login = (props) => {
                 console.log(res.data);
 
                 if (res.data.accessToken != undefined) {
+                   // history.push('/Calendar');
                     props.userHasAuthenticated(true);
                 } else {
                     console.log("Password incorrect");
@@ -53,7 +54,7 @@ const Login = (props) => {
     let Lbutton;
     let Rbutton;
 
-    useEffect(() => {x = document.getElementById("loginpage");
+  useEffect(() => {x = document.getElementById("loginpage");
     y = document.getElementById("registerpage");
     z = document.getElementById("btn");
     p = document.getElementById("passwordpage");
@@ -87,7 +88,7 @@ const Login = (props) => {
          
 
 
-     }
+     } 
      
                 
 
@@ -133,15 +134,15 @@ const Login = (props) => {
                 placeholder='Password'
                 type="password"
                 onChange={handleChange}/>
+                <button id="login-button" type="button" onClick={sendLoginRequest}>Login</button>
 
-               <button id="login-button" onClick={sendLoginRequest}>Login</button>
+
 
                <br></br><br></br>
-
-               <a href = "#" onClick={passpage}  >Forgot password?</a>
+              <a href = "#" onClick={passpage}  >Forgot password?</a> 
 
                 </form>
-                
+
                 
 
 

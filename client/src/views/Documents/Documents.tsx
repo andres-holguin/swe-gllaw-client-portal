@@ -7,11 +7,24 @@ import { fileURLToPath } from 'url';
 import './Documents.css'
 
 const Documents = () => {
+    // let isAdmin;
+    // axios.get("/api/auth/me").then((res)=>{
+    //     isAdmin = res.isAdmin;
+    // });
     const { register, handleSubmit, errors, reset, getValues } = useForm();
     const [listEntries, setListEntries] = useState([
-        "Document A",
-        "Document B",
-        "Document C"
+        {
+            name: "Document A",
+            id: "a"
+        },
+        {
+            name: "Document B",
+            id: "b"
+        },
+        {
+            name: "Document C",
+            id: "c"
+        }
     ]);
     
     const onSubmit = () =>{
