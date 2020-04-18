@@ -80,6 +80,19 @@ interface document {
    id: string
 }
 
+export const getCaseByID = (req, res) => {
+   Case.findById(req.params.caseid, (err, d) => {
+      if (err) 
+         return res.status(500).json({error: "An error occured."});
+      
+      if (!d) {
+         return res.status(404).json({error: "No case by that id exist."});
+      }
+
+      return res.status(200).json(d);
+   })
+}
+
 export const addDocument = (caseID: string, fileName: string, fileID: string) => {
 
 

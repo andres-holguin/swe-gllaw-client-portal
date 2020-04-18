@@ -44,8 +44,9 @@ const Login = (props) => {
             email: registration.email,
             password: registration.password
           }).then(res => {
-              if (res.status)
-          })
+              if (res.status == 204) 
+                console.log("user creation successful");
+          });
     }
     const sendLoginRequest = async () => {
       //   props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
