@@ -80,8 +80,8 @@ interface document {
    id: string
 }
 
-export const getCaseByID = (req, res) => {
-   Case.findById(req.params.caseid, (err, d) => {
+export const getCaseByID = (req: express.Request, res: express.Response) => {
+   Case.findById(req.body.id, (err, d) => {
       if (err) 
          return res.status(500).json({error: "An error occured."});
       
@@ -91,6 +91,16 @@ export const getCaseByID = (req, res) => {
 
       return res.status(200).json(d);
    })
+}
+
+export const getProgress = (req: express.Request, res: express.Response) => {
+   Case.findById(req.params.caseid, (err, c) => {
+      if (err) res.status(500).json({error: "An error occured"});
+      if (!c)
+         return res.status(404).json({error: 'Case not found'});
+
+      return res.status(200).json({progress: c.toObject().progress});
+   } )
 }
 
 export const addDocument = (caseID: string, fileName: string, fileID: string) => {
@@ -115,9 +125,9 @@ export const update_progress_bar = (req, res, next: boolean) => {
    // userExist.fin
    let caseName = req.body.id;
    
-   let updateFile = next ? {$inc: {progress: 1}} : {$dec: {progress: 1}};
+   let updateFile = next ? {$inc: {progress: 1}} : {$inc: {progress: -1}};
    Case.findByIdAndUpdate(caseName, updateFile, {new: true}, (err, document) => {
-      console.log(document);
+   //   console.log(document);
    });
    res.send(updateFile);
  //  update_case(id, {})

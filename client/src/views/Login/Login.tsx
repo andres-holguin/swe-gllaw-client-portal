@@ -57,9 +57,10 @@ const Login = (props) => {
                 //console.log(res.data.accessToken);
                 //console.log(res.data);
 
-                if (res.data.accessToken != undefined) {
+                if (res.status === 200) {
                    // history.push('/Calendar');
                     props.userHasAuthenticated(true);
+                    redirect();
                 } else {
                     console.log("Password incorrect");
                 }
@@ -67,7 +68,7 @@ const Login = (props) => {
     };
 
     const redirect = () => {
-        history.push('/Calendar')
+        history.push('/')
     }
 
 
