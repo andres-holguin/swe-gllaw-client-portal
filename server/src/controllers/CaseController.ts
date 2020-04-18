@@ -58,6 +58,7 @@ export const findFromIDS = async (ids: [string])=> {
       return new Promise((resolve, reject) => 
          Case.find({}).where('_id').in(ids).exec((err, documents) => {
          if (err) reject("Error");
+         if (!document) reject("No cases provided");
          for (let i = 0; i < documents.length; ++i) {
             //  console.log(documents[i]);
               let d = documents[i].toObject();
