@@ -3,6 +3,7 @@ import User from '../models/USERModel';
 //import config from '../config/config';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
+import * as caseController from './CaseController';
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
 import * as express from 'express';
@@ -38,6 +39,39 @@ const isTokenValid = (token: string) => {
         }
     })
 }
+interface names {
+    firstname: string,
+    lastname: string,
+}
+export const findNameId = async (req: express.Request, res: express.Response) => {
+    let id = new Promise<string>((resolve, reject) => {
+        let name: names = req.body.user;
+        console.log(name);
+        User.findOne({firstname: name.firstname.toLowerCase(), lastname: name.lastname.toLowerCase()}, (err, user) => {
+            //console.log(user);
+            if (err) return res.status(500).json({error: "There was an error"});
+            if (!user) {
+                return res.status(404).json({error: "User does not exist"});
+            }
+            
+            resolve(user._id);
+            
+        })
+    });
+
+    return id;
+
+}
+
+export const assignCaseByID = (userID: string,  caseId: string,  res: express.Response) => {
+    console.log("case", caseId);
+    User.findByIdAndUpdate(userID,
+        { $push: {cases: caseId}}, (err, success) => {
+            if (err) {
+                return res.status(500).json({error: "An error occured assigning user please try again."});
+            }
+    });
+} 
 
 const assignAdmin = (req, res) => {
     let username = req.body.name;
@@ -155,6 +189,7 @@ export const userExist = async (field): Promise<boolean> => {
 
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
+    //console.log(u);
     User.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
@@ -272,9 +307,28 @@ export const list = (req, res) => {
         if(err) throw err;
         res.send(data);
    });
+   
 };
 
 export const listCases = async (req: express.Request, res: express.Response) => {
+    let username: string = await findFromJWT(req, res);
+    
+
+   User.findOne({username: username}, async (err, user) => {
+        
+        if(user){
+        console.log(user.toObject().cases);
+        let myCases = await caseController.findFromIDS(user.toObject().cases);
+        console.log(myCases);
+        res.status(200).json({
+            cases: myCases//await caseController.findFromIDS(user.toObject().cases)
+        });
+        //res.json())
+        }
+    }
+};
+
+export const listCaseIds = async(req: express.Request, res: express.Response) => {
     let username: string = await findFromJWT(req, res);
     console.log(username);
     User.findOne({username: username}, (err, user) => {
