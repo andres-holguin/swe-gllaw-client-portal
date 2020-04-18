@@ -20,6 +20,7 @@ const Documents = () => {
 
         const data = new FormData();
         data.append('doc', document);
+        data.append('caseid', ''); // THis will be gotten from the active case id.
         console.log(data);
         axios.post('/api/document/upload', data)
           .then(function (response) {

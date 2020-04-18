@@ -2,7 +2,6 @@ import { requireAdmin } from './util';
 import * as express from 'express';
 import Case from '../models/CaseModel'
 import * as user from '../controllers/UserController';
-import { rejects } from 'assert';
 
 export const create = async (req: express.Request, res: express.Response) => {
    //Create the case.
@@ -44,10 +43,12 @@ export const listCases = (req: express.Request, res: express.Response) => {
 }
 
 interface Case  {
+   id: string,
    name: string,
    description: String,
    progress: Number,
-   active: Boolean
+   active: Boolean,
+   documents: any,
 }
 
 export const findFromIDS = async (ids: [string])=> {
@@ -61,16 +62,36 @@ export const findFromIDS = async (ids: [string])=> {
             //  console.log(documents[i]);
               let d = documents[i].toObject();
               let nextCase: Case = {
+                 id: d._id,
                  name: d.Name,
                  description: d.Description,
                  progress: d.progress,
-                 active: d.isActive
+                 active: d.isActive,
+                 documents: d.documents,
      
               };
               cases.push(nextCase);
             }
          resolve(cases);
-      })
+      }));
+}
+interface document {
+   name: string,
+   id: string
+}
+
+export const addDocument = (caseID: string, fileName: string, fileID: string) => {
+
+
+   Case.findByIdAndUpdate(caseID, 
+      { $push: {
+         documents: {
+         Name: fileName,
+         fileID: fileID
+      }}}, (err, success) => {
+            if (err) throw err;
+            console.log("done");
+      })   
 }
 
 

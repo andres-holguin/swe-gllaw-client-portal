@@ -5,7 +5,9 @@ import * as user from '../controllers/UserController';
 import * as userAuth from '../controllers/AuthController';
 const authRouter = express.Router();
 authRouter.get('/reset/:reset_token', (req: express.Request, res: express.Response) => {
-    res.json({token: req.params.reset_token});
+    
+    
+    //res.json({token: req.params.reset_token});
 });
 
 authRouter.post('/reset/:reset_token', (req: express.Request, res: express.Response) => {

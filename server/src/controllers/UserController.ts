@@ -341,15 +341,14 @@ export const listCases = async (req: express.Request, res: express.Response) => 
    User.findOne({username: username}, async (err, user) => {
         
         if(user){
-        console.log(user.toObject().cases);
-        let myCases = await caseController.findFromIDS(user.toObject().cases);
-        console.log(myCases);
-        res.status(200).json({
-            cases: myCases//await caseController.findFromIDS(user.toObject().cases)
-        });
-        //res.json())
+            console.log(user.toObject().cases);
+            let myCases = await caseController.findFromIDS(user.toObject().cases);
+            console.log(myCases);
+            res.status(200).json({
+                cases: myCases//await caseController.findFromIDS(user.toObject().cases)
+            });
         }
-    }
+    });
 };
 
 export const listCaseIds = async(req: express.Request, res: express.Response) => {
