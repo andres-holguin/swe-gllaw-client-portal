@@ -27,7 +27,15 @@ const Calendar = () => {
     const [email, setEmail] = useState('')
 
     useEffect(() => {
+        const getCalendarEvents = async () => {
+            await axios.get('/api/calender/edit')
+            .then(function (res) {
+                console.log(res.data)
+                setEvents(res.data)
+            })
+        }
         
+        getCalendarEvents();
     }, [])
 
     const _handleCalendarSync = async () => {
@@ -52,6 +60,24 @@ const Calendar = () => {
     }
 
     const createEvent = async (event) => {
+
+        const updatedListing = {
+            calenderEntrys : {
+                title: event.title,
+                start: event.start,
+                end: event.end
+            }
+        };
+
+        console.log(updatedListing.calenderEntrys.start)
+
+        await axios.post('/api/calender/edit', updatedListing)
+        .then(function (res) {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.response)
+        });
+
         let dateStartTime = moment(event.start).format("YYYY-MM-DDTHH:mm:ss");
         let dateEndTime = moment(event.end).format("YYYY-MM-DDTHH:mm:ss");
 
@@ -75,23 +101,6 @@ const Calendar = () => {
         await axios.post('/api/outlook/createitem', {
             newEvent: newEvent
         })
-        .then(function (res) {
-            console.log(res.data)
-        }).catch(error => {
-            console.log(error.response)
-        });
-
-        const updatedListing = {
-            calenderEntrys : {
-                title: event.title,
-                start: event.start,
-                end: event.end
-            }
-        };
-
-        //console.log('NEW EVENT: ', event.title)
-
-        await axios.post('/api/calender/edit', updatedListing)
         .then(function (res) {
             console.log(res.data)
         }).catch(error => {

@@ -358,14 +358,20 @@ export const updateCalender =async (req, res) => {
 export const getCalender = (req, res) => {
     //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
-    const getUserNamefromCookie = (cookie) => {
-      jwt.verify(cookie, secret, (err, decoded) => {
-     if (err) throw err;
-        return decoded.username;
+
+    let Tok =req.cookies["jwt"];
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
         });
-    }
-    let Tok = req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
+
+    console.log("the user requesting data is: ", username)
+
     User.findOne({username: username}, function(err,data){
         if(err) throw err;
         res.send(data.toObject().calenderEntrys);
