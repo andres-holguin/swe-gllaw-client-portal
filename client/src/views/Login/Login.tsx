@@ -16,11 +16,36 @@ const Login = (props) => {
         password: "",
     });
 
+    const [registration, setRegistration] = useState({
+        firstname: "",
+        lastname: "",
+        username: "",
+        password: "",
+        email: ""
+    })
+
     const history = useHistory();
 
-    const handleChange = (event) => {
+    const handleChangeLogin = (event) => {
         setUseDeat({...useDeat, 
                    [event.target.name]: event.target.value})
+    }
+
+    const handleChangeRegister = (event) => {
+        setRegistration({...registration, 
+            [event.target.name]: event.target.value})
+    }
+
+    const sendRegisterRequest = async () => {
+        await axios.post('/api/user/register', {
+            firstname: registration.firstname,
+            lastname: registration.lastname,
+            username: registration.username,
+            email: registration.email,
+            password: registration.password
+          }).then(res => {
+              if (res.status)
+          })
     }
     const sendLoginRequest = async () => {
       //   props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
@@ -126,12 +151,12 @@ const Login = (props) => {
                <input 
                 name="username"
                 placeholder='Username'
-                onChange={handleChange}/>
+                onChange={handleChangeLogin}/>
                 <input 
                 name='password'
                 placeholder='Password'
                 type="password"
-                onChange={handleChange}/>
+                onChange={handleChangeLogin}/>
                 <button id="login-button" type="button" onClick={sendLoginRequest}>Login</button>
 
                <br></br><br></br>
@@ -147,7 +172,7 @@ const Login = (props) => {
                     <input
                     name="email"
                     placeholder='Email'
-                    onChange={handleChange}/>
+                    onChange={handleChangeLogin}/>
                     
                  <button id="password-button" type = "button" >Submit</button>
 
@@ -159,29 +184,29 @@ const Login = (props) => {
                    <input 
                     name="firstname"
                     placeholder='Firstname'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
 
                    <input 
                     name="lastname"
                     placeholder='Lastname'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                      
                      <input 
                     name="username"
                     placeholder='Username'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     <input
                     name="email"
                     placeholder='Email'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     <input 
                     name='password'
                     placeholder='Password'
                     type="password"
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     
                     
-<button id="register-button" type = "button" >Register</button>
+                    <button id="register-button" type = "button"  onClick={sendRegisterRequest}>Register</button>
 
                     </form>
             
