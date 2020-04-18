@@ -27,41 +27,7 @@ const Calendar = () => {
     const [email, setEmail] = useState('')
 
     useEffect(() => {
-        const getSignInPage = async () => {
-            console.log('in signinpage function, about to get request')
-            await axios.get('/api/outlook/authurl')
-            .then(function (response) {
-                // handle success
-                console.log('RESPONSE: ', response.data)
-                setSignInPage(response.data)
-            })
-        }
-
-        // next, retrieve all of the new calendar events an admin has added, if they're a client
-        // if client
-            // retrieve and update events
-            // update outlook
-        const updateOutlookCalendar = async () => {
-            events.map(e => {
-                let newEvent = {
-                    "Subject": e.title,
-                    "Body": {
-                        "ContentType": "HTML",
-                        "Content": "I think it will meet our requirements!"
-                    },
-                    "Start": {
-                        "DateTime": e.start,
-                        "TimeZone": "Eastern Standard Time"
-                    },
-                };
-                //createEvent(newEvent)
-            })
-            // need a way to only grab the newest events
-        }
-
-        getSignInPage();
-        //updateOutlookCalendar();
-
+        
     }, [])
 
     const _handleCalendarSync = async () => {
@@ -114,6 +80,23 @@ const Calendar = () => {
         }).catch(error => {
             console.log(error.response)
         });
+
+        const updatedListing = {
+            calenderEntrys : {
+                title: event.title,
+                start: event.start,
+                end: event.end
+            }
+        };
+
+        //console.log('NEW EVENT: ', event.title)
+
+        await axios.post('/api/calender/edit', updatedListing)
+        .then(function (res) {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.response)
+        });
     }
 
     const _handleCloseModal = () => {
@@ -130,17 +113,6 @@ const Calendar = () => {
         console.log(event.end)
 
         setEvents([...events, event])
-
-        const updatedListing = {
-            calenderEntrys : {
-                title: event.title,
-                data: event.start
-            }
-        };
-
-        //console.log('NEW EVENT: ', event.title)
-
-        //await axios.post('/Calender/', updatedListing);
 
         // not sure if clients should be able to add events here, but just to display that it adds the event
         // to you outlook calendar, i have it create an event on the calendar as well
