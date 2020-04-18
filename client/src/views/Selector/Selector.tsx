@@ -4,6 +4,7 @@ import Search from '../../components/Search/Search';
 import List from '../../components/List/List';
 import Table from '../../components/Table/Table';
 import SubmissionForm from '../../components/SubmissionForm/SubmissionForm'
+import axios from 'axios';
 
 const Selector = () => {
     const [filterText, setFilterText] = useState('')
@@ -36,6 +37,21 @@ const Selector = () => {
             1
         ]
     ])
+
+    const isAdmin =  (): boolean => {
+        let admin = false;
+        axios.get("/api/auth/me").then( res => {
+            admin = res.data.admin; 
+        })
+        return admin;
+    }
+
+
+    const grabCaseList = () => {
+        if (isAdmin()) {
+            
+        }
+    }
     const addProject = (data)=>{
         let newData = tableData;
         let obj = [

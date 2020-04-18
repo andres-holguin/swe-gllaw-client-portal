@@ -20,7 +20,6 @@ const onSubmit = (event:any, data: any) => {
       username: newUser.username,
       email: newUser.email,
       password: newUser.password
-      
     }).then(res => {
       console.log(res.data);
       console.log(res.data);

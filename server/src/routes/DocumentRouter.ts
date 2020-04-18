@@ -2,7 +2,7 @@ import * as express from 'express';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import GridFsStorage from 'multer-gridfs-storage';
-
+import * as cases from '../controllers/CaseController';
 import { GridFSBucket, ObjectID } from 'mongodb';
 
 const documentRouter = express.Router();
@@ -39,12 +39,13 @@ let upload = multer({
 
 documentRouter.route('/upload').post(upload.single('doc'), (req: express.Request, res: express.Response) => {
     if(req.file === undefined) {
+        //
+        //req.file.filename;
         res.status(400).json({error: "Invalid File format."})
     } else {
-        res.status(200).json({message: "file transfer successful"}); // if there is an error if will be caught before this.
-
+       cases.addDocument(req.body.CaseID, req.file.originalname, req.file.id);
+        res.status(200).json({message: 'File successfully uploaded'});
     }
-    //console.log("File --", req.file)
 });
 
 documentRouter.get('/:document_id/', (req: express.Request, res: express.Response) => {

@@ -23,10 +23,8 @@ const mailgun_auth = {
 }
 const nodemailergun = nodemailer.createTransport(mailgun(mailgun_auth));
 
-
-
 mailRouter.post('/forgot_pass', async (req: express.Request, res: express.Response) => {
-    req.body.email;
+    //req.body.email;
 
     const token = await user.reset_password(req, res);
     console.log(token);
