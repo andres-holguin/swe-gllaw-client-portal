@@ -9,7 +9,8 @@ import jwt from 'jsonwebtoken';
 interface message { //For when the user emails someone.
     from: string,
     to: string,
-    content: string,
+    subject: string,
+    text: string
 }
 
 const mailRouter = express.Router();
@@ -23,13 +24,29 @@ const mailgun_auth = {
 }
 const nodemailergun = nodemailer.createTransport(mailgun(mailgun_auth));
 
+mailRouter.post('/new_user', async (req: express.Request, res: express.Response) => {
+    const email = req.body.email;
+
+
+    let new_user_message: message= {
+        from: 'no_reply@' + process.env.FROM_EMAIL,
+        to: email,
+        subject: 'New Account Created',
+        text: `Hello ${req.body.firstname}, Thank you for creating an account with us.`
+    }
+    nodemailergun.sendMail(new_user_message, (err, msg) => {
+        if (err) res.status(500).json({error: 'An error occured'});
+        res.status(200).json({ message: `Account Creation email sent to ${email}`});
+    });
+})
+
 mailRouter.post('/forgot_pass', async (req: express.Request, res: express.Response) => {
     //req.body.email;
 
     const token = await user.reset_password(req, res);
     console.log(token);
     nodemailergun.sendMail({
-        from: 'no_reply' + process.env.FROM_EMAIL,
+        from: 'no_reply@' + process.env.FROM_EMAIL,
         to: req.body.email,
         subject: 'Password Reset Request',
         text: `Password Reset Link. localhost:3001/reset/${token}`

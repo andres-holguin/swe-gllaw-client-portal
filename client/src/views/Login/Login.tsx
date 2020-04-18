@@ -36,7 +36,8 @@ const Login = (props) => {
             [event.target.name]: event.target.value})
     }
 
-    const sendRegisterRequest = async () => {
+    const sendRegisterRequest = async (e) => {
+        e.preventDefault();
         await axios.post('/api/user/register', {
             firstname: registration.firstname,
             lastname: registration.lastname,
@@ -47,6 +48,18 @@ const Login = (props) => {
               if (res.status == 204) 
                 console.log("user creation successful");
           });
+
+          //Send an email to the user
+
+          await axios.post('/api/mail/new_user', {
+            firstname: registration.firstname,
+            email: registration.email,
+          }).then(res => {
+              if (res.status === 200) {
+                console.log(res.data);  
+                //TODO SOMEONE ADD THIS 
+              } 
+          });
     }
     const sendLoginRequest = async () => {
       //   props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
@@ -56,13 +69,16 @@ const Login = (props) => {
             }).then(res => {
                 //console.log(res.data.accessToken);
                 //console.log(res.data);
-
                 if (res.status === 200) {
                    // history.push('/Calendar');
                     props.userHasAuthenticated(true);
                     redirect();
-                } else {
-                    console.log("Password incorrect");
+                }
+            }).catch(err => {
+
+                let badResponse = err.response;
+                if (badResponse.status === 403) {
+                    console.log("Incorrect username or password");
                 }
             });
     };
