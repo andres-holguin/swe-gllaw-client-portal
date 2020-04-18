@@ -435,14 +435,17 @@ export const deleteFromCalender =async (req, res) => {
     //console.log("HERE")
     //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
-    const getUserNamefromCookie = (cookie) => {
-      jwt.verify(cookie, secret, (err, decoded) => {
-     if (err) throw err;
-        return decoded.username;
-        });
-    }
+
     let Tok =req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
+        });
 
    function checkvalue(val) {
     if(val.start != req.body.calenderEntrys.start || val.title != req.body.calenderEntrys.title || val.end != req.body.calenderEntrys.end)
