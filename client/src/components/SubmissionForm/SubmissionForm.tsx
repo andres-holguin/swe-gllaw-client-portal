@@ -18,7 +18,8 @@ const onSubmit = (event:any, data: any) => {
       firstname: newUser.firstname,
       lastname: newUser.lastname,
       username: newUser.username,
-      email: newUser.email
+      email: newUser.email,
+      password: newUser.password
     }).then(res => {
       console.log(res.data);
       console.log(res.data);
@@ -40,6 +41,7 @@ const onSubmit = (event:any, data: any) => {
           placeholder="First name" 
           name="firstname"
           id="First"
+          className="form-input"
           ref={register({required: true, maxLength: 20})} 
         />
       {errors.First && <p>This field is required</p>}
@@ -49,6 +51,7 @@ const onSubmit = (event:any, data: any) => {
         type="text" 
         placeholder="Last name" 
         name="lastname" 
+        className="form-input"
         ref={register({required: true, maxLength: 20})} 
       />
       {errors.Last && <p>This field is required</p>}
@@ -58,6 +61,7 @@ const onSubmit = (event:any, data: any) => {
         type="text" 
         placeholder="Email" 
         name="email" 
+        className="form-input"
         ref={
           register({
             required: "This field is required", 
@@ -75,11 +79,12 @@ const onSubmit = (event:any, data: any) => {
         type="text" 
         placeholder="Username" 
         name="username" 
+        className="form-input"
         ref={register({required: "This field is required"})} 
       />
       {errors.Username && <p>This field is required</p>}
       
-      <input type="submit" />
+      <input type="submit" className="form-submit"/>
     </form>
   );
 }

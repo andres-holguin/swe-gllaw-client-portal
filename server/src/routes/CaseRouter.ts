@@ -12,6 +12,10 @@ caseRouter.get('/list', requireAdmin, (req: express.Request, res: express.Respon
     cases.listCases(req, res);
 })
 
+caseRouter.get('/:caseid', (req: express.Request, res: express.Response) => {
+    cases.getCaseByID(req, res);
+}
+
 caseRouter.put('/bar/increment', requireAdmin, (req, res) => {
     //Test
     cases.update_progress_bar(req, res, true); // Go to next
@@ -19,7 +23,7 @@ caseRouter.put('/bar/increment', requireAdmin, (req, res) => {
 });
 
 caseRouter.get('/bar', (req, res) => {
-
+    //case.progress();
 })
 
 caseRouter.put('/bar/decrement', requireAdmin, (req, res) => {

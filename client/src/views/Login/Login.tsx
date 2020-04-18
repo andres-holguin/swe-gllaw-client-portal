@@ -16,21 +16,46 @@ const Login = (props) => {
         password: "",
     });
 
+    const [registration, setRegistration] = useState({
+        firstname: "",
+        lastname: "",
+        username: "",
+        password: "",
+        email: ""
+    })
+
     const history = useHistory();
 
-    const handleChange = (event) => {
+    const handleChangeLogin = (event) => {
         setUseDeat({...useDeat, 
                    [event.target.name]: event.target.value})
-        console.log(useDeat[event.target.name]);
+    }
+
+    const handleChangeRegister = (event) => {
+        setRegistration({...registration, 
+            [event.target.name]: event.target.value})
+    }
+
+    const sendRegisterRequest = async () => {
+        await axios.post('/api/user/register', {
+            firstname: registration.firstname,
+            lastname: registration.lastname,
+            username: registration.username,
+            email: registration.email,
+            password: registration.password
+          }).then(res => {
+              if (res.status == 204) 
+                console.log("user creation successful");
+          });
     }
     const sendLoginRequest = async () => {
-        // props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
+      //   props.userHasAuthenticated(true); // TEMP - take out when done doing stuff
         await axios.post('/api/user/login', {
                 username: useDeat.username,
                 password: useDeat.password
             }).then(res => {
-                console.log(res.data.accessToken);
-                console.log(res.data);
+                //console.log(res.data.accessToken);
+                //console.log(res.data);
 
                 if (res.data.accessToken != undefined) {
                    // history.push('/Calendar');
@@ -58,7 +83,6 @@ const Login = (props) => {
     y = document.getElementById("registerpage");
     z = document.getElementById("btn");
     p = document.getElementById("passwordpage");
-    r = document.getElementById("loginpage");
     Lbutton = document.getElementById("Lbutton");
     Rbutton = document.getElementById("Rbutton");
 
@@ -128,15 +152,13 @@ const Login = (props) => {
                <input 
                 name="username"
                 placeholder='Username'
-                onChange={handleChange}/>
+                onChange={handleChangeLogin}/>
                 <input 
                 name='password'
                 placeholder='Password'
                 type="password"
-                onChange={handleChange}/>
+                onChange={handleChangeLogin}/>
                 <button id="login-button" type="button" onClick={sendLoginRequest}>Login</button>
-
-
 
                <br></br><br></br>
               <a href = "#" onClick={passpage}  >Forgot password?</a> 
@@ -151,31 +173,41 @@ const Login = (props) => {
                     <input
                     name="email"
                     placeholder='Email'
-                    onChange={handleChange}/>
+                    onChange={handleChangeLogin}/>
                     
-                 <button id="password-button" onClick={sendLoginRequest}>Submit</button>
+                 <button id="password-button" type = "button" >Submit</button>
 
                     </form>
                 
 
                <form id = "registerpage" className = "input-group">
 
+                   <input 
+                    name="firstname"
+                    placeholder='Firstname'
+                    onChange={handleChangeRegister}/>
+
+                   <input 
+                    name="lastname"
+                    placeholder='Lastname'
+                    onChange={handleChangeRegister}/>
+                     
                      <input 
                     name="username"
                     placeholder='Username'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     <input
                     name="email"
                     placeholder='Email'
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     <input 
                     name='password'
                     placeholder='Password'
                     type="password"
-                    onChange={handleChange}/>
+                    onChange={handleChangeRegister}/>
                     
                     
-<button id="register-button" onClick={sendLoginRequest}>Register</button>
+                    <button id="register-button" type = "button"  onClick={sendRegisterRequest}>Register</button>
 
                     </form>
             

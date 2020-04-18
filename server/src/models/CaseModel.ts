@@ -14,7 +14,13 @@ const caseSchema = new mongoose.Schema({
     Name: {type: String, required: true},
     Description: {type: String, required: true},
     isActive: {type: Boolean, required: true},
-    documentIDS: [Document],
+    documents: [
+        {
+            Name: {type: String},
+            fileID: {type: String, required: true}
+        }
+    ],
+    userIDS: [String],
     progress: {type: Number, default: 0,  required: true}
 });
 

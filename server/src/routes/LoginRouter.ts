@@ -1,5 +1,5 @@
 
-import {update, updateCalender, getCalender,list, debugCreate} from "../controllers/UserController"
+import {update,list,fetchIsAdmin} from "../controllers/UserController"
 import * as user from "../controllers/UserController";
 import {login, register} from "../user"
 import * as express  from 'express'
@@ -51,7 +51,11 @@ loginRouter.post('/cases', (req: express.Request, res: express.Response) =>
 });
 
 loginRouter.get("/Selector", (req, res) => {
-    list(req,res);
+    //list(req,res);
+});
+
+loginRouter.get("/isAdmin", (req, res) => {
+    fetchIsAdmin(req,res);
 });
 
 loginRouter.post("/Selector", (req, res) => {
