@@ -34,14 +34,14 @@ const Documents = () => {
         <div>
             <NavBar />
             <List data={listEntries} target="" isAdmin = {true}/>
-            <form className = "file-upload" onSubmit = {handleSubmit(onSubmit)} encType="multipart/form-data"/*action='/api/document/upload' encType="multipart/form-data" method="post"*/>
+            <form className = "submission-form" onSubmit = {handleSubmit(onSubmit)} encType="multipart/form-data"/*action='/api/document/upload' encType="multipart/form-data" method="post"*/>
                 <h5>
                     Upload Document <br></br>
                 </h5>
                 <input type="file" name="datafile" ref={register({required: true})}/>
                 
                 <div>
-                    <input type="submit" value="Send"/>
+                    <input type="submit" value="Upload" className="form-submit"/>
                 </div>
             </form>
         </div>

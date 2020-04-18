@@ -132,8 +132,8 @@ const prev = () => {
 
                     <div id="main">
                     
-                        <button id="previousBtn" onClick = {prev} >Previous</button>
-                        <button id="nextBtn" onClick = {next} >Next</button>
+                        <button id="previousBtn" onClick = {prev} className="previousBtn">Previous</button>
+                        <button id="nextBtn" onClick = {next} className="nextBtn" >Next</button>
                        
 
                     </div>

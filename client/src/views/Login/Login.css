@@ -19,7 +19,7 @@
 
 .form-box{
     width: 380px;
-    height: 390px;
+    height: 440px;
     position: relative;
     margin: 6% auto;
     background: white;
@@ -68,7 +68,7 @@
 }
 
 .input-group{
-    top: 130px;
+    top: 100px;
     position: absolute;
     width: 280px;
     transition: .5s;
@@ -138,6 +138,7 @@ input{
 
 #loginpage{
     left:50px;
+    top: 150px;
 }
 
 
@@ -147,6 +148,7 @@ input{
 
 #passwordpage{
     left: -400px;
+    top: 160px;
 }
 
 
