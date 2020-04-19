@@ -8,6 +8,7 @@ interface Props {
 }
 
 const ProjTable: React.FC<Props> = (props) => {
+    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
     // if they're a client or admin, the headers will be different
     const [headers, setHeaders] = useState(['Client', 'Project', 'Email', 'Date Created', 'Stage'])
 
@@ -24,8 +25,8 @@ const ProjTable: React.FC<Props> = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {res.map(subarry => 
-                    <tr>
+                    {res.map((subarry,index) => 
+                    <tr onClick = {(event) => {props.updateIndex(index)}}>
                         {subarry.map(el =>
                             <td style={{maxWidth:500}}>{el}</td>
                         )}

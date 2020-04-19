@@ -36,12 +36,10 @@ const Selector = () => {
         date,
         0
     ]];
-    cases.forEach((el,index)=>{
+    cases.forEach(async (el,index)=>{
         // const userResponse = await axios.get('/api/user/'+ el.id + '/info');
         // var clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
-        // var project = el.name;
         // var email = userResponse.data.email;
-        // var stage = el.progress;
         tableData[index] = [
             "Luke Jones",
             cases[index].name,
@@ -76,11 +74,10 @@ const Selector = () => {
         console.log(filterText)
     }
 
-    const updateIndex = () =>{
-        var int = parseInt(sessionStorage.getItem('caseIndex')||'');
-        int = int + 1;
-        var newValue = int.toString();
+    const updateIndex = (event, index) =>{
+        var newValue = index.toString();
         sessionStorage.setItem('caseIndex', newValue);
+        window.location.reload(true);
     }
 
     if(isAdmin)return (
