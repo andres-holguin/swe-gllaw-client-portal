@@ -74,8 +74,8 @@ const Selector = () => {
         console.log(filterText)
     }
 
-    const updateIndex = (event, index) =>{
-        var newValue = index.toString();
+    const updateIndex = (index) =>{
+        var newValue = "" + index;
         sessionStorage.setItem('caseIndex', newValue);
         window.location.reload(true);
     }
