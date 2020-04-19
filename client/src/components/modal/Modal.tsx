@@ -21,7 +21,7 @@ const Modal: React.FC<Props> = (props) => {
         setStartTime(startTime)
 
         let end;
-        if (endTime === '') {
+        if (endTime === '' || endTime === null) {
             setEndTime(startTime);
             end = start;
         } else {

@@ -46,8 +46,6 @@ const NavBar = () => {
 
     }, [bullets, nextBtn, previousBtn]);
 
-console.log('admin??', admin)
-
     const MAX_STEPS = 7;
     let currentStep = 1;
 
