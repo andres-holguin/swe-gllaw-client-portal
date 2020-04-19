@@ -10,7 +10,6 @@ import { stringify } from 'querystring';
 
 
 const Documents = () => {
-
     var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
     let caseData = {
         id: "",
@@ -41,7 +40,7 @@ const Documents = () => {
 
         const data = new FormData();
         data.append('doc', document);
-        data.append('CaseID', "5e9b692d2b4d838dd5ffcc52"); // THis will be gotten from the active case id.
+        data.append('CaseID', caseId); // THis will be gotten from the active case id.
         console.log(data);
         axios.post('/api/document/upload', data)
         .then(function (response) {
@@ -51,6 +50,7 @@ const Documents = () => {
             console.log(error);
         });
         reset();
+        window.location.reload(true);
     }
     if(isAdmin)return (
         <div>
@@ -65,7 +65,6 @@ const Documents = () => {
                 <div>
                     <input type="submit" value="Upload" className="form-submit"/>
                 </div>
-                <p>{caseIndex}</p>
             </form>
         </div>
     );

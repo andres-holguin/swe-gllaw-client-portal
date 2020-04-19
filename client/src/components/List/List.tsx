@@ -15,8 +15,8 @@ const viewDocument = (id, name) => {
     //let document = new File(["foo"], "foo.txt", {type: "text/plain"});
     Axios.get('/api/document/' + id + '/', {responseType: 'arraybuffer'}).then((res)=>{
             var file = new Blob([res.data], {type: 'application/pdf'});
-            var fileURL = URL.createObjectURL(file);
-            window.open(fileURL);
+            const fileUrl = URL.createObjectURL(file);
+            window.open(fileUrl);
     });
     // const fileUrl = URL.createObjectURL(document);
     // window.open(fileUrl, '_blank');
@@ -44,7 +44,7 @@ const List: React.FC<Props> = (props) => {
                 <ListGroup as='ul'variant='flush'>
                     {res.map((el, index) =>
                     <ListGroup.Item action as='li'>
-                        {index}. {el.Name}
+                        {index+1}. {el.Name}
                         <div>
                             <button onClick = {(e) => {viewDocument(el.fileID, el.Name)}}>Open</button>
                         </div>

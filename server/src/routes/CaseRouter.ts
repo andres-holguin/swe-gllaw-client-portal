@@ -14,7 +14,7 @@ caseRouter.get('/list', requireAdmin, (req: express.Request, res: express.Respon
 
 caseRouter.get('/:caseid', (req: express.Request, res: express.Response) => {
     cases.getCaseByID(req, res);
-}
+})
 
 caseRouter.put('/bar/increment', requireAdmin, (req, res) => {
     //Test
