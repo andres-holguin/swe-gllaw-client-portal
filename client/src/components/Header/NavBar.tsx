@@ -4,70 +4,67 @@ import { Link } from 'react-router-dom';
 import './NavBar.css';
 import ProgressBar from '../ProgressBar/ProgressBar'
 import logo from '../../images/GonzaloLawLogo.png';
+import axios from 'axios';
+
 
 const NavBar = () => {
     const [progressPercent, setProgressPercent] = useState(10)
-
     const [bullets,setBullets] = useState([] as Element[]);
     const [previousBtn, setpreviousBtn] = useState<any>(null);
     const [nextBtn, setnextBtn] = useState<any>(null);
+    const [admin, isAdmin] = useState(false);
 
-
- 
+    useEffect(() => {
+        const getPrivilege = async () => {
+            await axios.get("/api/auth/me")
+            .then(res => {
+                let ad = res.data.admin;
+                isAdmin(ad);
+                if (ad) {
+                    setpreviousBtn(document.getElementById('previousBtn'));
+                    setBullets([...document.querySelectorAll('.bullet')]);
+                    setnextBtn(document.getElementById('nextBtn'));
+                } 
+            })
+        }
     
-   
-    
+        getPrivilege();
+        
 
-useEffect(() => {setpreviousBtn(document.getElementById('previousBtn'));
+    }, []);               
 
-              
-                setBullets([...document.querySelectorAll('.bullet')]);
-                setnextBtn(document.getElementById('nextBtn'));
-               
-
-}, []);
-
-               
-
-        useEffect(() => {
-
-            if (nextBtn && bullets.length > 0){
+    useEffect(() => {
+        if (admin) {
+            if (nextBtn && bullets.length > 0) {
                 nextBtn.disabled = false;
-            }else if(nextBtn) nextBtn.disabled = true;
+            } else if(nextBtn) nextBtn.disabled = true;
             
-            if(previousBtn && currentStep === 1){
+            if(previousBtn && currentStep === 1) {
                 previousBtn.disabled = true;
-               }
-            
-            
-            
+            }     
+        }
+
+    }, [bullets, nextBtn, previousBtn]);
+
+console.log('admin??', admin)
+
+    const MAX_STEPS = 7;
+    let currentStep = 1;
+
+
+    const next = () => {
+        const currentBullet = bullets[currentStep - 1];
+        console.log("Here");
+        currentBullet.classList.add('completed');
         
-
-               
-   }, [bullets, nextBtn, previousBtn]);
-
-
-
-const MAX_STEPS = 7;
-let currentStep = 1;
-
-
-       const next = () => {
-        
-    const currentBullet = bullets[currentStep - 1];
-    console.log("Here");
-    currentBullet.classList.add('completed');
-    
-    currentStep++;
-    previousBtn.disabled = false;
-    if(currentStep === MAX_STEPS){
-        currentBullet.classList.remove('completed');
-        currentBullet.classList.add('finalstep');
-        nextBtn.disabled = true;
+        currentStep++;
+        previousBtn.disabled = false;
+        if(currentStep === MAX_STEPS){
+            currentBullet.classList.remove('completed');
+            currentBullet.classList.add('finalstep');
+            nextBtn.disabled = true;
+        }
     }
-
-
-       }
 
 const prev = () => {
    const previousBullet = bullets[currentStep - 2];
@@ -79,9 +76,6 @@ const prev = () => {
    if(currentStep === 1){
        previousBtn.disabled=true;
    }
-   
-   
-
 
 
 }
@@ -130,17 +124,15 @@ const prev = () => {
                         <div className="bullet">6</div>
                     </div>
 
-                    <div id="main">
-                    
-                        <button id="previousBtn" onClick = {prev} className="previousBtn">Previous</button>
-                        <button id="nextBtn" onClick = {next} className="nextBtn" >Next</button>
-                       
-
-                    </div>
-
-
-
-
+                    {
+                        admin ? 
+                            (
+                                <div id="main">
+                                    <button id="previousBtn" onClick = {prev} className="previousBtn">Previous</button>
+                                    <button id="nextBtn" onClick = {next} className="nextBtn" >Next</button>
+                                </div>
+                            ):<></>
+                    }
                 </div>
 
 
