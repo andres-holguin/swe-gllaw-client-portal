@@ -14,23 +14,26 @@ caseRouter.get('/list', requireAdmin, (req: express.Request, res: express.Respon
 
 caseRouter.get('/:caseid', (req: express.Request, res: express.Response) => {
     cases.getCaseByID(req, res);
+<<<<<<< HEAD
 })
+=======
+});
+>>>>>>> dev
 
-caseRouter.put('/bar/increment', requireAdmin, (req, res) => {
-    //Test
+caseRouter.put('/bar/increment', requireAdmin, (req: express.Request, res: express.Response) => {
+    console.log("HELLO", req.body);
     cases.update_progress_bar(req, res, true); // Go to next
-    //res.status(200).json({message: "successful"});
 });
 
-caseRouter.get('/bar', (req, res) => {
+caseRouter.get('/:caseid/bar', (req: express.Request, res: express.Response) => {
     //case.progress();
+    cases.getProgress(req, res);
+
 })
 
 caseRouter.put('/bar/decrement', requireAdmin, (req, res) => {
-    //Test
-    cases.update_progress_bar(req, res, false); // Go to next
+    cases.update_progress_bar(req, res, false); // Go to prev
 
-   // res.status(200).json({message: "successful"});
 });
 
 export default caseRouter;
