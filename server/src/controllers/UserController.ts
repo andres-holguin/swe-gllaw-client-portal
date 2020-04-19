@@ -408,8 +408,15 @@ export const updateCalender =async (req, res) => {
        calendarData = data.toObject().calenderEntrys;
        calendarData.push(req.body.calenderEntrys);   
     });
-   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
-   res.status(200).json({message: 'Successfully added new Calender Entry to ' + username});
+    if(calendarData != null)
+    {
+        await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+        res.status(200).json({message: 'Successfully added new Calender Entry to ' + username}); 
+    }
+    else
+    {
+      res.status(400).json({message: 'An error occured'});
+    }
 };
 
 export const getCalender = (req, res) => {
@@ -470,20 +477,10 @@ export const deleteFromCalender =async (req, res) => {
    res.status(200).json({message: 'Successfully removed the Calender Entry'});
 };
 
-export const debugCreate = (req, res) => {
+export const debugCreate =async (req, res) => {
     console.log(req.params);
-    let toAdd = new User(
-    {   
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        email:    req.body.email,
-        password: "123",
-        isAdmin: false,
-        newUser: true //This is for when we want to force a password change
-    });
-    toAdd.save();
-    res.send(toAdd);
+    let calendarData = [];
+    await User.findOneAndUpdate({username: req.body.username}, {calenderEntrys: calendarData});
 };
 
 
