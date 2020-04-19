@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../../components/Header/NavBar';
 import Search from '../../components/Search/Search';
 import List from '../../components/List/List';
@@ -7,48 +7,52 @@ import SubmissionForm from '../../components/SubmissionForm/SubmissionForm'
 import axios from 'axios';
 
 const Selector = () => {
+    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
     const [filterText, setFilterText] = useState('')
+    const [isAdmin, setAdmin] = useState(false);
     const date = (new Date).toString()
-    const [tableData, setTableData] = useState([
-        [
-            'Luke P.',
-            'SWE',
-            'lupey@aol.com',
-            date,
-            4
-        ],
-        [
-            'Anna Lanzino',
-            'SWEeeee',
-            'luaay@aol.com',
-            date,
-            3
-        ], [
-            'Andres',
-            'SWEeee',
-            'ly@aol.com',
-            date,
-            5
-        ], [
-            'Yashiyah',
-            'backend SWE',
-            'lyyyy@aol.com',
-            date,
-            1
-        ]
-    ])
+    const [caseIndexLocal, setCaseIndexLocal] = useState(caseIndex);
+    useEffect(() => {
+        async function loadData() {
+            const meResponse = await axios.get("/api/auth/me");
+            setAdmin(meResponse.data.admin);
+            const caseResponse = await axios.get("/api/user/cases");
+            setCases(caseResponse.data.cases);
+        }
 
-    const isAdmin =  (): boolean => {
-        let admin = false;
-        axios.get("/api/auth/me").then( res => {
-            admin = res.data.admin; 
-        })
-        return admin;
-    }
-
+        loadData();
+    },[])
+    const [cases, setCases] = useState([{
+        id: "",
+        name: "",
+        progress: 0,
+        description: ""
+    }]);
+    
+    var tableData = [[
+        "",
+        "",
+        "",
+        date,
+        0
+    ]];
+    cases.forEach((el,index)=>{
+        // const userResponse = await axios.get('/api/user/'+ el.id + '/info');
+        // var clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
+        // var project = el.name;
+        // var email = userResponse.data.email;
+        // var stage = el.progress;
+        tableData[index] = [
+            "Luke Jones",
+            cases[index].name,
+            "jones.luke@ufl.edu",
+            date,
+            cases[index].progress
+        ];
+    });
 
     const grabCaseList = () => {
-        if (isAdmin()) {
+        if (isAdmin) {
             
         }
     }
@@ -59,10 +63,9 @@ const Selector = () => {
             'SWE',
             data.email,
             date,
-            1
+            0
         ]
-        newData.push(obj);
-        setTableData(newData);
+        tableData.push(obj);
         setFilterText(' ');
         setFilterText('');
         console.log(tableData);
@@ -73,7 +76,14 @@ const Selector = () => {
         console.log(filterText)
     }
 
-    return (
+    const updateIndex = () =>{
+        var int = parseInt(sessionStorage.getItem('caseIndex')||'');
+        int = int + 1;
+        var newValue = int.toString();
+        sessionStorage.setItem('caseIndex', newValue);
+    }
+
+    if(isAdmin)return (
         <div>
             <NavBar />
             <Search
@@ -82,8 +92,22 @@ const Selector = () => {
             <Table
                 data={tableData}
                 target={filterText}
+                updateIndex = {updateIndex}
             />
             <SubmissionForm addProject = {addProject}/>
+        </div>
+    )
+    else return (
+        <div>
+            <NavBar />
+            <Search
+                filterUpdate={filterUpdate}
+            />
+            <Table
+                data={tableData}
+                target={filterText}
+                updateIndex = {updateIndex}
+            />
         </div>
     )
 }

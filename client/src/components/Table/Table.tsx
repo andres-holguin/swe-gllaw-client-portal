@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 interface Props {
     data: any,
     target: String
+    updateIndex: any
 }
 
 const ProjTable: React.FC<Props> = (props) => {
@@ -26,7 +27,7 @@ const ProjTable: React.FC<Props> = (props) => {
                     {res.map(subarry => 
                     <tr>
                         {subarry.map(el =>
-                            <td>{el}</td>
+                            <td style={{maxWidth:500}}>{el}</td>
                         )}
                     </tr>
                     )}
