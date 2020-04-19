@@ -13,7 +13,9 @@ const NavBar = () => {
     const [previousBtn, setpreviousBtn] = useState<any>(null);
     const [nextBtn, setnextBtn] = useState<any>(null);
     const [admin, isAdmin] = useState(false);
-
+    const [caseId, setCaseId] = useState("");
+    const [progress, setProgress] = useState(1);
+    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
     useEffect(() => {
         const getPrivilege = async () => {
             await axios.get("/api/auth/me")
@@ -24,13 +26,16 @@ const NavBar = () => {
                     setpreviousBtn(document.getElementById('previousBtn'));
                     setBullets([...document.querySelectorAll('.bullet')]);
                     setnextBtn(document.getElementById('nextBtn'));
-                } 
+                }
             })
+            const caseResponse = await axios.get("/api/user/cases");
+            setProgress(caseResponse.data.cases[caseIndex].progress + 1);
+            setCaseId(caseResponse.data.cases[caseIndex].id);
         }
+
+
     
         getPrivilege();
-        
-
     }, []);               
 
     useEffect(() => {
@@ -43,7 +48,7 @@ const NavBar = () => {
                 previousBtn.disabled = true;
             }     
         }
-
+        
     }, [bullets, nextBtn, previousBtn]);
 
 console.log('admin??', admin)
@@ -51,12 +56,21 @@ console.log('admin??', admin)
     const MAX_STEPS = 7;
     let currentStep = 1;
 
-
-    const next = () => {
+    if(bullets.length !==0){
+        while(currentStep < progress){
+            const currentBullet = bullets[currentStep - 1];
+            currentBullet.classList.add('completed');
+            currentStep++;
+            previousBtn.disabled = false;
+        }
+    }
+    const  next = async() => {
         const currentBullet = bullets[currentStep - 1];
         console.log("Here");
         currentBullet.classList.add('completed');
-        
+        await axios.put('/api/case/bar/increment',{
+                id: caseId
+            });
         currentStep++;
         previousBtn.disabled = false;
         if(currentStep === MAX_STEPS){
@@ -66,16 +80,20 @@ console.log('admin??', admin)
         }
     }
 
-const prev = () => {
+const prev = async() => {
    const previousBullet = bullets[currentStep - 2];
    previousBullet.classList.remove('finalstep');
    previousBullet.classList.remove('completed');
+   await axios.put('/api/case/bar/decrement',{
+        id: caseId
+        });
    currentStep--;
    console.log(currentStep);
    nextBtn.disabled = false;
    if(currentStep === 1){
        previousBtn.disabled=true;
    }
+   
 
 
 }

@@ -33,17 +33,30 @@ const Calendar = () => {
                 console.log(res.data)
                 setEvents(res.data)
             })
+            .catch(function (res) {
+                console.log(res.error)
+            })
         }
         
         getCalendarEvents();
     }, [])
 
+    const validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     const _handleCalendarSync = async () => {
         await axios.get('/api/outlook/sync')
         .then(function (res) {
             console.log(res.data)
-            setEmail(res.data)
-            alert('Your calendar has successfully synced to Outlook.')
+            let valid = validateEmail(res.data);
+            if (!valid)
+                alert('Make sure you have logged into Outlook in the Account tab.')
+            else {
+                setEmail(res.data)
+                alert('Your calendar has successfully synced to Outlook.')
+            }
         }).catch(error => {
             alert('Make sure you have logged into Outlook in the Account tab.')
             console.log(error.response)
@@ -68,8 +81,6 @@ const Calendar = () => {
                 end: event.end
             }
         };
-
-        console.log(updatedListing.calenderEntrys.start)
 
         await axios.post('/api/calender/edit', updatedListing)
         .then(function (res) {

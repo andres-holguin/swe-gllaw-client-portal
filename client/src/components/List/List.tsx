@@ -4,6 +4,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Axios from 'axios';
 import createObjectURL from 'url';
 
+import './List.css'
+
 
 interface Props {
     data: any,
@@ -32,7 +34,7 @@ const List: React.FC<Props> = (props) => {
                     <ListGroup.Item action as='li'>
                         {index}. {el.Name}
                         <div>
-                            <button onClick = {(e) => {viewDocument(el.fileID, el.Name)}}>Open</button>
+                            <button className='open-button' onClick = {(e) => {viewDocument(el.fileID, el.Name)}}>Open</button>
                         </div>
                     </ListGroup.Item>
                     )}
@@ -46,7 +48,7 @@ const List: React.FC<Props> = (props) => {
                     <ListGroup.Item action as='li'>
                         {index+1}. {el.Name}
                         <div>
-                            <button onClick = {(e) => {viewDocument(el.fileID, el.Name)}}>Open</button>
+                            <button className='open-button' onClick = {(e) => {viewDocument(el.fileID, el.Name)}}>Open</button>
                         </div>
                     </ListGroup.Item>
                     )}
