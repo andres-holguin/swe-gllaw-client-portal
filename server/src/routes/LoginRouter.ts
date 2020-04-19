@@ -3,7 +3,7 @@ import {update,list,fetchIsAdmin} from "../controllers/UserController"
 import * as user from "../controllers/UserController";
 import {login, register} from "../user"
 import * as express  from 'express'
-import * as util from '../controllers/util';
+import {requireAdmin} from '../controllers/util';
 const loginRouter: express.Router = express.Router();
 
 loginRouter.post("/register", register);
@@ -13,7 +13,10 @@ loginRouter.post("/login", (req, res) => {
    // res.json(req.body);
 });
 
-loginRouter.post("/logout", (req, res) => {
+loginRouter.get('/:id/info',  requireAdmin, user.getInfo);
+
+
+loginRouter.post("/logout", (req: express.Request, res: express.Response) => {
     res.clearCookie("_uid").clearCookie("jwt").json({loggedout: "Logged out"}); // Removes token from client logging them out.
 });
 
