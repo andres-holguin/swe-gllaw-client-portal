@@ -74,19 +74,18 @@ const Login = (props) => {
                 //console.log(res.data);
                 if (res.status === 200) {
                    // history.push('/Calendar');
-                   isValid(true)
+                    isValid(true)
                     props.userHasAuthenticated(true);
                     redirect();
                 }
             }).catch(err => {
-
                 let badResponse = err.response;
                 if (badResponse.status === 403) {
-                    console.log("Incorrect username or password");
+                    //console.log("Incorrect username or password");
+                    isValid(false)
+
                 }
-            }).catch(res => {
-                isValid(false)
-            });
+            })
     };
 
     const redirect = () => {
