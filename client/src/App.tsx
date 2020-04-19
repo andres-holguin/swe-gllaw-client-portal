@@ -15,7 +15,7 @@ import axios, { AxiosResponse } from 'axios';
 const App = (props) => {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
   const [userToken, setUserToken] = useState("");
-
+  sessionStorage.setItem('caseIndex', '0');
   useEffect(() => {
     onLoad();
   }, []);
