@@ -17,7 +17,17 @@ const Selector = () => {
             const meResponse = await axios.get("/api/auth/me");
             setAdmin(meResponse.data.admin);
             const caseResponse = await axios.get("/api/case/list");
-            setCases(caseResponse.data);
+
+            let cases = caseResponse.data
+  
+            for (let i=0; i<cases.length; i++) {
+                const c = cases[i];
+                const userResponse = await axios.get('/api/user/'+ c.userIDS[0] + '/info');
+                c.clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
+                c.email = userResponse.data.email;
+            }
+
+            setCases(cases);
         }
 
         loadData();
@@ -27,7 +37,9 @@ const Selector = () => {
         Name: "",
         progress: 0,
         Description: "",
-        userIDS: [""]
+        userIDS: [""],
+        clientName: "",
+        email: ""
     }]);
     
     var tableData = [[
@@ -38,17 +50,13 @@ const Selector = () => {
         0
     ]];
     cases.forEach(async (el,index)=>{
-        // const userResponse = await axios.get('/api/user/'+ el.userIDS[0] + '/info');
-        // var clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
-        // var email = userResponse.data.email;
         tableData[index] = [
-            "John Smith",
+            el.clientName,
             el.Name,
-            "sampleEmail@gmail.com",
+            el.email,
             date,
             el.progress
         ];
-        
     });
 
     const grabCaseList = () => {

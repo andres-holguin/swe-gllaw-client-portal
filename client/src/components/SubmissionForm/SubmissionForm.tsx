@@ -9,7 +9,7 @@ const onSubmit = (event:any, data: any) => {
     const newUser = getValues();
     console.log(newUser)
     registerUser(newUser);
-    props.addProject(newUser);
+    //props.addProject(newUser);
     reset();
   };
 
