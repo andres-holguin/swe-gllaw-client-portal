@@ -1,4 +1,4 @@
-var redirectUri = 'http://localhost:3001/api/outlook/authorize';
+var redirectUri = 'https://gllaw-client-portal.herokuapp.com/api/outlook/authorize';
 
 var scopes = [ // what permissions our app needs
     'openid', // allows autho process to give us display name of user + email addie
