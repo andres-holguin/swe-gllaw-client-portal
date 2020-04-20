@@ -3,12 +3,10 @@ import User from '../models/USERModel';
 //import config from '../config/config';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
+import * as caseController from './CaseController';
 import {Request, Response}  from 'express';
 import { MongooseDocument } from 'mongoose';
-import mongoose from 'mongoose';
-
-
-
+import * as express from 'express';
 const secret = process.env.JWT_SECRET; //
 
 const saltRounds = 10; // Amount of times that the salt and hash should be ran on the password through bcrypt.
@@ -41,20 +39,103 @@ const isTokenValid = (token: string) => {
         }
     })
 }
+interface names {
+    firstname: string,
+    lastname: string,
+}
+export const findNameId = async (req: express.Request, res: express.Response) => {
+    let id = new Promise<string>((resolve, reject) => {
+        let name: names = req.body.user;
+        console.log(name);
+        User.findOne({firstname: name.firstname.toLowerCase(), lastname: name.lastname.toLowerCase()}, (err, user) => {
+            //console.log(user);
+            if (err) return res.status(500).json({error: "There was an error"});
+            if (!user) {
+                return res.status(404).json({error: "User does not exist"});
+            }
+            
+            resolve(user._id);
+            
+        })
+    });
 
-const generateToken = (username: string) => {
+    return id;
 
-    const tok = {name: username};
+}
+
+export const assignCaseByID = (userID: string,  caseId: string,  res: express.Response) => {
+    console.log("case", caseId);
+    User.findByIdAndUpdate(userID,
+        { $push: {cases: caseId}}, (err, success) => {
+            if (err) {
+                return res.status(500).json({error: "An error occured assigning user please try again."});
+            }
+    });
+} 
+
+export const assignAdmin = async (req, res) => {
+    let name = req.body.name;
+    await User.findOneAndUpdate({username:name}, {isAdmin: true});
+    res.status(200).json({message: name +' is now an admin.'});
+}
+
+const generateToken = (username: string, role: string) => {
+
+    const tok = {name: username, role};
     const accessToken = jwt.sign(tok, secret);
     console.log(accessToken);
     return accessToken;
+}
+
+const findFromJWT = async (req: express.Request, res: express.Response ) => {//: Promise<string> => {
+    let token = req.cookies['jwt'];
+    let name = new Promise<string>((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            
+            if(err) throw reject("No token provided");
+                 resolve(decoded.name);
+            });
+    });
+   return name;
 }
 
 const hashPass = (plaintextPassword: string): string  => {
    return bcrypt.hashSync(plaintextPassword, saltRounds);
 }
 
-const randomPassword = async () => {
+export const reset_password = async (req, res): Promise<string> => {
+
+    let out = "";
+    await User.findOne({email: req.body.email}, (err, u) => {
+            if (err) return res.status(500).json({error: "An Error occured. Please try again."});
+    
+
+            res.status(200).json({message: "Email was sent to " + u.toObject().email + "."})
+
+            
+        }).then(u => {
+            if(!u) {
+                return res.status(401).json({error: "User does not exist for this email."})
+            }
+            let payload = {
+                id: u.id,
+                email: u.toObject().email,
+            }
+    
+            out =  jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: "1h"
+            });
+        });
+    
+    return out;
+}
+
+export const pass_link = async (req: express.Request, res: express.Response) => {
+
+}
+
+
+const randomPassword = async () => {//No olonger being used.
 
     let length = Math.floor(Math.random() * 32);
     let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -69,20 +150,16 @@ const randomPassword = async () => {
 export const create = async (req, res, isAdmin) => {
     let err:any = {};
     let newUser: UserRegistration = req.body;
-    console.log(newUser);
-    let newPassword: string;
     User.findOne({username: newUser.username.toLowerCase()}).then(async (user) => {
             if (user) return res.status(401).json({userExist: "User Already Exist"});
             
             else {
-            newPassword = await  randomPassword()
-            console.log("PASS: ", newPassword); // I need a way to give this password to the user.
             User.create({ 
                 firstname: newUser.firstname,
                 lastname: newUser.lastname,
                 username: newUser.username.toLowerCase(),
                 email: newUser.email.toLowerCase(),
-                password: hashPass(newPassword),
+                password: hashPass(req.body.password),
                 isAdmin: isAdmin,
                 newUser: true,
             }).then( (d)  => {
@@ -105,16 +182,21 @@ export const read = (name: String, res) => {
     })
 };
 
+export const userExist = async (field): Promise<boolean> => {
+    const doc = await User.findOne(field);
+    
+    return doc ? true : false;
+}
+
 export const verifyUser = async (req, res) => {
     let u: UserRequest = req.body;
+    //console.log(u);
     User.findOne({username: u.username.toLowerCase()}, (err, user) => {
 
         if (!user) {
             console.log("Oops");
             return res.status(403).json({authenticationerror: "Incorrect Username or Password"}); //Possibly change this status to a 401
         } else {
-            console.log(u); 
-            console.log(user.toObject());
             let hash = user.toObject().password;
 
 
@@ -124,28 +206,29 @@ export const verifyUser = async (req, res) => {
                 
                 if (authenticated) {
                     console.log("user confirmed");
-                
-                    const accessToken = generateToken(u.username);
+                    let role: string = user.toObject().isAdmin ? "admin" : "user"; 
+                    const accessToken = generateToken(u.username, role);
                     res.cookie('_uid', user.id).cookie('jwt', accessToken, {//Add the same site flag as well.
-                    httpOnly: true}).status(200).json({accessToken: accessToken});
+                    httpOnly: true}).redirect(200, '/');//.json({accessToken: accessToken});
+
                 } else {
                     console.log("User not confirmed");
-                    return res.status(403).json({authenticationerror: "Incorrect Username or Password."});
+                    return res.status(403).json({error: "Incorrect Username or Password."});
                 }
             });
         }
     });
 
 }
+
+const updateOne = async (name: string, change: any) => {
+    User.updateOne({username: name}, change);
+}
 /* Update a listing*/
 export const update = (req, res) => {
     let u_req: string = req.body.u_req.username;
     User.findOneAndUpdate({username: u_req}, req.body);
 };
-//Update the specific document that we wnat to change
-const updateByObject = (u: MongooseDocument, newContent: any) => {
-
-}
 
 export const changePassword = async (req: Request, res: Response, id: string) =>  {
     let newRequest: newPasswordRequest = req.body
@@ -174,7 +257,6 @@ export const changePassword = async (req: Request, res: Response, id: string) =>
             } );
         }
     });
-    //doc.name
 }
 /* Delete a listing */
 export const remove = (req, res) => {
@@ -201,7 +283,31 @@ export const getUserID = (username: string) => {
     });
 }
 
-const isAdmin = (username: string) => { //Replace this function
+export const fetchIsAdmin = (req: express.Request, res: express.Response) => { 
+    const secret = process.env.JWT_SECRET;
+
+    let Tok =req.cookies["jwt"];
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
+        });
+
+    User.findOne({username: username}, function(err,data){
+        if(err) throw err;
+        res.send(data.toObject().isAdmin);
+    });
+}
+
+
+export const isAdmin = (username: string) => { //Replace this function
+    
+    
+    
     User.findOne({username: username}, (err, u) => {
         if (err) throw err;
         if (!u) {
@@ -217,11 +323,6 @@ const isAdmin = (username: string) => { //Replace this function
         }
     });
 }
-const deleteUser = (req, res) => {
-    //Im gonna need to check if the user is an admin.
-    //req.body.u_req;
-}
-
 
 /* Retreive all the directory listings*/
 export const list = (req, res) => {
@@ -229,60 +330,172 @@ export const list = (req, res) => {
         if(err) throw err;
         res.send(data);
    });
+   
 };
 
-export const updateCalender = (req, res) => {
-    const jwt = require("json-web-token");
-    const secret = process.env.JWT_SECRET;
-    const getUserNamefromCookie = (cookie) => {
-      jwt.verify(cookie, secret, (err, decoded) => {
-     if (err) throw err;
-        return decoded.username;
-        });
-    }
-    let Tok =req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
-    let calendarData;
-    User.find({username: username}, function(err,data){
-        if(err) throw err;
-        calendarData = data;
+export const listCases = async (req: express.Request, res: express.Response) => {
+    let username: string = await findFromJWT(req, res);
+    
+
+   User.findOne({username: username}, async (err, user) => {
+        if (err) return res.status(500).json({error: "An error occured, please try again."})
+        if (!user) return res.status(403).json({error: "Invalid Token Provided."});
+        if(user){
+            console.log(user.toObject().cases);
+            let myCases = await caseController.findFromIDS(user.toObject().cases);
+            console.log(myCases);
+            res.status(200).json({
+                cases: myCases//await caseController.findFromIDS(user.toObject().cases)
+            });
+        }
     });
-    calendarData.push(req.body.data)//param1 may need to be changed
-    User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+};
+
+export const listCaseIds = async(req: express.Request, res: express.Response) => {
+    let username: string = await findFromJWT(req, res);
+    console.log(username);
+    User.findOne({username: username}, (err, user) => {
+        
+        if(user){
+        console.log(user.toObject().cases);
+        res.status(200).json({
+            active: {
+                cases: user.toObject().cases
+            }
+        })
+        }
+    });
+}
+
+export const getInfo = (req: express.Request, res: express.Response) => {
+    User.findById(req.params.id, (err, user) => {
+        if (err) return res.status(500).json({error: "An error occured, please try again."})
+        if (!user) return res.status(404).json({error: "No user exists for that id."});
+        const user_doc = user.toObject();
+        let info = {
+            firstname: user_doc.firstname,
+            lastname: user_doc.lastname,
+            email: user_doc.email
+        }
+        res.status(200).json(info);
+    })
+} 
+
+export const assignCase = (req: express.Request, res: express.Response) => {
+    let user = req.body.username;
+    
+    let newCase: string = req.body.case;
+
+    
+    User.findOneAndUpdate({username: user}, 
+        { $push: {cases: newCase}}, (err, success) => {
+            if (err) {
+                return res.status(500).json({error: "An error occured please try again."});
+
+            }
+            else {
+                res.status(200).json({message: 'Successfully added case ' + newCase + ' to ' + user});
+            }
+        });
+}
+
+export const updateCalender =async (req, res) => {
+    //console.log("HERE")
+    //const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
+
+    let Tok =req.cookies["jwt"];
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
+        });
+
+    console.log("the user requesting data is: ", username)
+   
+   let calendarData;
+   await User.findOne({username: username}, function(err,data){
+       if(err) throw err;
+       calendarData = data.toObject().calenderEntrys;
+       calendarData.push(req.body.calenderEntrys);   
+    });
+    if(calendarData != null)
+    {
+        await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+        res.status(200).json({message: 'Successfully added new Calender Entry to ' + username}); 
+    }
+    else
+    {
+      res.status(400).json({message: 'An error occured'});
+    }
 };
 
 export const getCalender = (req, res) => {
-    const jwt = require("json-web-token");
+    //const jwt = require("json-web-token");
     const secret = process.env.JWT_SECRET;
-    const getUserNamefromCookie = (cookie) => {
-      jwt.verify(cookie, secret, (err, decoded) => {
-     if (err) throw err;
-        return decoded.username;
-        });
-    }
+
     let Tok =req.cookies["jwt"];
-    let username = getUserNamefromCookie(Tok);
-    User.find({username: username}, function(err,data){
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
+        });
+
+    console.log("the user requesting data is: ", username)
+
+    User.findOne({username: username}, function(err,data){
         if(err) throw err;
-        res.send(data);
+        res.send(data.toObject().calenderEntrys);
     });
 };
 
+export const deleteFromCalender =async (req, res) => {
+    //console.log("HERE")
+    //const jwt = require("json-web-token");
+    const secret = process.env.JWT_SECRET;
 
-export const debugCreate = (req, res) => {
-    console.log(req.params);
-    let toAdd = new User(
-    {   
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        email:    req.body.email,
-        password: "123",
-        isAdmin: false,
-        newUser: true //This is for when we want to force a password change
+    let Tok =req.cookies["jwt"];
+    let username;
+
+    jwt.verify(Tok, secret, (err, decoded) => {
+        if (err) 
+            throw err;
+        else 
+            console.log('decoded username is: ', decoded.name)
+            username = decoded.name;
+        });
+
+   function checkvalue(val) {
+    if(val.start != req.body.calenderEntrys.start || val.title != req.body.calenderEntrys.title || val.end != req.body.calenderEntrys.end)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+   }
+   let calendarData;
+   await User.findOne({username: username}, function(err,data){
+       if(err) throw err;
+       calendarData = data.toObject().calenderEntrys.filter(checkvalue);
     });
-    toAdd.save();
-    res.send(toAdd);
+   await User.findOneAndUpdate({username: username}, {calenderEntrys: calendarData});
+   res.status(200).json({message: 'Successfully removed the Calender Entry'});
+};
+
+export const debugCreate =async (req, res) => {
+    console.log(req.params);
+    let calendarData = [];
+    await User.findOneAndUpdate({username: req.body.username}, {calenderEntrys: calendarData});
 };
 
 

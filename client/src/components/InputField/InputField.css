@@ -5,18 +5,12 @@
     border-style:solid;
     border-color:lightgrey;
     border-width: 1px;
-    
-
-    
-
+    background-color: white;
 }
 
 .inputField {
     padding: 1%;
-    background-color: whitesmoke;
-    
-
-
+    padding-left: 20px;
 }
 
 

@@ -1,8 +1,23 @@
 .submission-form{
     background-color: whitesmoke;
-    max-width: 250px;
+    max-width: 270px;
     margin: 20px auto; 
     padding: 20px;
     align-content: center;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.form-header {
+
+}
+
+.form-input {
+    max-width: 200px;
+}
+
+.form-submit {
+    background-color: #3373EB;
+    color: white;
+    border-radius: 5px;
 }

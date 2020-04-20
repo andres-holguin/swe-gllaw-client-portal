@@ -15,7 +15,9 @@ import axios, { AxiosResponse } from 'axios';
 const App = (props) => {
   const [isAuthenticated, userHasAuthenticated] = useState(false)
   const [userToken, setUserToken] = useState("");
-
+  if(!localStorage.getItem('caseIndex')){
+    localStorage.setItem('caseIndex', '0');
+  }
   useEffect(() => {
     onLoad();
   }, []);

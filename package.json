@@ -18,13 +18,17 @@
         "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\""
     },
     "devDependencies": {
+        "@types/jest": "^25.2.1",
+        "@types/jsonwebtoken": "^8.3.9",
         "@types/node": "^13.9.1",
         "concurrently": "^5.1.0",
         "nodemon": "^2.0.2",
         "typescript": "^3.8.3"
     },
     "dependencies": {
+        "all": "0.0.0",
         "axios": "^0.19.2",
+        "express-session": "^1.17.0",
         "node": "^13.10.1",
         "react-bootstrap": "^1.0.0-beta.17",
         "react-dom": "^16.13.1"
