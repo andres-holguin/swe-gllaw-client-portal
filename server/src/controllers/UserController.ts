@@ -338,7 +338,8 @@ export const listCases = async (req: express.Request, res: express.Response) => 
     
 
    User.findOne({username: username}, async (err, user) => {
-        
+        if (err) return res.status(500).json({error: "An error occured, please try again."})
+        if (!user) return res.status(403).json({error: "Invalid Token Provided."});
         if(user){
             console.log(user.toObject().cases);
             let myCases = await caseController.findFromIDS(user.toObject().cases);
@@ -365,6 +366,20 @@ export const listCaseIds = async(req: express.Request, res: express.Response) =>
         }
     });
 }
+
+export const getInfo = (req: express.Request, res: express.Response) => {
+    User.findById(req.params.id, (err, user) => {
+        if (err) return res.status(500).json({error: "An error occured, please try again."})
+        if (!user) return res.status(404).json({error: "No user exists for that id."});
+        const user_doc = user.toObject();
+        let info = {
+            firstname: user_doc.firstname,
+            lastname: user_doc.lastname,
+            email: user_doc.email
+        }
+        res.status(200).json(info);
+    })
+} 
 
 export const assignCase = (req: express.Request, res: express.Response) => {
     let user = req.body.username;
