@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ProjTable: React.FC<Props> = (props) => {
-    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
+    var caseIndex = parseInt(localStorage.getItem('caseIndex')||'');
     // if they're a client or admin, the headers will be different
     const [headers, setHeaders] = useState(['Client', 'Project', 'Email', 'Date Created', 'Stage'])
 

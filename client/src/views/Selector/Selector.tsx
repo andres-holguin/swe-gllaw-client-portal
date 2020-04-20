@@ -7,7 +7,7 @@ import SubmissionForm from '../../components/SubmissionForm/SubmissionForm'
 import axios from 'axios';
 
 const Selector = () => {
-    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
+    var caseIndex = parseInt(localStorage.getItem('caseIndex')||'');
     const [filterText, setFilterText] = useState('')
     const [isAdmin, setAdmin] = useState(false);
     const date = (new Date).toString()
@@ -16,17 +16,18 @@ const Selector = () => {
         async function loadData() {
             const meResponse = await axios.get("/api/auth/me");
             setAdmin(meResponse.data.admin);
-            const caseResponse = await axios.get("/api/user/cases");
-            setCases(caseResponse.data.cases);
+            const caseResponse = await axios.get("/api/case/list");
+            setCases(caseResponse.data);
         }
 
         loadData();
     },[])
     const [cases, setCases] = useState([{
         id: "",
-        name: "",
+        Name: "",
         progress: 0,
-        description: ""
+        Description: "",
+        userIDS: [""]
     }]);
     
     var tableData = [[
@@ -37,16 +38,17 @@ const Selector = () => {
         0
     ]];
     cases.forEach(async (el,index)=>{
-        // const userResponse = await axios.get('/api/user/'+ el.id + '/info');
+        // const userResponse = await axios.get('/api/user/'+ el.userIDS[0] + '/info');
         // var clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
         // var email = userResponse.data.email;
         tableData[index] = [
-            "Luke Jones",
-            cases[index].name,
-            "jones.luke@ufl.edu",
+            "John Smith",
+            el.Name,
+            "sampleEmail@gmail.com",
             date,
-            cases[index].progress
+            el.progress
         ];
+        
     });
 
     const grabCaseList = () => {
@@ -76,7 +78,8 @@ const Selector = () => {
 
     const updateIndex = (index) =>{
         var newValue = "" + index;
-        sessionStorage.setItem('caseIndex', newValue);
+        localStorage.removeItem('caseIndex');
+        localStorage.setItem('caseIndex', newValue);
         window.location.reload(true);
     }
 

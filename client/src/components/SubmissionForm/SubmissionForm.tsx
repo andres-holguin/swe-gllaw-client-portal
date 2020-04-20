@@ -14,27 +14,27 @@ const onSubmit = (event:any, data: any) => {
   };
 
   const registerUser = async (newUser) => {
-    await axios.post('/api/user/register', {
-      firstname: newUser.firstname,
-      lastname: newUser.lastname,
-      username: newUser.username,
-      email: newUser.email,
-      password: newUser.password
-    }).then(res => {
-      console.log(res.data);
-      console.log(res.data);
-/*
+      await axios.post('/api/case/new', {
+          "name": newUser.project,
+          "description":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pellentesque non quam quis porta. Morbi ultrices, dui vel tempus facilisis, odio felis facilisis ligula, sed pretium ligula est a eros. Duis non sagittis nisl, sed cursus quam. Aenean eu sodales sapien, ut imperdiet tortor. Integer urna justo, lacinia vitae eros eget, blandit ornare dolor. Donec porttitor porta tincidunt. Donec iaculis maximus justo, eu tempus arcu. Aliquam nunc metus, fringilla tincidunt felis non, convallis scelerisque mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ",
+          "user": {
+              "firstname": newUser.firstname,
+              "lastname": newUser.lastname
+            }
+        });
+    window.location.reload(true);
+/*      
       if (res.data.accessToken != undefined) {
          // props.userHasAuthenticated(true);
       } else {
           console.log("Password incorrect");
       } */
-  });
-  }
+    }
+  
   
   return (
     <form className="submission-form" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="form-header">Create User</h2>
+      <h2 className="form-header">Create Project</h2>
         <input 
           style={{ display: 'block', margin: 20 }}
           type="text" 
@@ -77,8 +77,8 @@ const onSubmit = (event:any, data: any) => {
       <input
         style={{ display: 'block', margin: 20 }} 
         type="text" 
-        placeholder="Username" 
-        name="username" 
+        placeholder="Project Name" 
+        name="project" 
         className="form-input"
         ref={register({required: "This field is required"})} 
       />
