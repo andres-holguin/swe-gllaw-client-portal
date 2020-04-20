@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../../components/Header/NavBar';
 import Search from '../../components/Search/Search';
 import List from '../../components/List/List';
@@ -7,48 +7,60 @@ import SubmissionForm from '../../components/SubmissionForm/SubmissionForm'
 import axios from 'axios';
 
 const Selector = () => {
+    var caseIndex = parseInt(localStorage.getItem('caseIndex')||'');
     const [filterText, setFilterText] = useState('')
+    const [isAdmin, setAdmin] = useState(false);
     const date = (new Date).toString()
-    const [tableData, setTableData] = useState([
-        [
-            'Luke P.',
-            'SWE',
-            'lupey@aol.com',
-            date,
-            4
-        ],
-        [
-            'Anna Lanzino',
-            'SWEeeee',
-            'luaay@aol.com',
-            date,
-            3
-        ], [
-            'Andres',
-            'SWEeee',
-            'ly@aol.com',
-            date,
-            5
-        ], [
-            'Yashiyah',
-            'backend SWE',
-            'lyyyy@aol.com',
-            date,
-            1
-        ]
-    ])
+    const [caseIndexLocal, setCaseIndexLocal] = useState(caseIndex);
+    useEffect(() => {
+        async function loadData() {
+            const meResponse = await axios.get("/api/auth/me");
+            setAdmin(meResponse.data.admin);
+            const caseResponse = await axios.get("/api/case/list");
 
-    const isAdmin =  (): boolean => {
-        let admin = false;
-        axios.get("/api/auth/me").then( res => {
-            admin = res.data.admin; 
-        })
-        return admin;
-    }
+            let cases = caseResponse.data
+  
+            for (let i=0; i<cases.length; i++) {
+                const c = cases[i];
+                const userResponse = await axios.get('/api/user/'+ c.userIDS[0] + '/info');
+                c.clientName = userResponse.data.firstname + ' ' + userResponse.data.lastname;
+                c.email = userResponse.data.email;
+            }
 
+            setCases(cases);
+        }
+
+        loadData();
+    },[])
+    const [cases, setCases] = useState([{
+        id: "",
+        Name: "",
+        progress: 0,
+        Description: "",
+        userIDS: [""],
+        clientName: "",
+        email: ""
+    }]);
+    
+    var tableData = [[
+        "",
+        "",
+        "",
+        date,
+        0
+    ]];
+    cases.forEach(async (el,index)=>{
+        tableData[index] = [
+            el.clientName,
+            el.Name,
+            el.email,
+            date,
+            el.progress
+        ];
+    });
 
     const grabCaseList = () => {
-        if (isAdmin()) {
+        if (isAdmin) {
             
         }
     }
@@ -59,10 +71,9 @@ const Selector = () => {
             'SWE',
             data.email,
             date,
-            1
+            0
         ]
-        newData.push(obj);
-        setTableData(newData);
+        tableData.push(obj);
         setFilterText(' ');
         setFilterText('');
         console.log(tableData);
@@ -73,7 +84,14 @@ const Selector = () => {
         console.log(filterText)
     }
 
-    return (
+    const updateIndex = (index) =>{
+        var newValue = "" + index;
+        localStorage.removeItem('caseIndex');
+        localStorage.setItem('caseIndex', newValue);
+        window.location.reload(true);
+    }
+
+    if(isAdmin)return (
         <div>
             <NavBar />
             <Search
@@ -82,8 +100,22 @@ const Selector = () => {
             <Table
                 data={tableData}
                 target={filterText}
+                updateIndex = {updateIndex}
             />
             <SubmissionForm addProject = {addProject}/>
+        </div>
+    )
+    else return (
+        <div>
+            <NavBar />
+            <Search
+                filterUpdate={filterUpdate}
+            />
+            <Table
+                data={tableData}
+                target={filterText}
+                updateIndex = {updateIndex}
+            />
         </div>
     )
 }

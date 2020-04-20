@@ -15,7 +15,7 @@ const NavBar = () => {
     const [admin, isAdmin] = useState(false);
     const [caseId, setCaseId] = useState("");
     const [progress, setProgress] = useState(1);
-    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
+    var caseIndex = parseInt(localStorage.getItem('caseIndex')||'');
     useEffect(() => {
         const getPrivilege = async () => {
             await axios.get("/api/auth/me")

@@ -10,7 +10,7 @@ import { stringify } from 'querystring';
 
 
 const Documents = () => {
-    var caseIndex = parseInt(sessionStorage.getItem('caseIndex')||'');
+    var caseIndex = parseInt(localStorage.getItem('caseIndex')||'');
     let caseData = {
         id: "",
         documents: [] }
