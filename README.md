@@ -21,7 +21,7 @@ Please view [SeparateBases.md](documentation/SeperateBases.md) for a guide on ho
 
 In the project directory, you can run:
 
-### `npm install-all`
+### `npm run install-all`
 Installs all dependencies for both the server and the client bases.
 
 ### `npm run dev`
