@@ -6,7 +6,7 @@ Welcome to the Gonzalo Law Portal - Administration Tool. This guide will walk th
 
 Just like a client, you will need to log into the portal with your admin credentials. The current admin credentials are:
 username: jsmith
-password: hunter12
+password: hunter2
 
 <div class="page"/>
 

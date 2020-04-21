@@ -14,8 +14,31 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Instructions used to [add TypeScript to the project](https://create-react-app.dev/docs/adding-typescript/). Additional resources on using TypeScript on that page.
 
+## Main Requested Features
+
+### Progress Bar
+
+Keeps track of progress on the current case. 
+
+The Administrator, can choose whether to increment the bar or decrement.
+
+Users can view but not change the status of the bar.
+
+### Calendar
+
+Allows for appointments to be schedules and saved on each user account.
+
+When the calendar is synced with outlook, the calendar information will be visible from both our app and your own outlook calendar.
+
+## Bonus Features
+
+- Hashing for sensitive information
+- Email Account Verification
+- Email notifications
+- Outlook Calendar Sync
+- PDF File Upload/Download
+
 # Getting Started
-Please view [SeparateBases.md](documentation/SeperateBases.md) for a guide on how to set up the environment for deployment.
 
 ## Available Scripts
 
@@ -25,43 +48,77 @@ In the project directory, you can run:
 Installs all dependencies for both the server and the client bases.
 
 ### `npm run dev`
-Starts the development application with the server.
 
-### `yarn start`
-
-Runs the app in the development mode.<br />
+Runs the app client and server in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm run start`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run the app in production mode. <br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Uses the build from react files and the server so no live changes are available.
 
-### `yarn build`
+### `npm run test`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Runs a few JEST Mock test, 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The majority of the test that we used involved postman.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run build`
 
-### `yarn eject`
+Builds the react app for production to the `client\build` folder.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Builds	the server in the `server\dist` folder.<br />It correctly bundles React in production mode and optimizes the build for the best performance.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Configuration
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Environment Variables
 
-## Learn More
+In order for the web app to run the server a few environment variables are required to be filled out in `.env` 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Keep in mind that the keys that have been used so far are personally owned by students and not suitable for production use. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* The mongo DB uri -- DB_URI
+
+* JSON Web Token Verification Secret -- JWT_SECRET
+
+* Server Listening Port -- PORT
+
+* Outlook Client ID - ID
+
+* Outlook Secret - CLIENT_SECRET
+
+* Mailgun API Key -- MAILGUN_API_KEY
+
+* Mail GUN Domain Name -- FROM_EMAIL
+
+  ```dotenv
+  DB_URI=
+  JWT_SECRET=randomsecret
+  PORT=3001
+  CLIENT_SECRET=
+  ID=
+  MAILGUN_API_KEY=
+  FROM_EMAIL=sandboxrandom.mailgun.org
+  ```
+### Using the Site
+
+Navigate to the site URL or if local use `npm run dev`
+
+Navigation for the site itself is included in [Admin Info](documentation\Admin_Info.md).
+
+## Documentation
+
+Links to different aspects of the backend API
+
+* [Users](documentation/Backend_Interaction.md)
+* [Cases](documentation/Case_Router.md)
+* [Email](documentation/Document_Router.md)
+* [Documents](documentation/Document_Router.md)
+
+  
+
